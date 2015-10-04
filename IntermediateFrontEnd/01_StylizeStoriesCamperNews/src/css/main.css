@@ -81,7 +81,7 @@ a {
   box-shadow: 3px 1px 10px $grey;
   float: left;
   height: $user-img-diameter;
-  margin-left: $x-translate-user-img- $user-img-diameter;
+  margin-left: $x-translate-user-img - $user-img-diameter;
   margin-top: -50px;
   position: absolute;
   width: $user-img-diameter;
