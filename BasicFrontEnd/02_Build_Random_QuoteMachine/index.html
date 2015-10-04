@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random quote maquine</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="app.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Pacifico' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1 class="title pacifico">Random Quote Generator</h1>
+        <p>Click on <em class="pacifico">“New Quote”</em> to get a new random quote.</p>
+        <p>Quotes are kindly provided by <a href="http://forismatic.com" target="_blank">forismatic.com</a>.</p>
+        <button id="get-quote" class="btn pacifico">New Quote</button>
+        <a class="tw" id="tw"><button class="btn pacifico"><i class="fa fa-twitter"></i> Tweet</button></a>
+        <div class="random-quote center-block">
+          <blockquote class="quote" cite=""></blockquote>
+          <footer class="author text-right"></footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

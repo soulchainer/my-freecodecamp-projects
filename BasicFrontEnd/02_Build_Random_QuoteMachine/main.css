@@ -1,0 +1,95 @@
+body{
+    animation: rainbow 120s ease-in 0s infinite;
+    background-color: #92E64B;
+    font-family: 'Bree Serif', serif;
+    font-size: 18px;
+    font-size: 1.8rem;
+    margin-top: 5vh;
+}
+@keyframes rainbow {
+    from {background-color: #92E64B;}
+    20%  {background-color: #8DC4E8;}
+    40%  {background-color: #9E8DE8;}
+    60%  {background-color: #FF9BE2;}
+    80%  {background-color: #E6DB4B;}
+    to   {background-color: #92E64B}
+}
+.title {
+    font-size: 6rem;
+    padding-bottom: 4rem;
+    text-shadow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #fff;
+}
+.pacifico {
+    font-family: "Pacifico", cursive;
+}
+a {
+    border-bottom: 1px solid transparent;
+    color: #000;
+    display: inline-block;
+    font-size: 2.5rem;
+}
+a:hover {
+    border-bottom: 1px solid black;
+    color: #000;
+    text-decoration: none;
+}
+a:active:focus,
+a:focus,
+.btn:active:focus,
+.btn:focus {
+    outline-width: 0;
+}
+.btn {
+    background-color: #fff;
+    border: 1px solid #292f33;
+    font-size: 2rem;
+    line-height: 3.5rem;
+    margin: 3rem;
+    padding: 1rem 2rem;
+}
+.btn,
+.btn:active {
+    box-shadow: 4px 3px 5px 2px rgba(54,54,54,.3);
+}
+.btn:active,
+.btn:focus
+.btn:hover {
+    border-color: #292f33;
+}
+.fa-twitter {
+    color: #55acee;
+    font-size: 3.2rem;
+}
+.tw {
+    color: #333;
+}
+.tw:active:focus
+.btn:active,
+.btn:active:focus,
+.btn:hover,
+.fa-twitter:hover {
+    background-color: #292f33;
+    color: #fff;
+}
+.tw:hover {
+    border-bottom: none;
+}
+.random-quote {
+    display: none;
+    font-weight: bold;
+    min-height: 300px;
+    max-width: 90vw;
+    width: 600px;
+}
+.quote {
+    border: none;
+    font-size: 3.6rem;
+    font-weight: normal;
+    padding: 1rem 1rem 0;
+}
+.author {
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: normal;
+    padding: 0 1rem 1rem 1rem;
+}

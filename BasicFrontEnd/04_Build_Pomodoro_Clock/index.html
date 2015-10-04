@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pomodoro Clock</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow|Londrina+Solid|Open+Sans:400|Ubuntu+Mono' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+  <script src="https://code.createjs.com/soundjs-0.6.1.min.js"></script>
+  <script src="javascript/app.js"></script>
+</head>
+<body>
+  <div class="modal" id="modal">
+    <span class="btnTop close">
+      <i class="ion ion-ios-close-empty" id="close" title="Close info"></i>
+    </span>
+    <div class="center-block mtext">
+      <p>This is a <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank">Pomodoro timer</a> I made for a <a href="http://freecodecamp.com/" target="_black">FreeCodeCamp</a> <a href="http://freecodecamp.com/challenges/zipline-build-a-pomodoro-clock" target="_blank">Challenge</a>.</p>
+      <p>
+        Their behaviour is simple:
+        <ul class="ion-ul">
+          <li class="ion-li"><i class="ion-bullet ion-hammer"></i>While we're getting <span class="mwork">work</span> done, <span class="mwork">WORK</span> letters are progressively emptied and <span class="mrest">REST</span> filled: our <span class="mrest">rest</span> time is getting closer!</li>
+          <li class="ion-li"><i class="ion-bullet ion-ios-game-controller-a"></i>With <span class="mwork">work</span> finally done, it's time to <span class="mrest">rest</span>. Unfortunately, while <span class="mrest">REST</span> is emptied, our next session of <span class="mwork">work</span> approaches.</li>
+        </ul>
+      </p>
+      <p>
+        <i class="ion-ios-refresh-empty"></i> resets the timer, <i class="ion-ios-play"></i> starts/resumes it, and <i class="ion-ios-pause"></i> pauses everything.</li>
+      </p>
+      <p>
+        <i class="ion-ios-plus-outline"></i> and <i class="ion-ios-minus-outline"></i> lets set the time (in minutes) for the interval where timer is paused on, or for each one if timer isn't started.
+      </p>
+    </div>
+  </div>
+  <span class="btnTop sound">
+    <i class="ion-ios-volume-high" id="sound" title="Play sound"></i>
+  </span>
+  <span class="btnTop info">
+    <i class="ion-ios-help-outline" id="info" title="Explain me this, please"></i>
+  </span>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-xs-12 text-center timer-text" id="work">
+        <span class="outline i">W<span class="fill work i wf" id="ww">W</span></span>
+        <span class="outline i">O<span class="fill work i of" id="ow">O</span></span>
+        <span class="outline i">R<span class="fill work i rf" id="rw">R</span></span>
+        <span class="outline i">K<span class="fill work i kf" id="kw">K</span></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 text-center timer-text" id="rest">
+        <span class="outline i">R<span class="fill rest i re" id="rr">R</span></span>
+        <span class="outline i">E<span class="fill rest i ee" id="er">E</span></span>
+        <span class="outline i">S<span class="fill rest i se" id="sr">S</span></span>
+        <span class="outline i">T<span class="fill rest i te" id="tr">T</span></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 text-center">
+        <span class="ui i">
+          <span class="ui-title i">Work time</span>
+          <span class="session b">
+            <button class="btn work" id="sminus">
+              <i class="ion-ios-minus-outline"></i>
+            </button>
+            <span class="time i" data-time="25" id="stime"></span>
+            <button class="btn work" id="splus">
+              <i class="ion-ios-plus-outline"></i>
+            </button>
+          </span>
+        </span>
+        <span class="ui i">
+          <span class="ui-title i">Rest time</span>
+          <span class="break b">
+            <button class="btn rest" id="bminus">
+              <i class="ion-ios-minus-outline"></i>
+            </button>
+            <span class="time i" data-time="5" id="btime"></span>
+            <button class="btn rest" id="bplus">
+              <i class="ion-ios-plus-outline"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 text-center">
+        <button class="btn action" id="reset" data-label="Reset" title="Reset">
+          <i class="ion-ios-refresh-empty"></i>
+        </button>
+        <button class="btn action start" id="playpause" title="Start">
+          <i class="ion-ios-play"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+body {
+    background-color: #d3f7b9;
+    font-family: 'Fira Sans', sans-serif;
+    overflow-y: scroll;
+}
+.main-container {
+    display: flex;
+    margin: 10vh auto;
+    width: 550px;
+}
+.menu-bar {
+    display: flex;
+    flex-direction: column;
+    width: 8rem;
+}
+.menu-item {
+    background-color: #eee;
+    background-color: rgba(238, 238, 238, .8);
+    border: 1px solid #282828;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+    display: block;
+    font-size: 3rem;
+    margin: .5rem;
+    padding: .5rem 1rem;
+}
+.search {
+    height: 5rem;
+    margin-bottom: 2rem;
+}
+.search-container {
+    border-bottom: 5px solid #282828;
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    width: 80%;
+}
+.search-input {
+    background-color: transparent;
+    border: medium none;
+    font-size: 2rem;
+    height: 90%;
+    padding: 0 .5rem;
+    width: 99%;
+}
+.all,
+.menu-bar>.all:hover {
+    color: #28a3df;
+}
+.menu-bar>.online:hover,
+.online {
+    color: #41ad42;
+}
+.menu-bar>.offline:hover,
+.offline {
+    color: #df2c28;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.users {
+    overflow: hidden;
+}
+.user-item {
+    background-color: #d3f7b9;
+    box-sizing: border-box;
+    display: flex;
+    overflow-y: hidden;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    width: 100%;
+}
+.user-avatar {
+    align-self: center;
+    border-radius: 5px;
+    height: 80px;
+    width: 80px;
+}
+.user-info {
+    overflow: hidden;
+    padding: .5rem;
+    text-overflow: ellipsis;
+}
+.user-name {
+    display: block;
+    font-size: 1.5rem;
+}
+.extra-info {
+    color: #28a3df;
+    white-space: nowrap;
+}
+.disabled {
+    color: #ccc;
+    opacity: .9;
+}
+.inactive {
+    color: #000;
+}
+.users>.all,
+.users>.offline,
+.users>.online {
+    max-height: 200px;
+    transition: all .4s .3s;
+}
+.online>.offline,
+.offline>.online,
+.users>.notAMatch {
+    max-height: 0;
+    padding: 0 1rem;
+    transition: all .2s 0s;
+}
+@media (max-width:600px), (max-device-width:600px), (max-device-height:600px) and (orientation: landscape){
+    .main-container{
+        flex-direction: column;
+        max-width: 95%;
+    }
+    .menu-bar{
+        flex-direction: row;
+        margin: 0 auto;
+        width: auto;
+    }
+}

@@ -1,0 +1,70 @@
+/* TEAM */
+
+  Developer: Juan Riquelme
+  Site: soulchainer.github.io
+  Contact: juanriqgon[at]tutanota[dot]com
+  Twitter: @juanriqgon
+  Location: Murcia, Spain
+
+/* THANKS */
+
+  API:
+
+    -- OpenWeatherMap --
+    Description: Weather API.
+    Site: http://openweathermap.org/api
+
+    -- Telize --
+    Description: IP Geolocation API
+    Site: http://www.telize.com/
+
+  Iconfonts:
+
+    -- Weather Icons --
+    Description: Weather themed icons
+    Site: https://erikflowers.github.io/weather-icons/
+    Author: Erik Flowers
+    License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
+
+  Webfonts:
+
+    -- Squada One --
+    Author: Joe Prince
+    Google+: https://plus.google.com/115540960342941034012/about
+    Site: https://www.google.com/fonts/specimen/Squada+One
+
+    -- Raleway --
+    Author: Multiple designers. More info in the Site.
+    Site: https://www.google.com/fonts/specimen/Raleway
+
+    -- Patua One --
+    Author: LatinoType
+    Author site: http://www.latinotype.com/
+    Google+: https://plus.google.com/103923376014098522614/about
+    Site: http://www.google.com/fonts/specimen/Patua+One
+
+    Webfonts license: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
+    Webfonts served by: Google webfonts service (http://www.google.com/fonts/)
+
+  CSS sprites:
+    -- Flag Sprites --
+    Description: Country flags in single CSS sprite
+    Site: https://www.flag-sprites.com/
+
+  Photograpy:
+
+    All photos are from multiple Pixabay (https://pixabay.com) members and were
+    released under a Creative Commons CCO
+    (https://creativecommons.org/publicdomain/zero/1.0/deed.en) license.
+
+    The only exception is the photo of the cyclone Catarina (https://commons.wikimedia.org/wiki/File:Cyclone_Catarina_from_the_ISS_on_March_26_2004.JPG),
+    that was created by NASA and, therefore, is also in the public domain.
+
+/* SITE */
+
+  Last update: 2015/09/03
+  Standards: CSS3, HTML5, Javascript
+  Components: Google Fonts, jQuery, Bootstrap
+  Software: Atom Editor, Firefox, BrowserSync
+  Language: English
+  Hosted in: Codepen, Imgur, GitHub

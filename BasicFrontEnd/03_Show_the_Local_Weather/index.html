@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Weather</title>
+  <link type="text/plain" rel="author" href="humans.txt" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/flags.css">
+  <link rel="stylesheet" href="css/weather-icons.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Squada+One|Raleway:300|Patua+One' rel='stylesheet' type='text/css'>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="javascript/app.js"></script>
+</head>
+<body class="raleway">
+  <header class="navbar-default topbar">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6 text-left">
+          <span class="credits i topbar-item text-center">
+            Credits and thanks: <a href="humans.txt" target="_blank"><img src="assets/humanstxt.png" alt="Humans.txt"></a>
+          </span>
+        </div>
+        <div class="col-md-6 col-xs-6 text-right">
+          <span class="change-key i topbar-item" id="change-key">Change API key</span>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container main">
+    <div class="row center-block">
+      <div class="col-md-8 col-md-offset-2 card">
+          <div class="row card-titlebar sunset-orange text-center">
+              <span class="city i title fs"></span>
+              <span class="country flag"></span>
+          </div>
+          <div class="row card-content">
+              <div id="condition" class="col-md-12 text-center">
+                <span class="actual-weather i">
+                  <span class="wi-now b" id="wi-now"></span>
+                  <span class="b fmd ls01" id="description"></span>
+                </span>
+                <span class="i squada">
+                  <span class="actual-temp b fxl">
+                    <span class="temp i unit-temp front" data-type="temperature" id="temp">
+                      <span class="unit-temp i back"></span>
+                    </span>
+                    <span class="degrees i raleway" id="toggle-degrees">
+                      <span class="degrees-symbol b squada">°</span>
+                      <span class="btn fs toggle-units front" data-unit="C" id="degrees">
+                        <span class="btn fs toggle-units back" data-unit="F"></span>
+                      </span>
+                    </span>
+                  </span>
+                  <span class="max-min-temp fs raleway">
+                    <span class="wi wi-direction-up fl"></span><span class="unit-temp i front" data-type="temperature" data-unit="C" id="temp_max">
+                      <span class="unit-temp i back"></span>
+                    </span><span class="degrees-symbol-mini fmd">°</span>
+                    <span class="wi wi-direction-down fl"></span><span class="unit-temp i front" data-type="temperature" data-unit="C" id="temp_min">
+                      <span class="unit-temp i back"></span>
+                    </span><span class="degrees-symbol-mini fmd">°</span>
+                  </span>
+                </span>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row center-block">
+      <div class="col-md-8 col-md-offset-2 card">
+        <div class="row card-titlebar blue">
+          <h2 class="col-md-12 text-center title fs">More details</h2>
+        </div>
+        <div class="row card-content card-2">
+          <div id="astronomy" class="col-md-12">
+            <h3 class="content-title fmd ls0 ptop-0 text-center">Astronomy</h3>
+            <div class="row">
+              <div class="col-md-3 col-xs-3 text-left">
+                <i class="detail-icon fl wi wi-sunrise wi-fw" title="Sunrise"></i><span class="b" id="sunrise">
+                </span>
+              </div>
+              <div class="col-md-3 col-md-offset-6 col-xs-3 col-xs-offset-6 text-right">
+                <i class="detail-icon fl wi wi-sunset wi-fw" title="Sunset"></i><span class="b" id="sunset">
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressbar">
+                  <span class="sr-only"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="atmosphere" class="col-md-12 text-center">
+            <h3 class="content-title fmd ls0">Atmosphere</h3>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-humidity wi-fw"></i><span class="detail fs i ls0 unit" data-type="water-vapor"  data-unit="%" id="humidity"></span>
+              <span class="detail-description b fxs">Humidity</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-barometer wi-fw"></i><span class="detail fs i ls0 unit" data-type="pressure" data-unit="hPa" id="pressure-sea"></span>
+              <span class="detail-description b fxs">sea level</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-barometer wi-fw"></i><span class="detail fs i ls0 unit" data-type="pressure" data-unit="hPa" id="pressure-grnd"></span>
+              <span class="detail-description b fxs">above sea level</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-cloudy wi-fw" title="Cloudiness"></i><span class="detail fs i ls0 unit" data-type="water-vapor" data-unit="%" id="clouds"></span>
+              <span class="detail-description b fxs">Cloudiness</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-rain wi-fw"></i><span class="detail fs i ls0 unit" data-type="volume" data-unit="mm" id="rain-vol"></span>
+              <span class="detail-description b fxs">rain vol. 3h</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-snow wi-fw"></i><span class="detail fs i ls0 unit" data-type="volume" data-unit="mm" id="snow-vol"></span>
+              <span class="detail-description b fxs">snow vol. 3h</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-day-haze wi-fw"></i><span class="detail fs i ls0 unit front" data-type="visibility" data-unit="m" id="visibility">
+                <span class="unit back" data-unit="mi"></span>
+              </span>
+              <span class="detail-description b fxs">visibility</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-strong-wind wi-fw"></i><span class="detail fs i ls0 unit front" data-type="speed" data-unit="Km/h" id="speed">
+                <span class="unit back" data-unit="mph"></span>
+              </span>
+              <span class="detail-description b fxs">Wind speed</span>
+            </span>
+            <span class="col-md-4 col-xs-6 details b hidden">
+              <i class="detail-icon fl wi wi-wind-direction wi-fw" id="wind-dir"></i><span class="detail fs i ls0 unit" data-type="deg" data-unit="°" id="deg"></span>
+              <span class="detail-description b fxs">wind direction</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

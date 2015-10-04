@@ -1,0 +1,17 @@
+<div class="news">
+  <article class="postit" ng-repeat="article in news.articles">
+    <header>
+      <img class="user-img" alt="{{article.author.username}} picture" lazy-img="{{article.author.picture}}" title="shared by @{{article.author.username}}"></img>
+      <h2 class="article-title">
+        <a href="{{article.link}}" target="_blank">{{article.headline}}</a>
+      </h2>
+    </header>
+    <a class="article-content" href="{{article.link}}" target="_blank">
+      <img class="article-image" lazy-img="{{article.image || news.placeholder}}">
+    </a>
+    <footer>
+      <span><a class="star" href="{{'http://www.freecodecamp.com/news/' + article.storyLink.split(' ').join('-')}}" target="_blank" title="Upvote">★</a> {{article.rank}}</span>
+      <time datetime="{{article.timePosted | date:'yyyy-MM-dd HH:mm'}}">{{article.timePosted | date:'MMM d, yyyy' | uppercase}}</time>
+    </footer>
+  </article>
+</div>

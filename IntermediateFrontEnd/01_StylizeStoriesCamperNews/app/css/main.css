@@ -1,0 +1,129 @@
+body {
+  background-attachment: fixed;
+  background-color: #f49f35;
+  background-image: url('../img/cork.jpg');
+  background-size: cover;
+  font-family: 'Droid Sans',sans-serif;
+}
+.title {
+  font-family: 'Permanent Marker',cursive;
+  font-size: 5rem;
+  opacity: .9;
+  text-align: center;
+}
+a {
+  text-decoration: none;
+  color: #282828;
+}
+.news {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 4rem;
+}
+.postit {
+  background-color: #f1d63f;
+  box-shadow: 5px 5px 20px #282828;
+  box-shadow: 5px 5px 20px rgba(40,40,40,.8);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 1rem;
+  padding: 1rem;
+  max-width: 100vw;
+  -webkit-transform: rotate(2deg);
+          transform: rotate(2deg);
+  transition: all .2s;
+  width: 400px;
+}
+.postit:nth-child(2n) {
+  background-color: #80d323;
+  -webkit-transform: none;
+  transform: none;
+}
+.postit:nth-child(2n) .user-img {
+  margin-left: calc(400px/2 - 60px);
+}
+.postit:nth-child(4n+3) {
+  background-color: #82bcfb;
+  -webkit-transform: rotate(-2deg);
+  transform: rotate(-2deg);
+}
+.postit:nth-child(4n+3) .user-img {
+  margin-left: calc(400px - 5px - 60px);
+}
+.postit:hover {
+  -webkit-transform: none;
+  transform: none;
+  transition: all .2s;
+}
+.user-img, .article-image {
+    opacity: 0;
+}
+.error, .success {
+    opacity: 1;
+    transition: opacity .2s;
+}
+.user-img {
+  background-color: #eee;
+  border: 5px solid #eee;
+  border-radius: 50%;
+  box-shadow: 3px 1px 10px #282828;
+  float: left;
+  height: 60px;
+  margin-left: $x-translate-user-img- 60px;
+  margin-top: -50px;
+  position: absolute;
+  width: 60px;
+}
+.article-title, .article-content, .article-image {
+  margin-bottom: 1.2rem;
+  width: 400px;
+}
+.article-title {
+  margin-top: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.article-content {
+  max-height: 350px;
+  overflow: hidden;
+}
+.star {
+  font-size: 1.5rem;
+}
+time {
+  color: #eee;
+  float: right;
+  font-weight: bold;
+  position: relative;
+  text-shadow: 0 0px 10px #aaa, 0 0px 10px #aaa;
+}
+.up-arrow {
+  background-color: #282828;
+  border-top-left-radius: 50%;
+  bottom: 0rem;
+  color: #eee;
+  display: inline-block;
+  line-height: 1rem;
+  padding: 0.4rem;
+  position: fixed;
+  right: 0rem;
+  text-align: center;
+  width: 1rem;
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,223 @@
+body {
+    background-color: #333;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: -.1rem;
+}
+.container {
+    padding-top: 10vh;
+}
+.timer-text {
+    font-size: 20rem;
+    line-height: 20rem;
+}
+.b {
+    display: block;
+}
+.i {
+    display: inline-block;
+}
+.outline {
+    color: #fff;
+    font-family: 'Londrina Shadow', cursive;
+    position: relative;
+    text-shadow: 0 -1px #fff;
+    transform: scale(1.01);
+}
+.fill {
+    font-family: 'Londrina Solid', cursive;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+}
+/* Need to compensate space within font design */
+.wf {
+    width: 98%;
+}
+.of {
+    width: 96%;
+}
+.re {
+    width: 7%;
+}
+.rf {
+    width: 101%;
+}
+.kf {
+    width: 102%;
+}
+.ee {
+    width: 9%;
+}
+.se {
+    width: 2%;
+}
+.te {
+    width: 3%;
+}
+/* Config */
+.ui {
+    color: #eee;
+    font-family: "Ubuntu Mono", monospace;
+    font-size: 3rem;
+    padding: 3rem;
+}
+.ui-title {
+    font-variant: small-caps;
+    padding: 1rem;
+}
+.time {
+    padding: 0 1.5rem;
+    width: 7.5rem;
+}
+.btn {
+    background-color: transparent;
+    color: #eee;
+    font-size: 3rem;
+    line-height: 1.5rem;
+    padding: .25rem 0;
+}
+.btn::before {
+    vertical-align: super;
+}
+.btn:active,
+.btn:hover,
+.btn:focus {
+    background-color: transparent;
+    color: #eee;
+}
+a:focus,
+.btn:active:focus,
+.btn:focus {
+    box-shadow: none;
+    outline-width: 0;
+}
+.work,
+.work:active,
+.work:focus,
+.work:hover {
+    color: #ee2251;
+}
+.rest,
+.rest:active,
+.rest:focus,
+.rest:hover
+{
+    color: #97c3dc;
+}
+a,
+a:active,
+a:hover,
+a:focus
+{
+    color: #9Ebf2b;
+}
+.time::before {
+    content: attr(data-time);
+}
+.action {
+    background-color: transparent;
+    font-size: 6rem;
+    height: auto;
+    padding: 1rem 6rem;
+    width: auto;
+}
+.action:active,
+.action:active:focus,
+.action:hover {
+    background-color: transparent;
+    text-shadow: 0 0 5px #eee;
+}
+.btnTop {
+    color: #eee;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 4rem;
+    font-weight: bold;
+    opacity: .7;
+    position: fixed;
+    top: 1rem;
+    z-index: 100;
+}
+.info {
+    right: 2rem;
+}
+.sound {
+    left: 2rem;
+}
+@keyframes shake {
+  from, to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-1.5rem, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translate3d(1.5rem, 0, 0);
+  }
+}
+
+.shake {
+  animation: shake 100ms infinite;
+}
+.modal {
+    background-color: #1E9F75;
+    display: block;
+    height: 100vh;
+    transform: rotate(180deg);
+    transform-origin: 0 100vw;
+    width: 100vw;
+}
+.close {
+    font-size: 6rem;
+    right: 2rem;
+    text-shadow: none;
+}
+.close:focus,
+.close:hover {
+    color: #eee;
+}
+.mtext {
+    color: #eee;
+    font-size: 2.5rem;
+    line-height: 3rem;
+    margin-top: 15vh;
+    max-width: 100vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2rem;
+    width: 960px;
+}
+.ion-ul {
+    list-style-type: none;
+    margin: 2.5rem auto;
+}
+.ion-li {
+    display: inline-block;
+    padding-bottom: 2rem;
+    position: relative;
+}
+.ion-bullet {
+    position: absolute;
+    left: -3rem;
+}
+.mrest {
+    color: #00FFAC;
+}
+.mwork {
+    color: #2D4B41;
+}
+/* MEDIA QUERIES */
+@media (max-width:479px), (max-device-width:479px), (max-device-height:479px) and (orientation: landscape){
+    .timer-text {
+        font-size: 12rem;
+        line-height: 12rem;
+    }
+    .time {
+        padding: 0 .2rem;
+    }
+    .ui {
+        padding: 2rem .3rem;
+    }
+}
