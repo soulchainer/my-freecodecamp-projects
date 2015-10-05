@@ -1,4 +1,4 @@
-# FreeCodeCamp «Zipline: Use the Twitchtv JSON API»
+# FreeCodeCamp «Zipline: Stylize Stories on Camper News»
 
 This is my solution for the [FreeCodeCamp](http://freecodecamp.com) [Zipline: Stylize Stories on Camper News](http://freecodecamp.com/challenges/zipline-stylize-stories-on-camper-news).
 
