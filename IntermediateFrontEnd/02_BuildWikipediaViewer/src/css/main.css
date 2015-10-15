@@ -204,7 +204,7 @@ form {
   @extend %field-alike;
   border: 4px double transparent;
   box-sizing: border-box;
-  font-size: $font-size-results;
+  font-size: $text;
   transition: border .4s, background-color .4s;
 
   &:hover {
@@ -222,7 +222,7 @@ form {
 
 .no-result {
   @extend %field-alike;
-  font-size: $font-size-results;
+  font-size: $text;
 }
 
 
