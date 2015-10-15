@@ -12,7 +12,8 @@ $text-xs: .8rem;
 $text-lg: 5rem;
 $text-md: 3.5rem;
 $text: 1.2rem;
-$mobile: 450px;
+
+@custom-media --mobile (width <= 450px), (device-width <= 450px), (device-height <= 450px) and (orientation: landscape);
 
 /*------------------------------------*\
     #GLOBAL
@@ -63,7 +64,7 @@ main {
   text-align:  center;
   text-shadow: 0 1px 1px #000, 0 -1px 1px #000, 1px 0 1px #000,
                -1px 0 1px #000;
-  @media (width <= $mobile), (device-width <= $mobile), (device-height <= $mobile) and (orientation: landscape) {
+  @media (--mobile) {
     font-size: $text-md;
   }
 }
@@ -242,7 +243,7 @@ form {
   position: fixed;
   text-align: center;
   width: 100%;
-  @media (width <= $mobile), (device-width <= $mobile), (device-height <= $mobile) and (orientation: landscape) {
+  @media (--mobile) {
     position: relative;
   }
 }
