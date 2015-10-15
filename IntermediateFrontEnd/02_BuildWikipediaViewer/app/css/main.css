@@ -1,0 +1,215 @@
+/*------------------------------------*\
+    #GLOBAL
+\*------------------------------------*/
+
+/* Avoid horizontal content «jumping» with y scrollbar appearing in FF */
+html { overflow: -moz-scrollbars-vertical !important; }
+
+body {
+  background-color: #f0f0f0;
+  font-family: 'Lato',sans-serif;
+  margin: 0;
+}
+
+a {
+  color: #282828;
+  line-height: 1.8rem;
+  text-decoration: none;
+}
+
+.text-green { color: #9ed534; }
+
+.text-white, .submit:hover, .submit.bg-blue, .random:hover, .suggestion:hover { color: #fff; }
+
+.text-blue { color: #23a6ee; }
+
+.bg-blue, .submit:hover, .submit.bg-blue, .suggestion:hover { background-color: #23a6ee; }
+
+
+
+
+
+/*------------------------------------*\
+    #MAIN
+\*------------------------------------*/
+
+main {
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.title-logo {
+  color: #23a6ee;
+  font-family: 'Poiret One',cursive;
+  font-size:   5rem;
+  font-weight: bold;
+  text-align:  center;
+  text-shadow: 0 1px 1px #000, 0 -1px 1px #000, 1px 0 1px #000,
+               -1px 0 1px #000
+}
+
+@media (max-width: 450px), (max-device-width: 450px), (max-device-height: 450px) and (orientation: landscape) {
+  .title-logo {
+  font-size: 3.5rem;
+  }
+  }
+
+
+
+
+
+/*------------------------------------*\
+    #FORM
+\*------------------------------------*/
+
+form, .results {
+  margin: auto;
+  max-width: 95%;
+  width:     700px;
+}
+
+.search-form, .suggestions {
+  background-color: #fff;
+  border: 1px solid #999;
+  padding: .1rem;
+}
+
+.search-form {
+  border-radius: 5px 5px 0 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.search, .close, .submit, .random, .result, .no-result {
+  background: transparent;
+  border:        none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 2rem;
+  margin:  0 .1rem;
+  padding: .4rem;
+}
+
+.search {
+  border: none;
+  cursor: text;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  min-width: 1vw;
+
+}
+
+.search::-webkit-search-cancel-button {/* Remove default x button in search input in Webkit browsers */ -webkit-appearance: none; }
+
+input:focus { outline: none; }
+
+button:focus { outline: none; }
+
+.close {
+  color: #999;
+
+}
+
+.close:hover { color: #282828; }
+
+.submit {
+  font-family: ionicons;
+
+}
+
+.random:hover { background-color: #9ed534; }
+
+
+
+
+
+/*------------------------------------*\
+    #SUGGESTIONS
+\*------------------------------------*/
+
+.suggestions {
+  border-radius: 0 0 5px 5px;
+  border-top:    none;
+  max-height: 30vh;
+  overflow: auto;
+}
+
+.suggestion {
+  cursor: pointer;
+  display: block;
+  padding: .2rem .4rem;
+
+}
+
+
+
+
+
+/*------------------------------------*\
+    #RESULTS
+\*------------------------------------*/
+
+.results {
+  margin: 80px auto;
+}
+
+.result {
+  border: 4px double transparent;
+  box-sizing: border-box;
+  font-size: $font-size-results;
+  transition: border .4s, background-color .4s;
+
+}
+
+.result:hover { background-color: #d1f58e; border-color: #282828; transition: border .4s, background-color .4s; }
+
+.result-title {
+  color: #23a6ee;
+  margin-top: 0;
+}
+
+.no-result {
+  font-size: $font-size-results;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #FOOTER
+\*------------------------------------*/
+
+.copyright {
+  background-color: #fff;
+  border-top: 1px solid #999;
+  bottom: 0;
+  box-sizing: border-box;
+  font-size: .8rem;
+  padding: .4rem .8rem;
+  position: fixed;
+  text-align: center;
+  width: 100%
+}
+
+@media (max-width: 450px), (max-device-width: 450px), (max-device-height: 450px) and (orientation: landscape) {
+  .copyright {
+  position: relative;
+  }
+  }
+
+.wikipedia-logo { vertical-align: bottom; }
+
+/*# sourceMappingURL=main.css.map */

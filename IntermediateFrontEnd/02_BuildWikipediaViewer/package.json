@@ -1,0 +1,21 @@
+{
+  "name": "wikipedia-viewer",
+  "version": "0.1.0",
+  "description": "«Build a Wikipedia Viewer», second «Intermediate Front End Development Project» from FreeCodeCamp",
+  "author": "Juan Riquelme <juanriqgon@tutanota.com>",
+  "devDependencies": {
+    "autoprefixer": "^6.0.3",
+    "browser-sync": "^2.9.7",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-filter": "^3.0.1",
+    "gulp-install": "^0.6.0",
+    "gulp-postcss": "^6.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.1",
+    "main-bower-files": "^2.9.0",
+    "postcss": "^4.1.16",
+    "postcss-media-minmax": "^2.1.0",
+    "precss": "^1.2.3"
+  }
+}

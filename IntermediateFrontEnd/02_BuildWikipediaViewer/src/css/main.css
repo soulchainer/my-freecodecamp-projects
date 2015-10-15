@@ -1,0 +1,250 @@
+$black:       #282828;
+$blue:        #23a6ee;
+$grey:        #999;
+$light-green: #d1f58e;
+$light-grey:  #f0f0f0;
+$green:       #9ed534;
+$white:       #fff;
+$font-main:   'Lato', sans-serif;
+$font-logo:   'Poiret One', cursive;
+$font-icons:  ionicons;
+$text-xs: .8rem;
+$text-lg: 5rem;
+$text-md: 3.5rem;
+$text: 1.2rem;
+$mobile: 450px;
+
+/*------------------------------------*\
+    #GLOBAL
+\*------------------------------------*/
+
+/* Avoid horizontal content «jumping» with y scrollbar appearing in FF */
+html { overflow: -moz-scrollbars-vertical !important; }
+
+body {
+  background-color: $light-grey;
+  font-family: $font-main;
+  margin: 0;
+}
+
+a {
+  color: $black;
+  line-height: 1.8rem;
+  text-decoration: none;
+}
+
+.text-green { color: $green; }
+
+.text-white { color: $white; }
+
+.text-blue { color: $blue; }
+
+.bg-blue { background-color: $blue; }
+
+
+
+
+
+/*------------------------------------*\
+    #MAIN
+\*------------------------------------*/
+
+main {
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-logo {
+  color: $blue;
+  font-family: $font-logo;
+  font-size:   $text-lg;
+  font-weight: bold;
+  text-align:  center;
+  text-shadow: 0 1px 1px #000, 0 -1px 1px #000, 1px 0 1px #000,
+               -1px 0 1px #000;
+  @media (width <= $mobile), (device-width <= $mobile), (device-height <= $mobile) and (orientation: landscape) {
+    font-size: $text-md;
+  }
+}
+
+
+
+
+
+/*------------------------------------*\
+    #FORM
+\*------------------------------------*/
+
+form {
+  margin: auto;
+  max-width: 95%;
+  width:     700px;
+}
+
+%search-boxes {
+  background-color: $white;
+  border: 1px solid $grey;
+  padding: .1rem;
+}
+
+.search-form {
+  @extend %search-boxes;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+%field-alike {
+  background: transparent;
+  border:        none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 2rem;
+  margin:  0 .1rem;
+  padding: .4rem;
+}
+
+.search {
+  @extend %field-alike;
+  border: none;
+  cursor: text;
+  flex-grow: 1;
+  min-width: 1vw;
+
+  &::-webkit-search-cancel-button {
+    /* Remove default x button in search input in Webkit browsers */
+    -webkit-appearance: none;
+  }
+
+}
+
+@each $tag in input, button {
+
+  $(tag):focus {
+    outline: none;
+  }
+
+}
+
+.close {
+  @extend %field-alike;
+  color: $grey;
+
+  &:hover {
+    color: $black;
+  }
+
+}
+
+.submit {
+  @extend %field-alike;
+  font-family: $font-icons;
+
+  &:hover, &.bg-blue {
+    @extend .text-white;
+    @extend .bg-blue;
+  }
+
+}
+
+.random {
+  @extend %field-alike;
+
+  &:hover {
+    @extend .text-white;
+    background-color: $green;
+  }
+
+}
+
+
+
+
+
+/*------------------------------------*\
+    #SUGGESTIONS
+\*------------------------------------*/
+
+.suggestions {
+  @extend %search-boxes;
+  border-radius: 0 0 5px 5px;
+  border-top:    none;
+  max-height: 30vh;
+  overflow: auto;
+}
+
+.suggestion {
+  cursor: pointer;
+  display: block;
+  padding: .2rem .4rem;
+
+  &:hover {
+    @extend .text-white;
+    @extend .bg-blue;
+  }
+
+}
+
+
+
+
+
+/*------------------------------------*\
+    #RESULTS
+\*------------------------------------*/
+
+.results {
+  @extend form;
+  margin: 80px auto;
+}
+
+.result {
+  @extend %field-alike;
+  border: 4px double transparent;
+  box-sizing: border-box;
+  font-size: $font-size-results;
+  transition: border .4s, background-color .4s;
+
+  &:hover {
+    background-color: $light-green;
+    border-color: $black;
+    transition: border .4s, background-color .4s;
+  }
+
+}
+
+.result-title {
+  color: $blue;
+  margin-top: 0;
+}
+
+.no-result {
+  @extend %field-alike;
+  font-size: $font-size-results;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #FOOTER
+\*------------------------------------*/
+
+.copyright {
+  background-color: $white;
+  border-top: 1px solid $grey;
+  bottom: 0;
+  box-sizing: border-box;
+  font-size: $text-xs;
+  padding: .4rem .8rem;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  @media (width <= $mobile), (device-width <= $mobile), (device-height <= $mobile) and (orientation: landscape) {
+    position: relative;
+  }
+}
+
+.wikipedia-logo { vertical-align: bottom; }
