@@ -17,3 +17,6 @@ service. I'm displaying the fonts:
 
 - [Droid Sans](https://www.google.com/fonts/specimen/Droid+Sans).
 - [Permanent Marker](https://www.google.com/fonts/specimen/Permanent+Marker).
+
+The background (heavily edited) comes from [an stock image](http://subspaceninja.deviantart.com/art/Bulletin-Board-38985456),
+made by DA user [subspaceNinja](http://subspaceninja.deviantart.com/).
