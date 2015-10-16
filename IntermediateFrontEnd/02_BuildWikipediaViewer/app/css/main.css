@@ -13,7 +13,6 @@ body {
 
 a {
   color: #282828;
-  line-height: 1.8rem;
   text-decoration: none;
 }
 
@@ -168,7 +167,7 @@ button:focus { outline: none; }
 .result {
   border: 4px double transparent;
   box-sizing: border-box;
-  font-size: $font-size-results;
+  font-size: 1.2rem;
   transition: border .4s, background-color .4s;
 
 }
@@ -181,7 +180,7 @@ button:focus { outline: none; }
 }
 
 .no-result {
-  font-size: $font-size-results;
+  font-size: 1.2rem;
 }
 
 
