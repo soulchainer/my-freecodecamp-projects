@@ -37,8 +37,21 @@
     return y.times(perc, base);
   }
 
-  function evaluate(expression){
-    var output = [], stack = [];
+  function partialEvaluation(stack, outputStack) {
+    var op = stack.pop();
+    var arity = operators[op].arity;
+    var operation = operators[op].op;
+    var x, y;
+    if (arity === 2) {
+      y = outputStack.pop();
+      x = outputStack.pop();
+    } else {
+      x = outputStack.pop();
+    }
+    outputStack.push(operation(x, y));
+  }
+  function evaluate(expression) {
+    var outputStack = [], stack = [];
     var tokens = expression.length;
     for (var i = 0; i < tokens; i++) {
       var token = expression[i];
@@ -46,7 +59,7 @@
       var value = token.value;
       var leftAssociative = token.associativity === "left";
       if (type === 'operand') {
-        output.push(new Decimal(value));
+        outputStack.push(new Decimal(value));
         continue;
       }
       if (type === 'operator') {
@@ -54,7 +67,7 @@
           ((leftAssociative && (operators[stack[stack.length-1]].precedence >= operators[value].precedence)) ||
           (!leftAssociative && (operators[stack[stack.length-1]].precedence > operators[value].precedence)))
         ) {
-          output.push(stack.pop());
+          partialEvaluation(stack, outputStack);
         }
         stack.push(value);
         continue;
@@ -65,15 +78,15 @@
       }
       if (value === ')') {
         while (stack.length && (stack[stack.length-1] != "(")) {
-          output.push(stack.pop());
+          partialEvaluation(stack, outputStack);
         }
         stack.pop();
       }
     }
     while (stack.length) {
-      output.push(stack.pop());
+      partialEvaluation(stack, outputStack);
     }
-    return output;
+    return outputStack;
   }
 
   app.controller('CalcController', ['$scope', function($scope){
@@ -85,7 +98,7 @@
       $scope.expression = [];
       $scope.previousButton = '';
     };
-    $scope.addToExpression = function(event){
+    $scope.addToExpression = function(event) {
       var element = event.target;
       var type = element.dataset.type;
       var value = element.value;
@@ -98,7 +111,7 @@
       $scope.previousButton = type;
       console.log($scope.expression);
     };
-    $scope.evalExpression = function(){
+    $scope.evalExpression = function() {
       $scope.ans = evaluate($scope.expression);
       $scope.clear();
       console.log("Expression: " + $scope.ans.join(""));
