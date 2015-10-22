@@ -11,33 +11,38 @@
     <input type="text" class="screen" />
     <div class="buttons">
       <div class="row">
-        <button ng-click="clear()" title="Clear">C</button>
         <button title="Memory Clear">MC</button>
+        <button data-type="operator" value="^" ng-click="addToExpression($event)">^</button>
         <button data-type="operator" value="%" ng-click="addToExpression($event)">%</button>
-        <button data-type="operator" value="÷" ng-click="addToExpression($event)">÷</button>
+        <button data-type="operator" value="-" ng-click="addToExpression($event)">(−)</button>
+        <button data-type="operator" value="√" ng-click="addToExpression($event)">√</button>
       </div>
       <div class="row">
         <button data-type="operand" value="7" ng-click="addToExpression($event)">7</button>
         <button data-type="operand" value="8" ng-click="addToExpression($event)">8</button>
         <button data-type="operand" value="9" ng-click="addToExpression($event)">9</button>
-        <button data-type="operator" value="×" ng-click="addToExpression($event)">×</button>
+        <button ng-click="deleteLastToken()">DEL</button>
+        <button ng-click="clear()" title="Clear">AC</button>
       </div>
       <div class="row">
         <button data-type="operand" value="4" ng-click="addToExpression($event)">4</button>
         <button data-type="operand" value="5" ng-click="addToExpression($event)">5</button>
         <button data-type="operand" value="6" ng-click="addToExpression($event)">6</button>
-        <button data-type="operator" value="−" ng-click="addToExpression($event)">−</button>
+        <button data-type="operator" value="×" ng-click="addToExpression($event)">×</button>
+        <button data-type="operator" value="÷" ng-click="addToExpression($event)">÷</button>
       </div>
       <div class="row">
         <button data-type="operand" value="1" ng-click="addToExpression($event)">1</button>
         <button data-type="operand" value="2" ng-click="addToExpression($event)">2</button>
         <button data-type="operand" value="3" ng-click="addToExpression($event)">3</button>
-        <button data-type="operator" value="^" ng-click="addToExpression($event)">^</button>
+        <button data-type="operator" value="+" ng-click="addToExpression($event)">+</button>
+        <button data-type="operator" value="−" ng-click="addToExpression($event)">−</button>
       </div>
       <div class="row">
         <button data-type="operand" value="0" ng-click="addToExpression($event)">0</button>
         <button data-type="operand" value="." ng-click="addToExpression($event)">.</button>
-        <button data-type="operator" value="+" ng-click="addToExpression($event)">+</button>
+        <button data-type="operator" value="EE" ng-click="addToExpression($event)">EE</button>
+        <button data-type="operand" value="Ans" ng-click="addToExpression($event)">Ans</button>
         <button ng-click="evalExpression()">=</button>
       </div>
     </div>
