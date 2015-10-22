@@ -10,6 +10,7 @@
     '+': {"op": add, "precedence": 3, "arity": 2, "associativity": "left"},
     '-': {"op": subtract, "precedence": 3, "arity": 2, "associativity": "left"}
   };
+  var postfix = '';
 
   function add(x, y) {
     var base = arguments[2] || 10;
@@ -54,6 +55,7 @@
       x = outputStack.pop();
     }
     outputStack.push(operation(x, y));
+    postfix += op + " ";
   }
   function evaluate(expression) {
     var outputStack = [], stack = [];
@@ -64,6 +66,7 @@
       var value = token.value;
       if (type === 'operand') {
         outputStack.push(new Decimal(value));
+        postfix += value + " ";
         continue;
       }
       if (type === 'operator') {
@@ -121,6 +124,8 @@
       $scope.clear();
       console.log("Expression: " + $scope.ans.join(""));
       // console.log($scope.ans.toString());
+      console.log("Postfix: " + postfix);
+      postfix = '';
     };
   }]);
 })();
