@@ -1,46 +1,48 @@
 (function(){
   var app = angular.module('js-calc', []);
   var operators = {
-    // '±': {"op": negative, "precedence": 7, "arity": 1, "associativity": "right"},
+    '-': {"op": negative, "precedence": 7, "arity": 1, "associativity": "right"},
     '%': {"op": percent, "precedence": 6, "arity": 2, "associativity": "right"},
     '^': {"op": power, "precedence": 5, "arity": 2, "associativity": "left"},
-    // '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
+    '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
     '×': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
     '÷': {"op": divide, "precedence": 4, "arity": 2, "associativity": "left"},
     '+': {"op": add, "precedence": 3, "arity": 2, "associativity": "left"},
-    '-': {"op": subtract, "precedence": 3, "arity": 2, "associativity": "left"}
+    '−': {"op": subtract, "precedence": 3, "arity": 2, "associativity": "left"}
   };
   var postfix = '';
 
   function add(x, y) {
-    var base = arguments[2] || 10;
-    return x.plus(y, base);
+    return x.plus(y);
   }
 
   function subtract(x, y) {
-    var base = arguments[2] || 10;
-    return x.minus(y, base);
+    return x.minus(y);
   }
 
   function multiply(x, y) {
-    var base = arguments[2] || 10;
-    return x.times(y, base);
+    return x.times(y);
   }
 
   function divide(x, y) {
-    var base = arguments[2] || 10;
-    return x.dividedBy(y, base);
+    return x.dividedBy(y);
   }
 
   function percent(x, y) {
-    var base = arguments[2] || 10;
-    var perc = x.dividedBy(100, base);
-    return y.times(perc, base);
+    var perc = x.dividedBy(100);
+    return y.times(perc);
   }
 
   function power(x, y) {
-    var base = arguments[2] || 10;
-    return x.pow(y, base);
+    return x.pow(y);
+  }
+
+  function negative(x) {
+    return x.neg();
+  }
+
+  function sqrt(x) {
+    return x.sqrt();
   }
 
   function partialEvaluation(stack, outputStack) {
@@ -99,7 +101,6 @@
 
   app.controller('CalcController', ['$scope', function($scope){
     $scope.ans = 0;
-    $scope.base = 10; // actual base
     $scope.expression = []; // Array with the elements of the expression
     $scope.previousButton = ''; // String with type of previous button pressed
     $scope.clear = function() {
