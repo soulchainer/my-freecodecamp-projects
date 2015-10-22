@@ -5,8 +5,8 @@
     '%': {"op": percent, "precedence": 6, "arity": 2, "associativity": "right"},
     '^': {"op": power, "precedence": 5, "arity": 2, "associativity": "left"},
     '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
-    '×': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
     '÷': {"op": divide, "precedence": 4, "arity": 2, "associativity": "left"},
+    '×': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
     '+': {"op": add, "precedence": 3, "arity": 2, "associativity": "left"},
     '−': {"op": subtract, "precedence": 3, "arity": 2, "associativity": "left"}
   };
@@ -16,16 +16,16 @@
     return x.plus(y);
   }
 
-  function subtract(x, y) {
-    return x.minus(y);
+  function divide(x, y) {
+    return x.dividedBy(y);
   }
 
   function multiply(x, y) {
     return x.times(y);
   }
 
-  function divide(x, y) {
-    return x.dividedBy(y);
+  function negative(x) {
+    return x.neg();
   }
 
   function percent(x, y) {
@@ -37,12 +37,12 @@
     return x.pow(y);
   }
 
-  function negative(x) {
-    return x.neg();
-  }
-
   function sqrt(x) {
     return x.sqrt();
+  }
+
+  function subtract(x, y) {
+    return x.minus(y);
   }
 
   function partialEvaluation(stack, outputStack) {
