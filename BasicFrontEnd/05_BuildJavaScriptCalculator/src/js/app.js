@@ -3,7 +3,7 @@
   var operators = {
     // '±': {"op": negative, "precedence": 7, "arity": 1, "associativity": "right"},
     '%': {"op": percent, "precedence": 6, "arity": 2, "associativity": "right"},
-    // '^': {"op": power, "precedence": 5, "arity": 1, "associativity": "right"},
+    '^': {"op": power, "precedence": 5, "arity": 2, "associativity": "left"},
     // '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
     '×': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
     '÷': {"op": divide, "precedence": 4, "arity": 2, "associativity": "left"},
@@ -35,6 +35,11 @@
     var base = arguments[2] || 10;
     var perc = x.dividedBy(100, base);
     return y.times(perc, base);
+  }
+
+  function power(x, y) {
+    var base = arguments[2] || 10;
+    return x.pow(y, base);
   }
 
   function partialEvaluation(stack, outputStack) {
