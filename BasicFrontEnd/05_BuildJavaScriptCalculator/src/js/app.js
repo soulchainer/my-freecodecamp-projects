@@ -57,15 +57,15 @@
       var token = expression[i];
       var type = token.type;
       var value = token.value;
-      var leftAssociative = token.associativity === "left";
       if (type === 'operand') {
         outputStack.push(new Decimal(value));
         continue;
       }
       if (type === 'operator') {
-        while(stack.length && (stack[stack.length-1].type !== 'parenthesis') &&
-          ((leftAssociative && (operators[stack[stack.length-1]].precedence >= operators[value].precedence)) ||
-          (!leftAssociative && (operators[stack[stack.length-1]].precedence > operators[value].precedence)))
+        var leftAssociative = operators[value].associativity === "left";
+        while(stack.length && ("()".indexOf(stack[stack.length-1]) === -1) &&
+          ((leftAssociative && ( operators[value].precedence <= operators[stack[stack.length-1]].precedence)) ||
+          (!leftAssociative && ( operators[value].precedence < operators[stack[stack.length-1]].precedence)))
         ) {
           partialEvaluation(stack, outputStack);
         }
