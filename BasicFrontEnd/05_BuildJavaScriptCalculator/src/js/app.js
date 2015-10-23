@@ -1,7 +1,10 @@
 (function(){
   var app = angular.module('js-calc', []);
+
+  var ans;
   var operators = {
     '-': {"op": negative, "precedence": 7, "arity": 1, "associativity": "right"},
+    'E': {"op": exponent, "precedence": 6, "arity": 2, "associativity": "left"},
     '%': {"op": percent, "precedence": 6, "arity": 2, "associativity": "right"},
     '^': {"op": power, "precedence": 5, "arity": 2, "associativity": "left"},
     '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
@@ -18,6 +21,10 @@
 
   function divide(x, y) {
     return x.dividedBy(y);
+  }
+
+  function exponent(x, y) {
+    return x.times(Decimal.pow(10, y));
   }
 
   function multiply(x, y) {
@@ -67,8 +74,9 @@
       var type = token.type;
       var value = token.value;
       if (type === 'operand') {
-        outputStack.push(new Decimal(value));
         postfix += value + " ";
+        value = new Decimal((value !== 'Ans')? value: ans);
+        outputStack.push(value);
         continue;
       }
       if (type === 'operator') {
@@ -100,7 +108,7 @@
   }
 
   app.controller('CalcController', ['$scope', function($scope){
-    $scope.ans = 0;
+    ans = 0;
     $scope.expression = []; // Array with the elements of the expression
     $scope.previousButton = ''; // String with type of previous button pressed
     $scope.clear = function() {
@@ -113,7 +121,13 @@
       var value = element.value;
       var prev = $scope.previousButton;
       if (prev === 'operand' && type === prev) {
-        $scope.expression[$scope.expression.length -1].value += value;
+        if (value === 'Ans') {
+          $scope.expression.push({'type': 'operator', 'value': '×'},
+                                 {'type': type, 'value': value});
+        } else if (!((value === '.') && ($scope.expression[$scope.expression.length -1].value.indexOf(value) !== -1)))
+        {
+          $scope.expression[$scope.expression.length -1].value += value;
+        }
       } else {
         $scope.expression.push({'type': type, 'value': value});
       }
@@ -121,10 +135,10 @@
       console.log($scope.expression);
     };
     $scope.evalExpression = function() {
-      $scope.ans = evaluate($scope.expression);
+      ans = evaluate($scope.expression);
       $scope.clear();
-      console.log("Expression: " + $scope.ans.join(""));
-      // console.log($scope.ans.toString());
+      console.log("Expression: " + ans.join(""));
+      // console.log(ans.toString());
       console.log("Postfix: " + postfix);
       postfix = '';
     };
