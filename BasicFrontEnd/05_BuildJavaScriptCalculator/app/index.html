@@ -11,6 +11,13 @@
     <input type="text" class="screen" />
     <div class="buttons">
       <div class="row">
+        <button data-type="operator" value="sin " ng-click="addToExpression($event)">sin</button>
+        <button data-type="operator" value="cos " ng-click="addToExpression($event)">cos</button>
+        <button data-type="operator" value="tan " ng-click="addToExpression($event)">tan</button>
+        <button data-type="operator" value="hyp" ng-click="addToExpression($event)">hyp</button>
+        <button data-type="constant" value="π" ng-click="addToExpression($event)">π</button>
+      </div>
+      <div class="row">
         <button title="Memory Clear">MC</button>
         <button data-type="operator" value="^" ng-click="addToExpression($event)">^</button>
         <button data-type="operator" value="%" ng-click="addToExpression($event)">%</button>
