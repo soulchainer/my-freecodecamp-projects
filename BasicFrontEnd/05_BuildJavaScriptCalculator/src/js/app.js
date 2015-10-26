@@ -6,15 +6,17 @@
 
   var ans;
   var operators = {
-    '-': {"op": negative, "precedence": 7, "arity": 1, "associativity": "right"},
-    'E': {"op": exponent, "precedence": 6, "arity": 2, "associativity": "left"},
-    '%': {"op": percent, "precedence": 6, "arity": 2, "associativity": "right"},
-    '^': {"op": power, "precedence": 5, "arity": 2, "associativity": "left"},
-    '√': {"op": sqrt, "precedence": 5, "arity": 1, "associativity": "right"},
-    '÷': {"op": divide, "precedence": 4, "arity": 2, "associativity": "left"},
-    '×': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
-    '+': {"op": add, "precedence": 3, "arity": 2, "associativity": "left"},
-    '−': {"op": subtract, "precedence": 3, "arity": 2, "associativity": "left"}
+    '-': {"op": negative, "precedence": 6, "arity": 1, "associativity": "right"},
+    'E': {"op": exponent, "precedence": 5, "arity": 2, "associativity": "left"},
+    '%': {"op": percent, "precedence": 5, "arity": 2, "associativity": "right"},
+    '^': {"op": power, "precedence": 4, "arity": 2, "associativity": "left"},
+    '√': {"op": sqrt, "precedence": 4, "arity": 1, "associativity": "right"},
+    // implied multiplication
+    '·': {"op": multiply, "precedence": 3, "arity": 2, "associativity": "left"},
+    '÷': {"op": divide, "precedence": 2, "arity": 2, "associativity": "left"},
+    '×': {"op": multiply, "precedence": 2, "arity": 2, "associativity": "left"},
+    '+': {"op": add, "precedence": 1, "arity": 2, "associativity": "left"},
+    '−': {"op": subtract, "precedence": 1, "arity": 2, "associativity": "left"}
   };
   var postfix = '';
 
@@ -125,7 +127,7 @@
       var prev = $scope.previousButton;
       if (prev === 'operand' && type === prev) {
         if (value === 'Ans') {
-          $scope.expression.push({'type': 'operator', 'value': '×'},
+          $scope.expression.push({'type': 'operator', 'value': '·'},
                                  {'type': type, 'value': value});
         } else if (!((value === '.') && ($scope.expression[$scope.expression.length -1].value.indexOf(value) !== -1)))
         {
