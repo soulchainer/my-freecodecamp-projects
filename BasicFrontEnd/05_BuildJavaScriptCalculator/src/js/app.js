@@ -1,4 +1,7 @@
 (function(){
+  var angular = require('angular');
+  var decimal = require('decimal.js');
+
   var app = angular.module('js-calc', []);
 
   var ans;
@@ -24,7 +27,7 @@
   }
 
   function exponent(x, y) {
-    return x.times(Decimal.pow(10, y));
+    return x.times(decimal.pow(10, y));
   }
 
   function multiply(x, y) {
@@ -75,7 +78,7 @@
       var value = token.value;
       if (type === 'operand') {
         postfix += value + " ";
-        value = new Decimal((value !== 'Ans')? value: ans);
+        value = new decimal((value !== 'Ans')? value: ans);
         outputStack.push(value);
         continue;
       }
