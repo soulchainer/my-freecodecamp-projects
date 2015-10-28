@@ -3,16 +3,30 @@
   var decimal = require('decimal.js');
 
   var app = angular.module('js-calc', []);
+  // Set the default precision to 50 significant digits
+  decimal.config({ precision: 50 });
 
   var ans;
   var operators = {
     '-': {"op": negative, "precedence": 6, "arity": 1, "associativity": "right"},
+    // implied multiplication
+    '·': {"op": multiply, "precedence": 5, "arity": 2, "associativity": "left"},
     'E': {"op": exponent, "precedence": 5, "arity": 2, "associativity": "left"},
     '%': {"op": percent, "precedence": 5, "arity": 2, "associativity": "right"},
     '^': {"op": power, "precedence": 4, "arity": 2, "associativity": "left"},
     '√': {"op": sqrt, "precedence": 4, "arity": 1, "associativity": "right"},
-    // implied multiplication
-    '·': {"op": multiply, "precedence": 3, "arity": 2, "associativity": "left"},
+    'acos ': {"op": acos, "precedence": 3, "arity": 1, "associativity": "left"},
+    'acosh ': {"op": acosh, "precedence": 3, "arity": 1, "associativity": "left"},
+    'asin ': {"op": asin, "precedence": 3, "arity": 1, "associativity": "left"},
+    'asinh ': {"op": asinh, "precedence": 3, "arity": 1, "associativity": "left"},
+    'atan ': {"op": atan, "precedence": 3, "arity": 1, "associativity": "left"},
+    'atanh ': {"op": atanh, "precedence": 3, "arity": 1, "associativity": "left"},
+    'cos ': {"op": cos, "precedence": 3, "arity": 1, "associativity": "left"},
+    'cosh ': {"op": cosh, "precedence": 3, "arity": 1, "associativity": "left"},
+    'sin ': {"op": sin, "precedence": 3, "arity": 1, "associativity": "left"},
+    'sinh ': {"op": sinh, "precedence": 3, "arity": 1, "associativity": "left"},
+    'tan ': {"op": tan, "precedence": 3, "arity": 1, "associativity": "left"},
+    'tanh ': {"op": tanh, "precedence": 3, "arity": 1, "associativity": "left"},
     '÷': {"op": divide, "precedence": 2, "arity": 2, "associativity": "left"},
     '×': {"op": multiply, "precedence": 2, "arity": 2, "associativity": "left"},
     '+': {"op": add, "precedence": 1, "arity": 2, "associativity": "left"},
@@ -20,16 +34,29 @@
   };
   var postfix = '';
 
+// Constants
+  var PI = new decimal('3.14159265358979323846264338327950288419716939937510');
+  var E = decimal.exp(1);
+// Operations
+  // Arithmetic
   function add(x, y) {
     return x.plus(y);
   }
 
   function divide(x, y) {
-    return x.dividedBy(y);
+    return x.div(y);
   }
 
   function exponent(x, y) {
     return x.times(decimal.pow(10, y));
+  }
+
+  function log(x) {
+    return x.log();
+  }
+
+  function ln(x) {
+    return x.ln();
   }
 
   function multiply(x, y) {
@@ -40,8 +67,11 @@
     return x.neg();
   }
 
+  function nthRoot(x, y) {
+    return y.pow(new decimal(1).div(x));
+  }
   function percent(x, y) {
-    var perc = x.dividedBy(100);
+    var perc = x.div(100);
     return y.times(perc);
   }
 
@@ -55,6 +85,44 @@
 
   function subtract(x, y) {
     return x.minus(y);
+  }
+  // Trygonometry
+
+  function sin(x) {
+    return new decimal(String(Math.sin(x.toNumber())));
+  }
+  function asin(x) {
+    return atan(x.div(x.pow(2).neg().plus(1).sqrt()));
+  }
+  function sinh(x) {
+    return (E.pow(x).minus(E.pow(x.neg()))).div(2);
+  }
+  function asinh(x){
+    return x.plus(x.pow(2).plus(1).sqrt()).ln();
+  }
+  function cos(x) {
+    return sin(PI.div(2).plus(x));
+  }
+  function acos(x) {
+    return atan((x.neg()).div(x.pow(2).neg().plus(1).sqrt())).plus(atan(1).times(2));
+  }
+  function cosh(x) {
+    return (E.pow(x).plus(E.pow(x.neg()))).div(2);
+  }
+  function acosh(x){
+    return x.plus(x.pow(2).minus(1).sqrt()).ln();
+  }
+  function tan(x) {
+    return sin(x).div(cos(x));
+  }
+  function atan(x) {
+    return new decimal(String(Math.atan(x.toNumber())));
+  }
+  function tanh(x) {
+    return sinh(x).divideBy(cosh(x));
+  }
+  function atanh(x){
+    return x.plus(1).div(x.neg().plus(1)).ln().times(0.5);
   }
 
   function partialEvaluation(stack, outputStack) {
