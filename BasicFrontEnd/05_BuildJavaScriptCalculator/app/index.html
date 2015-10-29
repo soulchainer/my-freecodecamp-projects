@@ -11,18 +11,25 @@
     <input type="text" class="screen" />
     <div class="buttons">
       <div class="row">
-        <button data-type="operator" value="sin " ng-click="addToExpression($event)">sin</button>
-        <button data-type="operator" value="cos " ng-click="addToExpression($event)">cos</button>
-        <button data-type="operator" value="tan " ng-click="addToExpression($event)">tan</button>
-        <button data-type="operator" value="hyp" ng-click="addToExpression($event)">hyp</button>
-        <button data-type="constant" value="π" ng-click="addToExpression($event)">π</button>
+        <button data-type="parenthesis" value="(" ng-click="addToExpression($event)">(</button>
+        <button data-type="parenthesis" value=")" ng-click="addToExpression($event)">)</button>
+        <button ng-click="shift()">SHIFT</button>
+        <button ng-click=""> </button>
+        <button ng-click=""> </button>
+      </div>
+      <div class="row">
+        <button data-type="operator" value="-" ng-click="addToExpression($event)">(−)</button>
+        <button data-type="operator" value="hyp" ng-click="hyperbolic()">hyp</button>
+        <button data-type="operator" value="{{ inv }}sin{{ hyp }}" ng-click="addToExpression($event)">{{ inv }}sin{{ hyp }}</button>
+        <button data-type="operator" value="{{ inv }}cos{{ hyp }} " ng-click="addToExpression($event)">{{ inv }}cos{{ hyp }}</button>
+        <button data-type="operator" value="{{ inv }}tan{{ hyp }} " ng-click="addToExpression($event)">{{ inv }}tan{{ hyp }}</button>
       </div>
       <div class="row">
         <button title="Memory Clear">MC</button>
-        <button data-type="operator" value="^" ng-click="addToExpression($event)">^</button>
-        <button data-type="operator" value="%" ng-click="addToExpression($event)">%</button>
-        <button data-type="operator" value="-" ng-click="addToExpression($event)">(−)</button>
         <button data-type="operator" value="√" ng-click="addToExpression($event)">√</button>
+        <button data-type="operator" value="{{alt['^'].value || '^'}}" ng-click="addToExpression($event)">{{ alt['^'].label || "^"}}</button>
+        <button data-type="operator" value="log" ng-click="addToExpression($event)">log</button>
+        <button data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-click="addToExpression($event)">{{ alt['ln'].label || "ln"}}</button>
       </div>
       <div class="row">
         <button data-type="operand" value="7" ng-click="addToExpression($event)">7</button>
@@ -35,7 +42,7 @@
         <button data-type="operand" value="4" ng-click="addToExpression($event)">4</button>
         <button data-type="operand" value="5" ng-click="addToExpression($event)">5</button>
         <button data-type="operand" value="6" ng-click="addToExpression($event)">6</button>
-        <button data-type="operator" value="×" ng-click="addToExpression($event)">×</button>
+        <button data-type="operator" value="{{alt['×'].value || '×'}}" ng-click="addToExpression($event)">{{ alt['×'].label || "×"}}</button>
         <button data-type="operator" value="÷" ng-click="addToExpression($event)">÷</button>
       </div>
       <div class="row">
@@ -48,7 +55,7 @@
       <div class="row">
         <button data-type="operand" value="0" ng-click="addToExpression($event)">0</button>
         <button data-type="operand" value="." ng-click="addToExpression($event)">.</button>
-        <button data-type="operator" value="E" ng-click="addToExpression($event)">EE</button>
+        <button data-type="{{alt.EE.type || 'operator'}}" value="{{alt.EE.value || 'E'}}" ng-click="addToExpression($event)">{{ alt.EE.label || "EE"}}</button>
         <button data-type="operand" value="Ans" ng-click="addToExpression($event)">Ans</button>
         <button ng-click="evalExpression()">=</button>
       </div>
