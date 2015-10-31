@@ -1,0 +1,71 @@
+/*------------------------------------*\
+    #VARIABLES
+\*------------------------------------*/
+
+$black: #282828;
+$blue:  #66d9ef;
+$green: #a6e22e;
+$white: #eeeeee;
+$grey:  #808080;
+
+
+
+
+
+/*------------------------------------*\
+    #DISPLAY
+\*------------------------------------*/
+
+body {
+  background-color: $black;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #DISPLAY
+\*------------------------------------*/
+
+.display {
+  color: $blue;
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+  height: 20vh;
+  max-height: 50vh;
+  width: 100%;
+
+  &-expression {
+    min-height: 2rem;
+    padding: .5rem 1rem;
+  }
+
+  &-result {
+    padding: .5rem 1rem;
+    &::before {
+      content: "= ";
+      color: $green;
+    }
+  }
+}
+
+
+
+
+
+/*------------------------------------*\
+    #BUTTONS
+\*------------------------------------*/
+
+button {
+  background-color: $grey;
+  border: medium none;
+  border-radius: 5px;
+  color: $white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: .05rem;
+  padding: 0.2rem 0.5rem;
+}

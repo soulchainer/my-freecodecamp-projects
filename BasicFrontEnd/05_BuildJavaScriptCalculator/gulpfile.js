@@ -10,6 +10,7 @@ var precss = require('precss');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
+var cleancss = require('gulp-minify-css');
 
 var reload = browserSync.reload;
 
@@ -39,7 +40,7 @@ gulp.task('styles', function () {
   return gulp.src('./src/css/*.css')
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(postcss(processors))
-      .pipe(uglify())
+      .pipe(cleancss())
       .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./app/css'));

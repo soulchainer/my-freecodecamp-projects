@@ -8,7 +8,10 @@
 </head>
 <body>
   <div class="calc" ng-controller="CalcController">
-    <input type="text" class="screen" />
+    <div class="display">
+      <div class="display-expression">{{ displayExpression }}</div>
+      <div class="display-result">{{ displayResult }}</div>
+    </div>
     <div class="buttons">
       <div class="row">
         <button data-type="parenthesis" value="(" ng-click="addToExpression($event)">(</button>

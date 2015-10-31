@@ -194,6 +194,8 @@
     ans = 0;
     $scope.expression = []; // Array with the elements of the expression
     $scope.previousButton = ''; // String with type of previous button pressed
+    $scope.displayExpression = '';
+    $scope.displayResult = '0';
     $scope.shiftOn = false;
     $scope.hypOn = false;
     $scope.clear = function() {
