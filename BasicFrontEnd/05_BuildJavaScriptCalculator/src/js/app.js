@@ -198,9 +198,13 @@
     $scope.displayResult = '0';
     $scope.shiftOn = false;
     $scope.hypOn = false;
-    $scope.clear = function() {
+    $scope.clear = function(event) {
+      if (event) {
+        $scope.displayExpression = '';
+        $scope.displayResult = '0';
+      }
       $scope.expression = [];
-      $scope.previousButton = '';
+      $scope.previousButton = 'equal';
     };
     $scope.shift = function() {
       $scope.shiftOn = !$scope.shiftOn;
@@ -216,24 +220,38 @@
       var type = element.dataset.type;
       var value = element.value;
       var prev = $scope.previousButton;
+      var noRepeatedDot = !((value === '.') &&
+      ($scope.expression[$scope.expression.length -1].value.indexOf(value) !==
+      -1));
       if (prev === 'operand' && type === prev) {  // in progress number
         if (value === 'Ans') {  // an implicit multiplication with Ans found
           $scope.expression.push({'type': 'operator', 'value': '·'},
                                  {'type': type, 'value': value});
-        } else if (!((value === '.') && ($scope.expression[$scope.expression.length -1].value.indexOf(value) !== -1)))
-        {  // No repeated dots, so add new operand to the in progress number
+        } else if (noRepeatedDot) {
+          // No repeated dot, so add new operand to the in-progress number
           $scope.expression[$scope.expression.length -1].value += value;
         }
-      } else {  // Not an in progress number, add the element to expression
+      } else {  // Not an in progress number
+        if (prev === "equal" || !prev) {
+          if (type === "operator" && operators[value].arity === 2) {
+            $scope.expression.push({'type': "operand", 'value': "Ans"});
+            $scope.displayExpression = "Ans";
+          } else {
+            $scope.displayExpression = "";
+          }
+        }
         $scope.expression.push({'type': type, 'value': value});
       }
       $scope.previousButton = type;
+      if (noRepeatedDot) {
+        $scope.displayExpression += value;
+      }
       console.log($scope.expression);
     };
     $scope.evalExpression = function() {
-      ans = evaluate($scope.expression);
+      ans = evaluate($scope.expression).join("");
+      $scope.displayResult = ans;
       $scope.clear();
-      console.log("Result: " + ans.join(""));
       console.log("Postfix: " + postfix);
       postfix = '';
     };
