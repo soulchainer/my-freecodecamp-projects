@@ -10,57 +10,57 @@
   <div class="calc" ng-controller="CalcController">
     <div class="display">
       <div class="display-expression">{{ displayExpression }}</div>
-      <div class="display-result">{{ displayResult }}</div>
+      <div class="display-result" id="result">{{ displayResult }}</div>
     </div>
     <div class="buttons">
       <div class="row">
-        <button data-type="parenthesis" value="(" ng-click="addToExpression($event)">(</button>
-        <button data-type="parenthesis" value=")" ng-click="addToExpression($event)">)</button>
-        <button ng-click="shift()">SHIFT</button>
-        <button ng-click=""> </button>
-        <button ng-click=""> </button>
+        <button data-type="parenthesis" value="(" ng-click="addToExpression($event)" ng-disabled="error">(</button>
+        <button data-type="parenthesis" value=")" ng-click="addToExpression($event)" ng-disabled="error">)</button>
+        <button ng-click="shift()" ng-disabled="error">SHIFT</button>
+        <button ng-click="" ng-disabled="error"> </button>
+        <button ng-click="" ng-disabled="error"> </button>
       </div>
       <div class="row">
-        <button data-type="operator" value="-" ng-click="addToExpression($event)">(−)</button>
-        <button data-type="operator" value="hyp" ng-click="hyperbolic()">hyp</button>
-        <button data-type="operator" value="{{ inv }}sin{{ hyp }}" ng-click="addToExpression($event)">{{ inv }}sin{{ hyp }}</button>
-        <button data-type="operator" value="{{ inv }}cos{{ hyp }} " ng-click="addToExpression($event)">{{ inv }}cos{{ hyp }}</button>
-        <button data-type="operator" value="{{ inv }}tan{{ hyp }} " ng-click="addToExpression($event)">{{ inv }}tan{{ hyp }}</button>
+        <button data-type="operator" value="-" ng-click="addToExpression($event)" ng-disabled="error">(−)</button>
+        <button data-type="operator" value="hyp" ng-click="hyperbolic()" ng-disabled="error">hyp</button>
+        <button data-type="operator" value="{{ inv }}sin{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}sin{{ hyp }}</button>
+        <button data-type="operator" value="{{ inv }}cos{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}cos{{ hyp }}</button>
+        <button data-type="operator" value="{{ inv }}tan{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}tan{{ hyp }}</button>
       </div>
       <div class="row">
-        <button title="Memory Clear">MC</button>
-        <button data-type="operator" value="√" ng-click="addToExpression($event)">√</button>
-        <button data-type="operator" value="{{alt['^'].value || '^'}}" ng-click="addToExpression($event)">{{ alt['^'].label || "^"}}</button>
-        <button data-type="operator" value="log" ng-click="addToExpression($event)">log</button>
-        <button data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-click="addToExpression($event)">{{ alt['ln'].label || "ln"}}</button>
+        <button title="Memory Clear" ng-disabled="error">MC</button>
+        <button data-type="operator" value="√" ng-click="addToExpression($event)" ng-disabled="error">√</button>
+        <button data-type="operator" value="{{alt['^'].value || '^'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['^'].label || "^"}}</button>
+        <button data-type="operator" value="log" ng-click="addToExpression($event)" ng-disabled="error">log</button>
+        <button data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['ln'].label || "ln"}}</button>
       </div>
       <div class="row">
-        <button data-type="operand" value="7" ng-click="addToExpression($event)">7</button>
-        <button data-type="operand" value="8" ng-click="addToExpression($event)">8</button>
-        <button data-type="operand" value="9" ng-click="addToExpression($event)">9</button>
-        <button ng-click="deleteLastToken()">DEL</button>
-        <button ng-click="clear($event)" title="Clear">AC</button>
+        <button data-type="operand" value="7" ng-click="addToExpression($event)" ng-disabled="error">7</button>
+        <button data-type="operand" value="8" ng-click="addToExpression($event)" ng-disabled="error">8</button>
+        <button data-type="operand" value="9" ng-click="addToExpression($event)" ng-disabled="error">9</button>
+        <button ng-click="deleteLastToken()" ng-disabled="error">DEL</button>
+        <button class="clear" ng-click="clear($event)" title="Clear">AC</button>
       </div>
       <div class="row">
-        <button data-type="operand" value="4" ng-click="addToExpression($event)">4</button>
-        <button data-type="operand" value="5" ng-click="addToExpression($event)">5</button>
-        <button data-type="operand" value="6" ng-click="addToExpression($event)">6</button>
-        <button data-type="operator" value="{{alt['×'].value || '×'}}" ng-click="addToExpression($event)">{{ alt['×'].label || "×"}}</button>
-        <button data-type="operator" value="÷" ng-click="addToExpression($event)">÷</button>
+        <button data-type="operand" value="4" ng-click="addToExpression($event)" ng-disabled="error">4</button>
+        <button data-type="operand" value="5" ng-click="addToExpression($event)" ng-disabled="error">5</button>
+        <button data-type="operand" value="6" ng-click="addToExpression($event)" ng-disabled="error">6</button>
+        <button data-type="operator" value="{{alt['×'].value || '×'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['×'].label || "×"}}</button>
+        <button data-type="operator" value="÷" ng-click="addToExpression($event)" ng-disabled="error">÷</button>
       </div>
       <div class="row">
-        <button data-type="operand" value="1" ng-click="addToExpression($event)">1</button>
-        <button data-type="operand" value="2" ng-click="addToExpression($event)">2</button>
-        <button data-type="operand" value="3" ng-click="addToExpression($event)">3</button>
-        <button data-type="operator" value="+" ng-click="addToExpression($event)">+</button>
-        <button data-type="operator" value="−" ng-click="addToExpression($event)">−</button>
+        <button data-type="operand" value="1" ng-click="addToExpression($event)" ng-disabled="error">1</button>
+        <button data-type="operand" value="2" ng-click="addToExpression($event)" ng-disabled="error">2</button>
+        <button data-type="operand" value="3" ng-click="addToExpression($event)" ng-disabled="error">3</button>
+        <button data-type="operator" value="+" ng-click="addToExpression($event)" ng-disabled="error">+</button>
+        <button data-type="operator" value="−" ng-click="addToExpression($event)" ng-disabled="error">−</button>
       </div>
       <div class="row">
-        <button data-type="operand" value="0" ng-click="addToExpression($event)">0</button>
-        <button data-type="operand" value="." ng-click="addToExpression($event)">.</button>
-        <button data-type="{{alt.EE.type || 'operator'}}" value="{{alt.EE.value || 'E'}}" ng-click="addToExpression($event)">{{ alt.EE.label || "EE"}}</button>
-        <button data-type="operand" value="Ans" ng-click="addToExpression($event)">Ans</button>
-        <button ng-click="evalExpression()">=</button>
+        <button data-type="operand" value="0" ng-click="addToExpression($event)" ng-disabled="error">0</button>
+        <button data-type="operand" value="." ng-click="addToExpression($event)" ng-disabled="error">.</button>
+        <button data-type="{{alt.EE.type || 'operator'}}" value="{{alt.EE.value || 'E'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt.EE.label || "EE"}}</button>
+        <button data-type="operand" value="Ans" ng-click="addToExpression($event)" ng-disabled="error">Ans</button>
+        <button ng-click="evalExpression()" ng-disabled="error">=</button>
       </div>
     </div>
   </div>

@@ -43,8 +43,10 @@
     '−': {"op": subtract, "precedence": 1, "arity": 2, "associativity": "left"}
   };
   var postfix = '';
+  var result = document.getElementById("result");
 
 // Constants
+  var E = exponential();
   var PI = new decimal('3.14159265358979323846264338327950288419716939937510');
 // Operations
   // Arithmetic
@@ -187,7 +189,14 @@
     while (stack.length) {
       partialEvaluation(stack, outputStack);
     }
-    return outputStack;
+    var output = outputStack.join("");
+
+    function specialCases(match, string) {
+      return (match === "Infinity")? "∞": "Math ERROR";
+    }
+
+    output = output.replace(/Infinity|NaN/, specialCases);
+    return output;
   }
 
   app.controller('CalcController', ['$scope', function($scope){
@@ -198,10 +207,13 @@
     $scope.displayResult = '0';
     $scope.shiftOn = false;
     $scope.hypOn = false;
+
     $scope.clear = function(event) {
       if (event) {
         $scope.displayExpression = '';
         $scope.displayResult = '0';
+        $scope.error = false;
+        angular.element(result).removeClass("invisible");
       }
       $scope.expression = [];
       $scope.previousButton = 'equal';
@@ -249,7 +261,18 @@
       console.log($scope.expression);
     };
     $scope.evalExpression = function() {
-      ans = evaluate($scope.expression).join("");
+      try {
+        ans = evaluate($scope.expression);
+      } catch(err) {
+        ans = "Syntax ERROR";
+      }
+
+      if ((ans === "Math ERROR") || (ans === "Syntax ERROR")) {
+        $scope.displayExpression = ans;
+        ans = "";
+        angular.element(result).addClass("invisible");
+        $scope.error = true;
+      }
       $scope.displayResult = ans;
       $scope.clear();
       console.log("Postfix: " + postfix);
