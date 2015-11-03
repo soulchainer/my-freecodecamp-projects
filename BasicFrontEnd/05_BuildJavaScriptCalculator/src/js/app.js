@@ -232,7 +232,7 @@
       var type = element.dataset.type;
       var value = element.value;
       var prev = $scope.previousButton;
-      var noRepeatedDot = !((value === '.') &&
+      var noRepeatedDot = !((value === '.') && $scope.expression.length &&
       ($scope.expression[$scope.expression.length -1].value.indexOf(value) !==
       -1));
       if (prev === 'operand' && type === prev) {  // in progress number
@@ -260,9 +260,26 @@
       }
       console.log($scope.expression);
     };
+    $scope.deleteLastToken = function() {
+      if ($scope.expression.length) {
+        console.log($scope.expression);
+        var token = $scope.expression.pop();
+        var value = token.value;
+        var isANumber = (token.type === "operand") && (value !== "Ans");
+        if (isANumber && (value.length > 1)) {
+          token = {type: "operand", value: value.slice(0, value.length - 1)};
+          $scope.expression.push(token);
+          $scope.displayExpression = $scope.displayExpression.slice(0, $scope.displayExpression.length - 1);
+        } else {
+          $scope.displayExpression = $scope.displayExpression.slice(0, $scope.displayExpression.lastIndexOf(value));
+        }
+        $scope.previousButton = ($scope.expression.length)? $scope.expression[$scope.expression.length - 1].type: "";
+      }
+    };
     $scope.evalExpression = function() {
       try {
         ans = evaluate($scope.expression);
+        console.log($scope.expression);
       } catch(err) {
         ans = "Syntax ERROR";
       }
