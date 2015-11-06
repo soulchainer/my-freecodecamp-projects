@@ -207,7 +207,7 @@
   }
 
   app.controller('CalcController', ['$scope', function($scope){
-    ans = 0;
+    ans = "";
     $scope.expression = []; // Array with the elements of the expression
     $scope.previousButton = ''; // String with type of previous button pressed
     $scope.displayExpression = '';
@@ -219,7 +219,10 @@
       if (event) {
         $scope.displayExpression = '';
         $scope.displayResult = '0';
-        $scope.error = false;
+        if ($scope.error) {
+          $scope.error = false;
+          ans = "";
+        }
         angular.element(result).removeClass("invisible");
       }
       $scope.expression = [];
@@ -284,6 +287,9 @@
       }
     };
     $scope.evalExpression = function() {
+      if (!$scope.expression.length) {
+        return;
+      }
       if (expChecker.test($scope.displayExpression)) {
         try {
           ans = evaluate($scope.expression);
