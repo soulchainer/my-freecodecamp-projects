@@ -8,7 +8,7 @@
 
   var ans;
   var altFunctions = {
-    'EE': {'type': 'constant', 'value': 'π', 'label': 'π'},
+    'EXP': {'type': 'constant', 'value': 'π', 'label': 'π'},
     'ln': {'value': 'e', 'label': 'e˟'},
     '×': {'value': '%', 'label': '%'},
     '^': {'value': '˟√', 'label': '˟√'},
@@ -45,6 +45,13 @@
   var postfix = '';
   var result = document.getElementById("result");
 
+  // Regular expression for first test of expression entered
+  var arity1 = '([(]*((a?(sin|cos|tan)h?)|√|log|ln|-|e)[)]*)';
+  var operand = '([(]*(\\d|Ans|π)+(E\\d+)?[)]*)';
+  var arity2 = '(%|\\^|˟√|÷|×|\\+|−)';
+  var expChecker = new RegExp("^(" + arity1 + "*" + operand +
+                      "(" + arity2 + arity1 + "*" + operand + ")*)$");
+
 // Constants
   var E = exponential();
   var PI = new decimal('3.14159265358979323846264338327950288419716939937510');
@@ -63,7 +70,7 @@
   }
 
   function exponent(x, y) {
-    return (x || new decimal(1)).times(decimal.pow(10, y));
+    return x.times(decimal.pow(10, y));
   }
 
   function log(x) {
@@ -277,10 +284,14 @@
       }
     };
     $scope.evalExpression = function() {
-      try {
-        ans = evaluate($scope.expression);
-        console.log($scope.expression);
-      } catch(err) {
+      if (expChecker.test($scope.displayExpression)) {
+        try {
+          ans = evaluate($scope.expression);
+          console.log($scope.expression);
+        } catch(err) {
+          ans = "Syntax ERROR";
+        }
+      } else {
         ans = "Syntax ERROR";
       }
 

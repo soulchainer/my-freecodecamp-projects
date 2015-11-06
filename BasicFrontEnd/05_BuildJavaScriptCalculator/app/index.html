@@ -58,7 +58,7 @@
       <div class="row">
         <button data-type="operand" value="0" ng-click="addToExpression($event)" ng-disabled="error">0</button>
         <button data-type="operand" value="." ng-click="addToExpression($event)" ng-disabled="error">.</button>
-        <button data-type="{{alt.EE.type || 'operator'}}" value="{{alt.EE.value || 'E'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt.EE.label || "EE"}}</button>
+        <button data-type="{{alt.EXP.type || 'operator'}}" value="{{alt.EXP.value || 'E'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt.EXP.label || "EXP"}}</button>
         <button data-type="operand" value="Ans" ng-click="addToExpression($event)" ng-disabled="error">Ans</button>
         <button ng-click="evalExpression()" ng-disabled="error">=</button>
       </div>
