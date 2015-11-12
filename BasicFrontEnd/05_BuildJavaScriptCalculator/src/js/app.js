@@ -44,10 +44,11 @@
   };
   var postfix = '';
   var result = document.getElementById("result");
+  var parentizedFunctions = 'asinhacoshatanhlogln';
 
   // Regular expression for first test of expression entered
-  var arity1 = '([(]*((a?(sin|cos|tan)h?)|√|log|ln|-|e)[)]*)';
-  var operand = '([(]*(\\d|Ans|π)+(E\\d+)?[)]*)';
+  var arity1 = '([(]*((((a?(sin|cos|tan)h?)|log|ln)[(])|√|-|e))';
+  var operand = '([(]*(((\\d+\\.?\\d*)(Ans|π)*)|(Ans|π)+)(E\\d+)?[)]*)';
   var arity2 = '(%|\\^|˟√|÷|×|\\+|−)';
   var expChecker = new RegExp("^(" + arity1 + "*" + operand +
                       "(" + arity2 + arity1 + "*" + operand + ")*)$");
@@ -263,6 +264,10 @@
           }
         }
         $scope.expression.push({'type': type, 'value': value});
+        if (parentizedFunctions.indexOf(value) !== -1) {
+          $scope.expression.push({'type': "parenthesis", 'value': "("});
+          value += "(";
+        }
       }
       $scope.previousButton = type;
       if (noRepeatedDot) {
@@ -282,6 +287,11 @@
           $scope.displayExpression = $scope.displayExpression.slice(0, $scope.displayExpression.length - 1);
         } else {
           $scope.displayExpression = $scope.displayExpression.slice(0, $scope.displayExpression.lastIndexOf(value));
+          if (value === "(" && $scope.expression.length &&
+              parentizedFunctions.indexOf[$scope.expression[$scope.expression.length - 1].value] !== -1) {
+            var parentizedFunction = $scope.expression.pop();
+            $scope.displayExpression = $scope.displayExpression.slice(0, $scope.displayExpression.lastIndexOf(parentizedFunction.value));
+          }
         }
         $scope.previousButton = ($scope.expression.length)? $scope.expression[$scope.expression.length - 1].type: "";
       }
@@ -295,6 +305,7 @@
           ans = evaluate($scope.expression);
           console.log($scope.expression);
         } catch(err) {
+          console.log(err);
           ans = "Syntax ERROR";
         }
       } else {

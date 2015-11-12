@@ -14,10 +14,9 @@
     </div>
     <div class="buttons">
       <div class="row">
+        <button ng-click="shift()" ng-disabled="error">SHIFT</button>
         <button data-type="parenthesis" value="(" ng-click="addToExpression($event)" ng-disabled="error">(</button>
         <button data-type="parenthesis" value=")" ng-click="addToExpression($event)" ng-disabled="error">)</button>
-        <button ng-click="shift()" ng-disabled="error">SHIFT</button>
-        <button ng-click="" ng-disabled="error"> </button>
         <button ng-click="" ng-disabled="error"> </button>
       </div>
       <div class="row">
