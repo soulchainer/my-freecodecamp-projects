@@ -14,29 +14,29 @@
     '^': {'value': '˟√', 'label': '˟√'},
   };
   var operators = {
-    '-': {"op": negative, "precedence": 6, "arity": 1, "associativity": "right"},
+    'acos': {"op": acos, "precedence": 6, "arity": 1, "associativity": "left"},
+    'acosh': {"op": acosh, "precedence": 6, "arity": 1, "associativity": "left"},
+    'asin': {"op": asin, "precedence": 6, "arity": 1, "associativity": "left"},
+    'asinh': {"op": asinh, "precedence": 6, "arity": 1, "associativity": "left"},
+    'atan': {"op": atan, "precedence": 6, "arity": 1, "associativity": "left"},
+    'atanh': {"op": atanh, "precedence": 6, "arity": 1, "associativity": "left"},
+    'cos': {"op": cos, "precedence": 6, "arity": 1, "associativity": "left"},
+    'cosh': {"op": cosh, "precedence": 6, "arity": 1, "associativity": "left"},
+    'log': {"op": log, "precedence": 6, "arity": 1, "associativity": "right"},
+    'ln': {"op": ln, "precedence": 6, "arity": 1, "associativity": "right"},
+    'sin': {"op": sin, "precedence": 6, "arity": 1, "associativity": "left"},
+    'sinh': {"op": sinh, "precedence": 6, "arity": 1, "associativity": "left"},
+    'tan': {"op": tan, "precedence": 6, "arity": 1, "associativity": "left"},
+    'tanh': {"op": tanh, "precedence": 6, "arity": 1, "associativity": "left"},
+    '-': {"op": negative, "precedence": 5, "arity": 1, "associativity": "right"},
     // implied multiplication
-    '·': {"op": multiply, "precedence": 5, "arity": 2, "associativity": "left"},
-    'E': {"op": exponent, "precedence": 5, "arity": 2, "associativity": "left"},
-    'e': {"op": exponential, "precedence": 5, "arity": 1, "associativity": "right"},
-    '%': {"op": percent, "precedence": 5, "arity": 2, "associativity": "right"},
-    '^': {"op": power, "precedence": 4, "arity": 2, "associativity": "left"},
-    '√': {"op": sqrt, "precedence": 4, "arity": 1, "associativity": "right"},
-    '˟√': {"op": nthRoot, "precedence": 4, "arity": 2, "associativity": "right"},
-    'acos': {"op": acos, "precedence": 3, "arity": 1, "associativity": "left"},
-    'acosh': {"op": acosh, "precedence": 3, "arity": 1, "associativity": "left"},
-    'asin': {"op": asin, "precedence": 3, "arity": 1, "associativity": "left"},
-    'asinh': {"op": asinh, "precedence": 3, "arity": 1, "associativity": "left"},
-    'atan': {"op": atan, "precedence": 3, "arity": 1, "associativity": "left"},
-    'atanh': {"op": atanh, "precedence": 3, "arity": 1, "associativity": "left"},
-    'cos': {"op": cos, "precedence": 3, "arity": 1, "associativity": "left"},
-    'cosh': {"op": cosh, "precedence": 3, "arity": 1, "associativity": "left"},
-    'log': {"op": log, "precedence": 3, "arity": 1, "associativity": "right"},
-    'ln': {"op": ln, "precedence": 3, "arity": 1, "associativity": "right"},
-    'sin': {"op": sin, "precedence": 3, "arity": 1, "associativity": "left"},
-    'sinh': {"op": sinh, "precedence": 3, "arity": 1, "associativity": "left"},
-    'tan': {"op": tan, "precedence": 3, "arity": 1, "associativity": "left"},
-    'tanh': {"op": tanh, "precedence": 3, "arity": 1, "associativity": "left"},
+    '·': {"op": multiply, "precedence": 4, "arity": 2, "associativity": "left"},
+    'E': {"op": exponent, "precedence": 4, "arity": 2, "associativity": "left"},
+    'e': {"op": exponential, "precedence": 4, "arity": 1, "associativity": "right"},
+    '%': {"op": percent, "precedence": 4, "arity": 2, "associativity": "right"},
+    '^': {"op": power, "precedence": 3, "arity": 2, "associativity": "left"},
+    '√': {"op": sqrt, "precedence": 3, "arity": 1, "associativity": "right"},
+    '˟√': {"op": nthRoot, "precedence": 3, "arity": 2, "associativity": "right"},
     '÷': {"op": divide, "precedence": 2, "arity": 2, "associativity": "left"},
     '×': {"op": multiply, "precedence": 2, "arity": 2, "associativity": "left"},
     '+': {"op": add, "precedence": 1, "arity": 2, "associativity": "left"},
@@ -109,7 +109,7 @@
   function subtract(x, y) {
     return x.minus(y);
   }
-  // Trygonometry
+  // Trigonometry
   function sin(x) {
     return new decimal(String(Math.sin(x.toNumber())));
   }
@@ -301,6 +301,7 @@
         return;
       }
       if (expChecker.test($scope.displayExpression)) {
+        console.log("test passed");
         try {
           ans = evaluate($scope.expression);
           console.log($scope.expression);
