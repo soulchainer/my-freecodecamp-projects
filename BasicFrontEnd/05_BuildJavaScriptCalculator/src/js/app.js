@@ -8,7 +8,7 @@
 
   var ans;
   var altFunctions = {
-    'EXP': {'type': 'constant', 'value': 'π', 'label': 'π'},
+    'EXP': {'type': 'operand', 'value': 'π', 'label': 'π'},
     'ln': {'value': 'e', 'label': 'e˟'},
     '×': {'value': '%', 'label': '%'},
     '^': {'value': '˟√', 'label': '˟√'},
@@ -168,7 +168,16 @@
       var value = token.value;
       if (type === 'operand') {
         postfix += value + " ";
-        value = new decimal((value !== 'Ans')? value: ans);
+        switch (value) {
+          case "Ans":
+            value = new decimal(ans);
+            break;
+          case "π":
+            value = PI;
+            break;
+          default:
+            value = new decimal(value);
+        }
         outputStack.push(value);
         continue;
       }
@@ -200,7 +209,7 @@
     var output = outputStack.join("");
 
     function specialCases(match, string) {
-      return (match === "Infinity")? "∞": "Math ERROR";
+      return (match === "NaN")? "Math ERROR": match;
     }
 
     output = output.replace(/Infinity|NaN/, specialCases);
