@@ -9,7 +9,7 @@
 <body>
   <div class="calc" ng-controller="CalcController">
     <div class="display">
-      <div class="display-expression">{{ displayExpression }}</div>
+      <div class="display-expression">{{ displayExpression }}<span class="blink" ng-hide="hideCursor">_</span></div>
       <div class="display-result" id="result">{{ displayResult }}</div>
     </div>
     <div class="buttons">

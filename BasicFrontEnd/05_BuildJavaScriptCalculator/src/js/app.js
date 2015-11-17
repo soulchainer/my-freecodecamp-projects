@@ -213,11 +213,15 @@
     $scope.previousButton = ''; // String with type of previous button pressed
     $scope.displayExpression = '';
     $scope.displayResult = '0';
+    $scope.hideCursor = false;
     $scope.shiftOn = false;
     $scope.hypOn = false;
 
     $scope.clear = function(event) {
       if (event) {
+        if ($scope.hideCursor) {
+          $scope.hideCursor = false;
+        }
         $scope.displayExpression = '';
         $scope.displayResult = '0';
         if ($scope.error) {
@@ -246,6 +250,9 @@
       var noRepeatedDot = !((value === '.') && $scope.expression.length &&
       ($scope.expression[$scope.expression.length -1].value.indexOf(value) !==
       -1));
+      if ($scope.hideCursor) {
+        $scope.hideCursor = false;
+      }
       if (prev === 'operand' && type === prev) {  // in progress number
         if (value === 'Ans') {  // an implicit multiplication with Ans found
           $scope.expression.push({'type': 'operator', 'value': '·'},
@@ -297,6 +304,7 @@
       }
     };
     $scope.evalExpression = function() {
+      $scope.hideCursor = true;
       if (!$scope.expression.length) {
         return;
       }
