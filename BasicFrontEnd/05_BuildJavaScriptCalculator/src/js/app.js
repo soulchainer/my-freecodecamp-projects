@@ -8,7 +8,6 @@
 
   var ans;
   var altFunctions = {
-    'EXP': {'type': 'operand', 'value': 'π', 'label': 'π'},
     'ln': {'value': 'e', 'label': 'e˟'},
     '×': {'value': '%', 'label': '%'},
     '^': {'value': '˟√', 'label': '˟√'},
