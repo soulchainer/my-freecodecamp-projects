@@ -226,6 +226,7 @@
     $scope.hideCursor = false;
     $scope.shiftOn = false;
     $scope.hypOn = false;
+    $scope.precision = 50;
 
     $scope.clear = function(event) {
       if (event) {
@@ -238,7 +239,6 @@
           $scope.error = false;
           ans = "";
         }
-        angular.element(result).removeClass("invisible");
       }
       $scope.expression = [];
       $scope.previousButton = 'equal';
@@ -251,6 +251,16 @@
     $scope.hyperbolic = function() {
       $scope.hypOn = !$scope.hypOn;
       $scope.hyp = ($scope.hypOn)? 'h': '';
+    };
+    $scope.changeConfiguration = function() {
+      decimal.config({ precision: $scope.precision });
+      $scope.showConfiguration(false);
+    };
+    $scope.showConfiguration = function(show) {
+      var modalContainer = document.getElementById("modal-container");
+      var overlay = document.getElementById("overlay");
+      angular.element(modalContainer).css('visibility', (show)? 'visible': 'hidden');
+      angular.element(overlay).css('visibility', (show)? 'visible': 'hidden');
     };
     $scope.addToExpression = function(event) {
       var element = event.target;
@@ -334,7 +344,6 @@
       if ((ans === "Math ERROR") || (ans === "Syntax ERROR")) {
         $scope.displayExpression = ans;
         ans = "";
-        angular.element(result).addClass("invisible");
         $scope.error = true;
       }
       $scope.displayResult = ans;

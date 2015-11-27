@@ -4,9 +4,14 @@
 
 $black: #282828;
 $blue:  #66d9ef;
-$green: #a6e22e;
-$white: #eeeeee;
+$green: #43a647;
 $grey:  #808080;
+$light-green: #a6e22e;
+$light-grey: #dadada;
+$medium-grey: #c1c1c1;
+$red: rgb(194, 120, 120);
+$transparent-red: rgba(194, 120, 120, .8);
+$white: #eeeeee;
 
 @custom-media --mobile (width <= 450px), (device-width <= 450px), (device-height <= 450px) and (orientation: landscape);
 
@@ -20,6 +25,127 @@ $grey:  #808080;
 
 body {
   background-color: $black;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #CONFIGURATION
+\*------------------------------------*/
+
+.modal-open {
+  display: inline-block;
+  fill: $white;
+  height: 2rem;
+  position: fixed;
+  right: .5rem;
+  top: .5rem;
+
+  &:hover {
+    color: $light-green;
+    cursor: pointer;
+  }
+}
+
+.modal-container {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top:0;
+  visibility: hidden;
+  width: 100vw;
+  z-index: 1000;
+}
+
+
+.modal {
+  background-color: $white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(40, 40, 40, .7);
+  left: auto;
+  max-width: 90vw;
+  min-width: 255px;
+  position: relative;
+  width: 400px;
+
+  &>header {
+    background-color: $medium-grey;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: .6rem;
+  }
+
+  &-close {
+    background-color: transparent;
+    border: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    position:absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &-option {
+    border-color: $light-grey;
+    border-style: solid;
+    border-width: 1px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: .6rem;
+
+    &>input {
+      max-width: 90%;
+    }
+  }
+
+  &-submit {
+    display: flex;
+    justify-content: flex-end;
+    padding: .6rem;
+
+    &>button {
+      background-color: $green;
+      border: 0;
+      border-radius: 5px;
+      color: $white;
+      font-weight: bold;
+      padding: .4rem .6rem;
+    }
+  }
+}
+
+.alert {
+  background-color: $transparent-red;
+  background-color: $red;
+  border-radius: 5px;
+  color: $white;
+  margin: .6rem .4rem;
+  padding: .4rem;
+}
+
+.overlay {
+  background-color: $blue;
+  visibility: hidden;
+  height: 100%;
+  left: 0;
+  opacity: .7;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
 }
 
 
@@ -99,7 +225,7 @@ body {
   overflow: auto;
 }
 
-button {
+.calc-button {
   background-color: $grey;
   border: 2px solid $black;
   border-collapse: collapse;
