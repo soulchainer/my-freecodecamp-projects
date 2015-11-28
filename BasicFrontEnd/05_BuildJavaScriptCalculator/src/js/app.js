@@ -3,8 +3,10 @@
   var decimal = require('decimal.js');
 
   var app = angular.module('js-calc', []);
-  // Set the default precision to 50 significant digits. Max. fixed to 500
-  decimal.config({ precision: 50 });
+  // Set internal precision to 500 significant digits (maximum value).
+  // Final value will be cropped to $scope.precission value for display purposes
+  // We keep the internal value to its maximum for minimize rounding errors
+  decimal.config({ precision: 500 });
 
   var ans;
   var altFunctions = {
@@ -207,14 +209,10 @@
     while (stack.length) {
       partialEvaluation(stack, outputStack);
     }
-    var output = outputStack.join("");
+    
+    var output = outputStack[0];
 
-    function specialCases(match, string) {
-      return (match === "NaN")? "Math ERROR": match;
-    }
-
-    output = output.replace(/Infinity|NaN/, specialCases);
-    return output;
+    return (output.isNaN())? "Math ERROR": output;
   }
 
   app.controller('CalcController', ['$scope', function($scope){
@@ -345,6 +343,8 @@
         $scope.displayExpression = ans;
         ans = "";
         $scope.error = true;
+      } else {
+        ans = ans.toSignificantDigits($scope.precision).toString();
       }
       $scope.displayResult = ans;
       $scope.clear();
