@@ -209,7 +209,7 @@
     while (stack.length) {
       partialEvaluation(stack, outputStack);
     }
-    
+
     var output = outputStack[0];
 
     return (output.isNaN())? "Math ERROR": output;
@@ -217,6 +217,7 @@
 
   app.controller('CalcController', ['$scope', function($scope){
     ans = "";
+    $scope.ans = "";
     $scope.expression = []; // Array with the elements of the expression
     $scope.previousButton = ''; // String with type of previous button pressed
     $scope.displayExpression = '';
@@ -240,6 +241,10 @@
       }
       $scope.expression = [];
       $scope.previousButton = 'equal';
+    };
+    $scope.clearAns = function() {
+      ans = "";
+      $scope.ans = "";
     };
     $scope.shift = function() {
       $scope.shiftOn = !$scope.shiftOn;
@@ -281,7 +286,7 @@
         }
       } else {  // Not an in progress number
         if (prev === "equal" || !prev) {
-          if (type === "operator" && operators[value].arity === 2) {
+          if (type === "operator" && operators[value].arity === 2 && ans!="") {
             $scope.expression.push({'type': "operand", 'value': "Ans"});
             $scope.displayExpression = "Ans";
           } else {
@@ -347,6 +352,7 @@
         ans = ans.toSignificantDigits($scope.precision).toString();
       }
       $scope.displayResult = ans;
+      $scope.ans = ans;
       $scope.clear();
       console.log("Postfix: " + postfix);
       postfix = '';
