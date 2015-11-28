@@ -14,8 +14,8 @@
     </div>
     <div class="buttons">
       <div class="column">
-        <button class="calc-button verbose-button" ng-click="shift()" ng-disabled="error">SHIFT</button>
-        <button class="calc-button verbose-button" data-type="operator" value="hyp" ng-click="hyperbolic()" ng-disabled="error">hyp</button>
+        <button class="calc-button verbose-button" ng-class="{'mode-active': shiftOn}" ng-click="shift()" ng-disabled="error">SHIFT</button>
+        <button class="calc-button verbose-button" data-type="operator" value="hyp" ng-class="{'mode-active': hypOn}" ng-click="hyperbolic()" ng-disabled="error">hyp</button>
         <button class="calc-button verbose-button" data-type="operator" value="E" ng-click="addToExpression($event)" ng-disabled="error">EXP</button>
         <button class="calc-button" data-type="operand" value="7" ng-click="addToExpression($event)" ng-disabled="error">7</button>
         <button class="calc-button" data-type="operand" value="4" ng-click="addToExpression($event)" ng-disabled="error">4</button>
@@ -24,7 +24,7 @@
       </div>
       <div class="column">
         <button class="calc-button" data-type="operator" value="√" ng-click="addToExpression($event)" ng-disabled="error">√</button>
-        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}sin{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}sin{{ hyp }}</button>
+        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}sin{{ hyp }}" ng-class="{'alt-function': hypOn||shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}sin{{ hyp }}</button>
         <button class="calc-button" data-type="parenthesis" value="(" ng-click="addToExpression($event)" ng-disabled="error">(</button>
         <button class="calc-button" data-type="operand" value="8" ng-click="addToExpression($event)" ng-disabled="error">8</button>
         <button class="calc-button" data-type="operand" value="5" ng-click="addToExpression($event)" ng-disabled="error">5</button>
@@ -32,8 +32,8 @@
         <button class="calc-button" data-type="operand" value="." ng-click="addToExpression($event)" ng-disabled="error">.</button>
       </div>
       <div class="column">
-        <button class="calc-button" data-type="operator" value="{{alt['^'].value || '^'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['^'].label || "^"}}</button>
-        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}cos{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}cos{{ hyp }}</button>
+        <button class="calc-button" data-type="operator" value="{{alt['^'].value || '^'}}" ng-class="{'alt-function': shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['^'].label || "^"}}</button>
+        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}cos{{ hyp }}" ng-class="{'alt-function': hypOn||shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}cos{{ hyp }}</button>
         <button class="calc-button" data-type="parenthesis" value=")" ng-click="addToExpression($event)" ng-disabled="error">)</button>
         <button class="calc-button" data-type="operand" value="9" ng-click="addToExpression($event)" ng-disabled="error">9</button>
         <button class="calc-button" data-type="operand" value="6" ng-click="addToExpression($event)" ng-disabled="error">6</button>
@@ -42,15 +42,15 @@
       </div>
       <div class="column">
         <button class="calc-button verbose-button" data-type="operator" value="log" ng-click="addToExpression($event)" ng-disabled="error">log</button>
-        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}tan{{ hyp }}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}tan{{ hyp }}</button>
+        <button class="calc-button verbose-button" data-type="operator" value="{{ inv }}tan{{ hyp }}" ng-class="{'alt-function': hypOn||shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ inv }}tan{{ hyp }}</button>
         <button class="calc-button" data-type="operator" value="-" ng-click="addToExpression($event)" ng-disabled="error">(−)</button>
         <button class="calc-button" data-type="operator" value="÷" ng-click="addToExpression($event)" ng-disabled="error">÷</button>
-        <button class="calc-button" data-type="operator" value="{{alt['×'].value || '×'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['×'].label || "×"}}</button>
+        <button class="calc-button" data-type="operator" value="{{alt['×'].value || '×'}}" ng-class="{'alt-function': shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['×'].label || "×"}}</button>
         <button class="calc-button" data-type="operator" value="−" ng-click="addToExpression($event)" ng-disabled="error">−</button>
         <button class="calc-button" data-type="operator" value="+" ng-click="addToExpression($event)" ng-disabled="error">+</button>
       </div>
       <div class="column">
-        <button class="calc-button" data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['ln'].label || "ln"}}</button>
+        <button class="calc-button" data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-class="{'alt-function': shiftOn}" ng-click="addToExpression($event)" ng-disabled="error">{{ alt['ln'].label || "ln"}}</button>
         <button class="calc-button" data-type="operand" value="π" ng-click="addToExpression($event)" ng-disabled="error">π</button>
         <button class="calc-button verbose-button" title="Memory Clear" ng-disabled="error">MC</button>
         <button class="calc-button verbose-button" class="clear" ng-click="clear($event)" title="Clear">AC</button>

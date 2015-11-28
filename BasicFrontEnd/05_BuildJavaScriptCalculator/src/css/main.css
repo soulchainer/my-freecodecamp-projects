@@ -12,6 +12,7 @@ $medium-grey: #c1c1c1;
 $red: rgb(194, 120, 120);
 $transparent-red: rgba(194, 120, 120, .8);
 $white: #eeeeee;
+$yellow: #f2e207;
 
 @custom-media --mobile (width <= 450px), (device-width <= 450px), (device-height <= 450px) and (orientation: landscape);
 
@@ -276,6 +277,14 @@ h2 {
   @media (--mobile) {
     font-size: .9rem;
   }
+}
+
+.mode-active {
+  color: $light-green;
+}
+
+.alt-function {
+  color: $yellow;
 }
 
 .column {
