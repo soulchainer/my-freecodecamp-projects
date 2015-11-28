@@ -41,6 +41,11 @@ h2 {
     #CONFIGURATION
 \*------------------------------------*/
 
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}
+
 .modal-open {
   display: inline-block;
   fill: $white;
@@ -48,9 +53,11 @@ h2 {
   position: fixed;
   right: .5rem;
   top: .5rem;
+  width: 2rem;
 
   &:hover {
-    color: $light-green;
+    animation: spin 3s linear 0s infinite;
+    fill: $light-green;
     cursor: pointer;
   }
 }
@@ -228,9 +235,9 @@ h2 {
 .calc-button {
   background-color: $grey;
   border: 2px solid $black;
-  border-collapse: collapse;
   box-sizing: border-box;
   color: $white;
+  cursor: pointer;
   flex: 1;
   font-size: 1.5rem;
   font-weight: bold;
@@ -238,6 +245,25 @@ h2 {
   min-height: 3rem;
   max-height: 3rem;
   padding: 0.2rem 0.5rem;
+  text-shadow: 0 0 2px black;
+
+  &:hover {
+    background-color: $blue;
+  }
+
+  &:active {
+    border: 2px inset;
+  }
+
+  /* Hide Webkit outline when a button gets the focus */
+  &:focus {
+    outline: none;
+  }
+
+  /* Hide Firefox dotted line when a button is clicked/focused */
+  &::-moz-focus-inner {
+    border: 0;
+  }
 
   @media (--mobile) {
     font-size: 1.2rem;
