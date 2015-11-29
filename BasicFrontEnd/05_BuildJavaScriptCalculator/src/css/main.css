@@ -168,7 +168,6 @@ h2 {
 .calc {
   display: flex;
   flex-direction: column;
-  height: 98vh;
   justify-content: flex-start;
   margin: 0 auto;
   max-width: 900px;
@@ -185,7 +184,7 @@ h2 {
 .display {
   color: $blue;
   font-size: 2rem;
-  height: 30vh;
+  min-height: 30vh;
   width: 100%;
   word-break: break-all;
   word-wrap: break-word;
@@ -197,8 +196,6 @@ h2 {
   &-expression,
   &-result {
     box-sizing: border-box;
-    max-height: 50%;
-    overflow: auto;
     padding: .5rem 1rem 2.1rem .5rem;
   }
 
@@ -230,8 +227,6 @@ h2 {
 .buttons {
   display: flex;
   justify-content: center;
-  height: 68vh;
-  overflow: auto;
 }
 
 .calc-button {
