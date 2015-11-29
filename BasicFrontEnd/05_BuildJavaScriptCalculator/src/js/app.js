@@ -9,7 +9,7 @@
   decimal.config({ precision: 500 });
 
   var ans;
-  var altFunctions = {
+  var altFunctions = { // Functions activated when «SHIFT» is pressed
     'ln': {'value': 'e', 'label': 'e˟'},
     '×': {'value': '%', 'label': '%'},
     '^': {'value': '˟√', 'label': '˟√'},
@@ -43,56 +43,47 @@
     '+': {"op": add, "precedence": 1, "arity": 2, "associativity": "left"},
     '−': {"op": subtract, "precedence": 1, "arity": 2, "associativity": "left"}
   };
-  var postfix = '';
-  var result = document.getElementById("result");
+  // Functions whose parameters must be between parenthesis
   var parentizedFunctions = 'asinhacoshatanhlogln';
 
-  // Regular expression for first test of expression entered
+  // Regular expression for first check of expression entered
   var arity1 = '([(]*((((a?(sin|cos|tan)h?)|log|ln)[(])|√|-|e))';
   var operand = '([(]*(((\\d+\\.?\\d*)(Ans|π)*)|(Ans|π)+)(E\\d+)?[)]*)';
   var arity2 = '(%|\\^|˟√|÷|×|\\+|−)';
   var expChecker = new RegExp("^(" + arity1 + "*" + operand +
                       "(" + arity2 + arity1 + "*" + operand + ")*)$");
 
-// Constants
+  // Constants
   var E = exponential();
   // first 500 digits of PI
   var PI = new decimal('3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491');
 
-// Operations
-  // Arithmetic
+  // Operations. For «sin» & «atan» the JavaScript native functions are used,
+  // so precision will suffer a little for operations involving them
   function add(x, y) {
     return x.plus(y);
   }
-
   function divide(x, y) {
     return x.div(y);
   }
-
   function exponential(x) {
     return (x || new decimal(1)).exp();
   }
-
   function exponent(x, y) {
     return x.times(decimal.pow(10, y));
   }
-
   function log(x) {
     return x.log();
   }
-
   function ln(x) {
     return x.ln();
   }
-
   function multiply(x, y) {
     return x.times(y);
   }
-
   function negative(x) {
     return x.neg();
   }
-
   function nthRoot(x, y) {
     return y.pow(new decimal(1).div(x));
   }
@@ -100,19 +91,15 @@
     var perc = x.div(100);
     return y.times(perc);
   }
-
   function power(x, y) {
     return x.pow(y);
   }
-
   function sqrt(x) {
     return x.sqrt();
   }
-
   function subtract(x, y) {
     return x.minus(y);
   }
-  // Trigonometry
   function sin(x) {
     return new decimal(String(Math.sin(x.toNumber())));
   }
@@ -151,6 +138,8 @@
   }
 
   function partialEvaluation(stack, outputStack) {
+    // Process the next operation, recovering next operator from stack and
+    // operands from outputStack, and save the result again in the outputStack
     var op = stack.pop();
     var arity = operators[op].arity;
     var operation = operators[op].op;
@@ -160,9 +149,11 @@
     }
     x = outputStack.pop();
     outputStack.push(operation(x, y));
-    postfix += op + " ";
   }
   function evaluate(expression) {
+    // Evaluate the given math expression (implementing a version of the
+    // Shunting yard algorithm with direct evaluation) and return a Decimal
+    // number or an «Math ERROR» error
     var outputStack = [], stack = [];
     var tokens = expression.length;
     for (var i = 0; i < tokens; i++) {
@@ -170,7 +161,6 @@
       var type = token.type;
       var value = token.value;
       if (type === 'operand') {
-        postfix += value + " ";
         switch (value) {
           case "Ans":
             value = new decimal(ans);
@@ -211,7 +201,6 @@
     }
 
     var output = outputStack[0];
-
     return (output.isNaN())? "Math ERROR": output;
   }
 
@@ -227,45 +216,54 @@
     $scope.hypOn = false;
     $scope.precision = 50;
 
-    $scope.clear = function(event) {
-      if (event) {
-        if ($scope.hideCursor) {
-          $scope.hideCursor = false;
-        }
-        $scope.displayExpression = '';
-        $scope.displayResult = '0';
-        if ($scope.error) {
-          $scope.error = false;
-          ans = "";
-        }
-      }
+    $scope.setForNextExpression = function() {
+      // Prepare the calc for begin to recieve a new math expression
       $scope.expression = [];
       $scope.previousButton = 'equal';
     };
+    $scope.clear = function() {
+      // Clear the display (fired when AC is pressed)
+      if ($scope.hideCursor) {
+        $scope.hideCursor = false;
+      }
+      $scope.displayExpression = '';
+      $scope.displayResult = '0';
+      if ($scope.error) {
+        $scope.error = false;
+        ans = "";
+      }
+      $scope.setForNextExpression();
+    };
     $scope.clearAns = function() {
+      // Clear the value stored in Ans (fired when MC is pressed)
       ans = "";
       $scope.ans = "";
     };
     $scope.shift = function() {
+      // Handle the SHIFT button function
       $scope.shiftOn = !$scope.shiftOn;
       $scope.inv = ($scope.shiftOn)? 'a': '';
       $scope.alt = ($scope.shiftOn)? altFunctions: null;
     };
     $scope.hyperbolic = function() {
+      // Handle the hyp button function
       $scope.hypOn = !$scope.hypOn;
       $scope.hyp = ($scope.hypOn)? 'h': '';
     };
     $scope.changeConfiguration = function() {
+      // Set the new configuration values set by the user
       decimal.config({ precision: $scope.precision });
       $scope.showConfiguration(false);
     };
     $scope.showConfiguration = function(show) {
+      // Display the modal for setting the configuration
       var modalContainer = document.getElementById("modal-container");
       var overlay = document.getElementById("overlay");
       angular.element(modalContainer).css('visibility', (show)? 'visible': 'hidden');
       angular.element(overlay).css('visibility', (show)? 'visible': 'hidden');
     };
     $scope.addToExpression = function(event) {
+      // Handle the press of operators/operand buttons and update display
       var element = event.target;
       var type = element.dataset.type;
       var value = element.value;
@@ -286,7 +284,7 @@
         }
       } else {  // Not an in progress number
         if (prev === "equal" || !prev) {
-          if (type === "operator" && operators[value].arity === 2 && ans!="") {
+          if (type === "operator" && operators[value].arity === 2 && ans!=="") {
             $scope.expression.push({'type': "operand", 'value': "Ans"});
             $scope.displayExpression = "Ans";
           } else {
@@ -303,11 +301,10 @@
       if (noRepeatedDot) {
         $scope.displayExpression += value;
       }
-      console.log($scope.expression);
     };
     $scope.deleteLastToken = function() {
+      // Handle the DEL button function
       if ($scope.expression.length) {
-        console.log($scope.expression);
         var token = $scope.expression.pop();
         var value = token.value;
         var isANumber = (token.type === "operand") && (value !== "Ans");
@@ -327,17 +324,15 @@
       }
     };
     $scope.evalExpression = function() {
+      // Handle the press of = button. Fire the evaluation of math expression
       $scope.hideCursor = true;
       if (!$scope.expression.length) {
         return;
       }
       if (expChecker.test($scope.displayExpression)) {
-        console.log("test passed");
         try {
           ans = evaluate($scope.expression);
-          console.log($scope.expression);
         } catch(err) {
-          console.log(err);
           ans = "Syntax ERROR";
         }
       } else {
@@ -353,9 +348,7 @@
       }
       $scope.displayResult = ans;
       $scope.ans = ans;
-      $scope.clear();
-      console.log("Postfix: " + postfix);
-      postfix = '';
+      $scope.setForNextExpression();
     };
   }]);
 })();

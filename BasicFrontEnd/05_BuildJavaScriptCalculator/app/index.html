@@ -54,7 +54,7 @@
         <button class="calc-button" data-type="operator" value="{{alt['ln'].value || 'ln'}}" ng-class="{'alt-function': shiftOn}" ng-click="addToExpression($event)" ng-disabled="error" ng-cloak>{{ alt['ln'].label || "ln"}}</button>
         <button class="calc-button" data-type="operand" value="π" ng-click="addToExpression($event)" ng-disabled="error">π</button>
         <button class="calc-button verbose-button" title="Memory Clear" ng-click="clearAns()" ng-disabled="error||((displayExpression.indexOf('Ans') !== -1) && previousButton !== 'equal')">MC</button>
-        <button class="calc-button verbose-button" class="clear" ng-click="clear($event)" title="Clear">AC</button>
+        <button class="calc-button verbose-button" class="clear" ng-click="clear()" title="Clear">AC</button>
         <button class="calc-button verbose-button" ng-click="deleteLastToken()" ng-disabled="error">DEL</button>
         <button class="calc-button column-item-span2" ng-click="evalExpression()" ng-disabled="error">=</button>
       </div>
