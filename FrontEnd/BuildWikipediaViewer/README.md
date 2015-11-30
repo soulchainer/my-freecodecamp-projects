@@ -2,8 +2,7 @@
 
 This is my solution for the [FreeCodeCamp](http://freecodecamp.com) [Zipline: Build a Wikipedia Viewer](http://freecodecamp.com/challenges/zipline-build-a-wikipedia-viewer).
 
-As usually in the *Intermediate Projects*, I'm using
-[AngularJS](https://angularjs.org/).
+I'm using [AngularJS](https://angularjs.org/).
 
 For webfonts, I choose the next fonts from
 [Google Fonts](https://www.google.com/fonts):
