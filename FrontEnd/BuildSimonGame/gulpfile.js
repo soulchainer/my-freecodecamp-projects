@@ -4,12 +4,13 @@ var gulp = require('gulp'),
     babelify = require("babelify"),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
+    each = require('postcss-each'),
     precss = require('precss'),
     source = require('vinyl-source-stream');
 var bs = require('browser-sync').create();
 var $ = require('gulp-load-plugins')();
 
-var reload = bs.reload();
+var reload = bs.reload;
 
 // Process the app JavaScript (own and required)
 gulp.task('scripts', function() {
@@ -32,6 +33,7 @@ gulp.task('scripts', function() {
 gulp.task('styles', function () {
   var processors = [
     autoprefixer('last 2 versions'),
+    each,
     precss
   ];
 
