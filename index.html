@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>FreeCodeCamp Calculator</title>
+        <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="calc_body">
+            <img id="logo"
+            src="https://raw.githubusercontent.com/FreeCodeCamp/FCCAssets/master/Logos%20and%20Covers/freeCodeCamp-onBrown-1200.png" alt=""/>
+            <div id="display">
+                <p id="displayNumbers">
+                    <span id="sign"></span>
+                    <span id="number">0</span>
+                </p>
+            </div>
+
+            <table id="buttons_pad">
+                <tr>
+                    <td id="c" class="button operational_button dark_brown">C</td>
+                    <td class="button operational_button dark_brown"
+                    colspan="2">DEL</td>
+                    <td class="button operational_button dark_brown">^</td>
+                    <td class="button operational_button dark_brown">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="button numeric_button light_brown">7</td>
+                    <td class="button numeric_button light_brown">8</td>
+                    <td class="button numeric_button light_brown">9</td>
+                    <td class="button operational_button dark_brown">+</td>
+                    <td class="button operational_button dark_brown">%</td>
+                </tr>
+                <tr>
+                    <td class="button numeric_button light_brown">4</td>
+                    <td class="button numeric_button light_brown">5</td>
+                    <td class="button numeric_button light_brown">6</td>
+                    <td class="button operational_button dark_brown">-</td>
+                    <td class="button operational_button dark_brown">√</td>
+                </tr>
+                <tr>
+                    <td class="button numeric_button light_brown">1</td>
+                    <td class="button numeric_button light_brown">2</td>
+                    <td class="button numeric_button light_brown">3</td>
+                    <td class="button operational_button dark_brown">*</td>
+                    <td class="button operational_button dark_brown">/</td>
+                </tr>
+                <tr>
+                    <td id="change_sign" class="button light_brown">&plusmn;</td>
+                    <td class="button numeric_button light_brown">0</td>
+                    <td class="button numeric_button light_brown">.</td>
+                    <td id="equal_button" class="button dark_brown" colspan="2">=</td>
+                </tr>
+            </table>
+      </div>
+        <script src="main.js" type="text/javascript" charset="utf-8"></script>
+    </body>
+</html>

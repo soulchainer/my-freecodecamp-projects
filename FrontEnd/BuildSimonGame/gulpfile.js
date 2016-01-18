@@ -10,8 +10,6 @@ var gulp = require('gulp'),
 var bs = require('browser-sync').create();
 var $ = require('gulp-load-plugins')();
 
-var reload = bs.reload;
-
 // Process the app JavaScript (own and required)
 gulp.task('scripts', function() {
     var b = browserify({
@@ -54,7 +52,7 @@ gulp.task('serve', function() {
   var appFiles = ['./app/*', './app/js/*', './app/css/*'];
   gulp.watch('./src/js/*.js', ['scripts']);
   gulp.watch('./src/css/*.css', ['styles']);
-  gulp.watch(appFiles).on('change',reload);
+  gulp.watch(appFiles).on('change',bs.reload);
 });
 
 gulp.task('default', ['scripts', 'styles', 'serve']);
