@@ -11,6 +11,9 @@
     }
     return unpressed;
   }
+  function unpressed(e) {
+    e.classList.remove('pushed');
+  }
 
   // get the music buttons
   var musicBtns = [];
@@ -42,58 +45,23 @@
 
   // simon device function
   var simon = function() {
-    function getRandomTap() {
-        return String(Math.floor(Math.random()*4));
-    }
-    function processFunctionButton(e) {
-      switch (e.target.id) {
-        case 'power':
-          self.on = false;
-          break;
-        case 'start':
-          self.restart();
-          break;
-        default:
-          self.strict = true;
-      }
-    }
-    function toggleDisabled(e) {
-      if (e.hasAttribute('disabled')) {
-        e.removeAttribute('disabled');
-        console.log("enabled");
-      } else {
-        e.setAttribute('disabled','true');
-        console.log("disabled");
-      }
-    }
-    var power = document.getElementById('power');
-    var start = document.getElementById('start');
-    var strict = document.getElementById('strict');
+    var powerBtn = document.getElementById('power');
+    var startBtn = document.getElementById('start');
+    var strictBtn = document.getElementById('strict');
+    var  led = document.getElementById('led');
     var self = this;
-
-    this.on = true; // Is the Simon device turned on?
+    this.cpuInterval = null;
+    powerBtn.addEventListener('click', togglePower);
+    this.on = false; // Is the Simon device turned on?
     this.mode = "Normal"; // Modes available: Normal, Survivor
     this.strict = false;  // Additive mode: after a fail, the game resets
     this.started = false; // Is the Simon game started?
     this.turn = 0;
     this.turns = (self.mode === "Normal")? 20: Infinity; // debe ser 20, pruebas
-    this.togglePower = function(){
-      self.on = (self.on)? false: true;
-      if (self.on) {
-        for (let btn of [power, start, strict]) {
-          btn.addEventListener('click', processFunctionButton);
-        }
-      } else {
-        for (let btn of [power, start, strict]) {
-          btn.removeEventListener('click', processFunctionButton);
-        }
-      }
-    };
     this.start = function() {
       self.started = true;
       self.cpuTurn();
     };
-    this.restart = game;
     this.taps = [];
     this.currentPlayerTap = null;
     this.playerMiss = false;
@@ -103,70 +71,34 @@
         console.log("entra cpu turn");
         if (!self.playerMiss || !self.taps.length) {
           self.taps.push(getRandomTap());
+          updateLed(self.turn);
         }
-        if (self.playerMiss) {
-          self.playerMiss = false;
-        }
+        self.playerMiss = false;
         console.log(self.taps);
         var tap = 0;
-        musicBtns.forEach(toggleDisabled);
-        var round = setInterval(play, 600, round);
+        musicBtns.forEach(disableMusicBtns);
+        self.cpuInterval = window.setInterval(play, 600, self.cpuInterval);
       } else {
         console.log("Game ended");
         return;
       }
-      function play(interval) {
+      function play() {
         console.log(self.turn + " "+ tap);
         console.log(self.taps);
         console.log(tap);
         snds[self.taps[tap]].play();
         tap++;
-        if (tap >= self.turn) {
-          clearInterval(round);
-          musicBtns.forEach(toggleDisabled);
-          setTimeout(self.playerTurn, 400);
+        console.log("turn " + self.turn + " tap "+ tap);
+        if ((tap >= self.turn)) {
+          window.clearInterval(self.cpuInterval);
+          self.cpuInterval = null;
+          window.setTimeout(self.playerTurn, 400);
         }
       }
     };
     this.playerTurn = function() {
-      function musicTapError() {
-        console.log("You didn't tap any button or tap the wrong one");
-        self.turn = (self.strict)? 0: --self.turn;
-        self.playerMiss = true;
-        setTimeout(self.cpuTurn, 200);
-      }
-      function processMusicTap(e) {
-        console.log("Se ejecuta processMusicTap");
-        console.log(e);
-        console.log(musicBtns);
-        console.log("playerTap: " + self.currentPlayerTap);
-        var tapped = e.target.getAttribute("data-btn");
-        var snd = snds[tapped];
-        snd.play();
-        snd.on('complete', function(){
-          console.log("Al completar sonido → tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
-          if (tapped === self.taps[self.currentPlayerTap]) {
-            console.log("Correct button pressed");
-            self.currentPlayerTap++;
-            console.log("playerTap: " + self.currentPlayerTap, "turn: "+ self.turn);
-            if (self.currentPlayerTap === self.turn) {
-              console.log("Lista de taps mostrada al completar sonido y alcanzar el final del turno del jugador:");
-              console.log(self.taps);
-              for (let btn of musicBtns) {
-                btn.removeEventListener('click', processMusicTap);
-              }
-              setTimeout(self.cpuTurn, 200);
-            }
-          } else {
-            console.log("Al completar el sonido y pulsarse botón erroneamente, tapped !== self.taps[playerTap] →  tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
-            for (let btn of musicBtns) {
-              btn.removeEventListener('click', processMusicTap);
-            }
-            musicTapError();
-          }
-        }, null, true);
-      }
       console.log("Entra player");
+      musicBtns.forEach(enableMusicBtns);
       var taps = self.turn;
       self.currentPlayerTap = 0;
       // declare actions to trigger when a music button is pressed
@@ -177,11 +109,123 @@
     this.gameEnded = function() {
       return (self.turn > self.turns);
     };
+
+    // helper functions
+    function getRandomTap() {
+        return String(Math.floor(Math.random()*4));
+    }
+    function processFunctionButton(e) {
+      console.log("pulsado "+ e.target.id);
+      switch (e.target.id) {
+        case 'start':
+          if (self.started) {
+            resetGame();
+          } else {
+            self.start();
+          }
+          break;
+        default:
+          self.strict = (self.strict)? false: true;
+      }
+    }
+    function enableMusicBtns(e) {
+      if (e.hasAttribute('disabled')) {
+        e.removeAttribute('disabled');
+      }
+    }
+    function disableMusicBtns(e) {
+      if (!e.hasAttribute('disabled')) {
+        e.setAttribute('disabled','true');
+      }
+    }
+    function togglePower(e){
+      console.log("pulsado " + e.target.id);
+      self.on = (self.on)? false: true;
+      if (self.on) {
+        console.log("Power on");
+        for (let btn of [startBtn, strictBtn]) {
+          btn.addEventListener('click', processFunctionButton);
+        }
+      } else {
+        console.log("Power off");
+        stopGame();
+      }
+    }
+    function musicTapError() {
+      console.log("You didn't tap any button or tap the wrong one");
+      console.log(self.strict);
+      if (self.strict) {
+        resetGame();
+      } else {
+        self.playerMiss = true;
+        self.turn--;
+        window.setTimeout(self.cpuTurn, 200);
+      }
+    }
+    function processMusicTap(e) {
+      console.log("Se ejecuta processMusicTap");
+      console.log(e);
+      console.log(musicBtns);
+      console.log("playerTap: " + self.currentPlayerTap);
+      var tapped = e.target.getAttribute("data-btn");
+      var snd = snds[tapped];
+      snd.play();
+      snd.on('complete', function(){
+        console.log("Al completar sonido → tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
+        if (tapped === self.taps[self.currentPlayerTap]) {
+          console.log("Correct button pressed");
+          self.currentPlayerTap++;
+          console.log("playerTap: " + self.currentPlayerTap, "turn: "+ self.turn);
+          if (self.currentPlayerTap === self.turn) {
+            console.log("Lista de taps mostrada al completar sonido y alcanzar el final del turno del jugador:");
+            console.log(self.taps);
+            for (let btn of musicBtns) {
+              btn.removeEventListener('click', processMusicTap);
+            }
+            window.setTimeout(self.cpuTurn, 200);
+          }
+        } else {
+          console.log("Al completar el sonido y pulsarse botón erroneamente, tapped !== self.taps[playerTap] →  tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
+          for (let btn of musicBtns) {
+            btn.removeEventListener('click', processMusicTap);
+          }
+          musicTapError();
+        }
+      }, null, true);
+    }
+    function updateLed(value="--") {
+      led.textContent = value;
+    }
+    function baseReset(){
+      window.clearInterval(self.cpuInterval);
+      self.cpuInterval = null;
+      cs.stop();
+      musicBtns.forEach(unpressed);
+      // borrar los escuchadores de eventos click
+      for (let btn of musicBtns) {
+        btn.removeEventListener('click', processMusicTap);
+      }
+      updateLed();
+      self.turn = 0;
+      self.taps = [];
+      self.currentPlayerTap = null;
+      self.playerMiss = false;
+    }
+    function stopGame() {
+      baseReset();
+      for (let btn of [startBtn, strictBtn]) {
+        btn.removeEventListener('click', processFunctionButton);
+      }
+      self.on = false;
+      self.started = false;
+    }
+    function resetGame() {
+      baseReset();
+      self.on = true;
+      self.start();
+    }
   };
-  // game function
-  function game() {
-    let simonGame = new simon();
-    simonGame.start();
-  }
-  game();
+
+  // launch the game
+  var simonGame = new simon();
 })();
