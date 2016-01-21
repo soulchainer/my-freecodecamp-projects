@@ -1,11 +1,8 @@
 // Define plugins
 var gulp = require('gulp'),
-    autoprefixer = require('autoprefixer'),
     babelify = require("babelify"),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
-    each = require('postcss-each'),
-    precss = require('precss'),
     source = require('vinyl-source-stream');
 var bs = require('browser-sync').create();
 var $ = require('gulp-load-plugins')();
@@ -29,17 +26,14 @@ gulp.task('scripts', function() {
 });
 // Process CSS files with PostCSS
 gulp.task('styles', function () {
-  var processors = [
-    autoprefixer('last 2 versions'),
-    each,
-    precss
-  ];
-
-  return gulp.src('./src/css/*.css')
+  return gulp.src('./src/sass/*.scss')
     .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe($.postcss(processors))
-      .pipe($.minifyCss())
-      .on('error', $.util.log)
+    .pipe($.sass({outputStyle: 'compressed'}))
+    .pipe($.autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .on('error', $.util.log)
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('./app/css'));
 });
@@ -51,7 +45,7 @@ gulp.task('serve', function() {
   });
   var appFiles = ['./app/*', './app/js/*', './app/css/*'];
   gulp.watch('./src/js/*.js', ['scripts']);
-  gulp.watch('./src/css/*.css', ['styles']);
+  gulp.watch('./src/sass/*.scss', ['styles']);
   gulp.watch(appFiles).on('change',bs.reload);
 });
 

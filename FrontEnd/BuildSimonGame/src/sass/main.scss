@@ -1,0 +1,317 @@
+/*------------------------------------*\
+    #VARIABLES
+\*------------------------------------*/
+
+$black: #0e0c17;
+$black-shadow: #282828;
+$blue:  #1515cc;
+$green: #12a712;
+$orange: #ffa500;
+$red:   #cd0f0f;
+$yellow: #c9bc03;
+$white: #e1eae5;
+
+$footer-height: 1.8rem;
+
+
+
+
+
+/*------------------------------------*\
+    #GLOBAL
+\*------------------------------------*/
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: $orange;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  height: 100vh;
+  margin: 0;
+}
+
+main {
+  /* equal to footer height */
+  margin-bottom: -1.8rem;
+  min-height: 100vh;
+  position: relative;
+  width: 100vw;
+
+  &:after {
+    content: "";
+    display: block;
+    height: $footer-height;
+  }
+}
+
+
+
+
+
+/*------------------------------------*\
+    #INFO-BAR
+\*------------------------------------*/
+
+.info-bar {
+  color: $black;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: 'Press Start 2P', cursive;
+  justify-content: space-around;
+  // padding: .5rem;
+  padding: 2rem 2rem 4rem 2rem;
+  width: 100%;
+
+  &>span {
+    display: inline-block;
+  }
+}
+
+
+
+
+
+/*------------------------------------*\
+    #BOARD
+\*------------------------------------*/
+
+.board {
+  background-color: $black;
+  border-radius: 100%;
+  box-shadow: 0 0 1vmin $black-shadow;
+  box-sizing: border-box;
+  display: flex;
+  height: 80vmin;
+  margin: auto;
+  top: 10vh;
+  width: 80vmin;
+}
+
+.inner-board {
+  border-radius: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: 70vmin;
+  margin: auto;
+  position: relative;
+  width: 70vmin;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #CONTROL-PANEL
+\*------------------------------------*/
+
+.control-panel {
+  background-color: $white;
+  border: 3vmin solid $black;
+  border-radius: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  height: 35vmin;
+  left: 0;
+  justify-content: center;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 22.5vmin;
+  width: 35vmin;
+}
+
+.trademark {
+  align-self: center;
+  background-color: $black;
+  box-sizing: border-box;
+  display: flex;
+  height: 40%;
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+
+  &>span {
+    align-self: flex-end;
+    color: $white;
+    display: inline-block;
+    font-family: 'Sarpanch', sans-serif;
+    font-size: 1.8rem;
+
+    &>sup {
+      font-family: sans-serif;
+      font-size: .8rem;
+    }
+  }
+}
+
+.control-container {
+  background-color: $black;
+  border: 6px solid $white;
+  border-radius: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.controls {
+  align-self: center;
+  background-color: $white;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  justify-content: space-around;
+  margin: auto;
+  padding: .8rem;
+  width: 100%;
+}
+
+.controls-row {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  height: 50%;
+  justify-content: center;
+  padding-bottom: 5px;
+  width: 100%;
+}
+
+.buttons {
+  justify-content: space-around;
+}
+
+
+/*------------------------------------*\
+    #BUTTONS & SLIDERS
+\*------------------------------------*/
+
+%music-button {
+  box-sizing: border-box;
+  height: 50%;
+  position: relative;
+  width: 50%;
+}
+@each $name, $color, $position, $borders in
+(green, #12a712, top-left, (right, bottom)),
+(red, #cd0f0f, top-right, (left, bottom)),
+(yellowy, #c9bc03, bottom-left, (top, right)),
+(blue, #1515cc, bottom-right, (left, top)) {
+  .#{$name} {
+    @extend %music-button;
+    background-color: $color;
+    border-#{$position}-radius: 100%;
+    @each $border in $borders {
+      border-#{$border}: 2vmin solid $black;
+    }
+
+    &.pushed {
+      background-color: lighten($color, 60%);
+    }
+  }
+}
+
+.controls-btn {
+  display: flex;
+  flex-direction: column;
+
+  &-item {
+    border-color: transparent;
+    border-radius: 100%;
+    box-shadow: 0 .2rem .2rem $black;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+%pressed {
+  box-shadow: inset 0 0 .2rem $black;
+  transform: translateY(1.5px);
+}
+
+@each $button, $color in (start: #cd0f0f, strict: #c9bc03, modes: #1515cc) {
+  .#{$button} {
+    background-color: $color;
+
+    &:active {
+      @extend %pressed;
+    }
+  }
+}
+
+.label {
+  font-family: 'Homenaje', sans-serif;
+  font-size: .7rem;
+  font-weight: bold;
+}
+
+.power-switch {
+  background-color: $black;
+  border-radius: 5px;
+  display: inline-block;
+  height: 1.5rem;
+  margin: .3rem;
+  width: 35%;
+}
+
+.switch {
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
+  width: 50%;
+}
+
+.power {
+  background-color: $red;
+  border: 2px solid darken($red, 30%);
+}
+
+.right>.switch {
+  transform: translateX(50%);
+  transition: transform .4s;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #FOOTER
+\*------------------------------------*/
+
+.credits {
+  background: linear-gradient(to bottom,#101010,#000);
+  color: $white;
+  font-family: "Helvetica";
+  font-size: 1rem;
+  height: $footer-height;
+  padding: .5rem;
+  text-align: center;
+  width: 100vw;
+}
+
+/*------------------------------------*\
+    #BROWSER HACKS
+\*------------------------------------*/
+
+/* Get rid of the ugly outline in Firefx when a button is pressed */
+:focus {
+  outline: none !important;
+}
+
+::-moz-focus-inner {
+  border: 0 !important;
+}
