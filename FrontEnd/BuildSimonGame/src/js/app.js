@@ -48,17 +48,23 @@
     var powerBtn = document.getElementById('power');
     var startBtn = document.getElementById('start');
     var strictBtn = document.getElementById('strict');
+    var modesBtn = document.getElementById('modes');
     var  led = document.getElementById('led');
+    var modeLabel = document.getElementById('mode-label');
+    var strictLabel = document.getElementById('strict-label');
+    var status = document.getElementById('status');
+    var modes = ["Normal", "Survival"]; // game modes available
     var self = this;
     this.cpuInterval = null;
     powerBtn.addEventListener('click', togglePower);
     this.on = false; // Is the Simon device turned on?
-    this.mode = "Normal"; // Modes available: Normal, Survivor
+    this.mode = 0;
     this.strict = false;  // Additive mode: after a fail, the game resets
     this.started = false; // Is the Simon game started?
     this.turn = 0;
-    this.turns = (self.mode === "Normal")? 20: Infinity; // debe ser 20, pruebas
+    this.turns = getTurns();
     this.start = function() {
+      modesBtn.removeEventListener('click', processFunctionButton);
       self.started = true;
       self.cpuTurn();
     };
@@ -68,7 +74,7 @@
     this.cpuTurn = function() {
       self.turn++;
       if (!self.gameEnded()) {
-        console.log("entra cpu turn");
+        status.textContent = "Machine turn";
         if (!self.playerMiss || !self.taps.length) {
           self.taps.push(getRandomTap());
           updateLed(self.turn);
@@ -79,7 +85,7 @@
         musicBtns.forEach(disableMusicBtns);
         self.cpuInterval = window.setInterval(play, 600, self.cpuInterval);
       } else {
-        console.log("Game ended");
+        status.textContent = "YOU WIN!!";
         return;
       }
       function play() {
@@ -97,7 +103,7 @@
       }
     };
     this.playerTurn = function() {
-      console.log("Entra player");
+      status.textContent = "Your turn";
       musicBtns.forEach(enableMusicBtns);
       var taps = self.turn;
       self.currentPlayerTap = 0;
@@ -111,6 +117,9 @@
     };
 
     // helper functions
+    function getTurns() {
+      return (self.mode === 0)? 20: Infinity;
+    }
     function getRandomTap() {
         return String(Math.floor(Math.random()*4));
     }
@@ -124,14 +133,21 @@
             self.start();
           }
           break;
-        default:
+        case 'strict':
           if (self.strict) {
             self.strict = false;
             strictBtn.classList.remove('pushed');
+            strictLabel.textContent= "";
           } else {
             self.strict = true;
             strictBtn.classList.add('pushed');
+            strictLabel.textContent= "(Strict)";
           }
+          break;
+        default:
+          self.mode = (self.mode === modes.length - 1)? 0: self.mode + 1;
+          modeLabel.textContent = modes[self.mode];
+          self.turns = getTurns();
       }
     }
     function enableMusicBtns(e) {
@@ -147,19 +163,19 @@
     function togglePower(e){
       self.on = (self.on)? false: true;
       if (self.on) {
-        console.log("Power on");
+        status.textContent = "On";
         powerBtn.classList.add('right');
-        for (let btn of [startBtn, strictBtn]) {
+        for (let btn of [startBtn, strictBtn, modesBtn]) {
           btn.addEventListener('click', processFunctionButton);
         }
       } else {
-        console.log("Power off");
+        status.textContent = "Off";
         powerBtn.classList.remove('right');
         stopGame();
       }
     }
     function musicTapError() {
-      console.log("You didn't tap any button or tap the wrong one");
+      status.textContent = "YOU MISS!!";
       console.log(self.strict);
       if (self.strict) {
         resetGame();
@@ -225,6 +241,7 @@
       }
       self.on = false;
       self.started = false;
+      modesBtn.addEventListener('click', processFunctionButton);
     }
     function resetGame() {
       baseReset();
