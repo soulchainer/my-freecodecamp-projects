@@ -3,14 +3,9 @@
 \*------------------------------------*/
 
 $black: #0e0c17;
-$black-shadow: #282828;
-$blue:  #1515cc;
-$green: #12a712;
-$orange: #ffa500;
-$red:   #cd0f0f;
-$yellow: #c9bc03;
+$red-color:   #cd0f0f;
 $white: #e1eae5;
-
+$white-shadow: rgba(225, 234, 229, .4);
 $footer-height: 1.8rem;
 
 
@@ -30,16 +25,23 @@ body {
   height: 100%;
 }
 
+%background {
+  background-image: url('../assets/images/bgstars.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 body {
-  background-color: $orange;
+  @extend %background;
   display: flex;
   flex-wrap: wrap;
   font-size: 1rem;
-  height: 100vh;
   margin: 0;
 }
 
 main {
+  @extend %background;
   /* equal to footer height */
   margin-bottom: -1.8rem;
   min-height: 100vh;
@@ -62,12 +64,11 @@ main {
 \*------------------------------------*/
 
 .info-bar {
-  color: $black;
+  color: $white;
   display: flex;
   flex-wrap: wrap;
   font-family: 'Press Start 2P', cursive;
   justify-content: space-around;
-  // padding: .5rem;
   padding: 2rem 2rem 4rem 2rem;
   width: 100%;
 
@@ -87,7 +88,7 @@ main {
 .board {
   background-color: $black;
   border-radius: 100%;
-  box-shadow: 0 0 1vmin $black-shadow;
+  box-shadow: 0 0 4vmin $white-shadow;
   box-sizing: border-box;
   display: flex;
   height: 80vmin;
@@ -204,6 +205,7 @@ main {
   position: relative;
   width: 50%;
 }
+
 @each $name, $color, $position, $borders in
 (green, #12a712, top-left, (right, bottom)),
 (red, #cd0f0f, top-right, (left, bottom)),
@@ -212,6 +214,7 @@ main {
   .#{$name} {
     @extend %music-button;
     background-color: $color;
+    background: linear-gradient(to right, lighten($color, 10%), darken($color, 20%));
     border-#{$position}-radius: 100%;
     @each $border in $borders {
       border-#{$border}: 2vmin solid $black;
@@ -219,6 +222,7 @@ main {
 
     &.pushed {
       background-color: lighten($color, 20%);
+      background: linear-gradient(to right, lighten($color, 30%), $color);
     }
   }
 }
@@ -281,8 +285,8 @@ main {
 }
 
 .power {
-  background-color: $red;
-  border: 2px solid darken($red, 30%);
+  background-color: $red-color;
+  border: 2px solid darken($red-color, 30%);
 }
 
 .right>.switch {
@@ -307,6 +311,7 @@ main {
   padding: .5rem;
   text-align: center;
   width: 100vw;
+  z-index: 100;
 }
 
 /*------------------------------------*\
