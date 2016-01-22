@@ -125,7 +125,13 @@
           }
           break;
         default:
-          self.strict = (self.strict)? false: true;
+          if (self.strict) {
+            self.strict = false;
+            strictBtn.classList.remove('pushed');
+          } else {
+            self.strict = true;
+            strictBtn.classList.add('pushed');
+          }
       }
     }
     function enableMusicBtns(e) {
@@ -139,15 +145,16 @@
       }
     }
     function togglePower(e){
-      console.log("pulsado " + e.target.id);
       self.on = (self.on)? false: true;
       if (self.on) {
         console.log("Power on");
+        powerBtn.classList.add('right');
         for (let btn of [startBtn, strictBtn]) {
           btn.addEventListener('click', processFunctionButton);
         }
       } else {
         console.log("Power off");
+        powerBtn.classList.remove('right');
         stopGame();
       }
     }

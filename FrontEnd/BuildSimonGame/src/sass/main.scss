@@ -218,7 +218,7 @@ main {
     }
 
     &.pushed {
-      background-color: lighten($color, 60%);
+      background-color: lighten($color, 20%);
     }
   }
 }
@@ -251,6 +251,10 @@ main {
   }
 }
 
+.strict.pushed {
+  @extend %pressed;
+}
+
 .label {
   font-family: 'Homenaje', sans-serif;
   font-size: .7rem;
@@ -271,6 +275,8 @@ main {
   box-sizing: border-box;
   height: 100%;
   position: relative;
+  transform: none;
+  transition: transform .4s;
   width: 50%;
 }
 
@@ -280,7 +286,7 @@ main {
 }
 
 .right>.switch {
-  transform: translateX(50%);
+  transform: translateX(100%);
   transition: transform .4s;
 }
 
