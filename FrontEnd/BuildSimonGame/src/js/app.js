@@ -61,7 +61,6 @@
           updateLed(self.turn);
         }
         self.playerMiss = false;
-        console.log(self.taps);
         var tap = 0;
         musicBtns.forEach(disableMusicBtns);
         // interval that plays the actual serie of buttons
@@ -71,12 +70,8 @@
         return;
       }
       function play() {  // play a music button
-        console.log(self.turn + " "+ tap);
-        console.log(self.taps);
-        console.log(tap);
         snds[self.taps[tap]].play();
         tap++;
-        console.log("turn " + self.turn + " tap "+ tap);
         if ((tap >= self.turn)) {
           window.clearInterval(self.cpuInterval);
           self.cpuInterval = null;
@@ -127,7 +122,6 @@
         return String(Math.floor(Math.random()*4));
     }
     function processFunctionButton(e) {  // execute action related to pushed btn
-      console.log("pulsado "+ e.target.id);
       switch (e.target.id) {
         case 'start':
           if (self.started) {
@@ -179,7 +173,6 @@
     }
     function musicTapError() {  // what to do when user make a mistake
       status.textContent = "YOU MISS!!";
-      console.log(self.strict);
       if (self.strict) {
         resetGame();
       } else {
@@ -189,29 +182,19 @@
       }
     }
     function processMusicTap(e) {  // process the tap of a music button
-      console.log("Se ejecuta processMusicTap");
-      console.log(e);
-      console.log(musicBtns);
-      console.log("playerTap: " + self.currentPlayerTap);
       var tapped = e.target.getAttribute("data-btn");
       var snd = snds[tapped];
       snd.play();
       snd.on('complete', function(){
-        console.log("Al completar sonido → tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
         if (tapped === self.taps[self.currentPlayerTap]) {
-          console.log("Correct button pressed");
           self.currentPlayerTap++;
-          console.log("playerTap: " + self.currentPlayerTap, "turn: "+ self.turn);
           if (self.currentPlayerTap === self.turn) {
-            console.log("Lista de taps mostrada al completar sonido y alcanzar el final del turno del jugador:");
-            console.log(self.taps);
             for (let btn of musicBtns) {
               btn.removeEventListener('click', processMusicTap);
             }
             window.setTimeout(self.cpuTurn, 200);
           }
         } else {
-          console.log("Al completar el sonido y pulsarse botón erroneamente, tapped !== self.taps[playerTap] →  tapped: "+tapped+" taps["+self.currentPlayerTap+"]: "+self.taps[self.currentPlayerTap] +" turn: "+ self.turn);
           for (let btn of musicBtns) {
             btn.removeEventListener('click', processMusicTap);
           }
