@@ -74,7 +74,7 @@
     this.cpuTurn = function() {
       self.turn++;
       if (!self.gameEnded()) {
-        status.textContent = "Machine turn";
+        status.textContent = "CPU turn";
         if (!self.playerMiss || !self.taps.length) {
           self.taps.push(getRandomTap());
           updateLed(self.turn);

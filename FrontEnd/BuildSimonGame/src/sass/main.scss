@@ -3,6 +3,7 @@
 \*------------------------------------*/
 
 $black: #0e0c17;
+$links-color: #23d5ed;
 $red-color:   #cd0f0f;
 $white: #e1eae5;
 $white-shadow: rgba(225, 234, 229, .4);
@@ -40,6 +41,18 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+
+  &,
+  &:active,
+  &:hover,
+  &:focus
+  {
+    color: $links-color;
+  }
+}
+
 main {
   @extend %background;
   /* equal to footer height */
@@ -65,15 +78,20 @@ main {
 
 .info-bar {
   color: $white;
-  display: flex;
-  flex-wrap: wrap;
   font-family: 'Press Start 2P', cursive;
-  justify-content: space-around;
   padding: 2rem 2rem 4rem 2rem;
+  text-align: center;
   width: 100%;
 
   &>span {
     display: inline-block;
+    padding-right: 1rem;
+  }
+
+  &>span:last-child {
+    @media (max-width:550px), (max-device-width:550px), (max-device-height:550px) and (orientation: landscape){
+      display: block;
+    }
   }
 }
 
@@ -122,14 +140,14 @@ main {
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
-  height: 35vmin;
+  height: 40vmin;
   left: 0;
   justify-content: center;
   margin: auto;
   position: absolute;
   right: 0;
-  top: 22.5vmin;
-  width: 35vmin;
+  top: 20vmin;
+  width: 40vmin;
 }
 
 .trademark {
@@ -137,10 +155,8 @@ main {
   background-color: $black;
   box-sizing: border-box;
   display: flex;
-  height: 40%;
-  justify-content: center;
-  margin: auto;
-  text-align: center;
+  height: 30%;
+  justify-content: space-around;
   width: 100%;
 
   &>span {
@@ -148,20 +164,38 @@ main {
     color: $white;
     display: inline-block;
     font-family: 'Sarpanch', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2rem;
+
+    @media (max-width:550px), (max-device-width:550px) {
+      font-size: 4vw;
+    }
+
+    @media (max-device-height:550px) and (orientation: landscape){
+      font-size: 4vh;
+    }
 
     &>sup {
       font-family: sans-serif;
       font-size: .8rem;
+
+      @media (max-width:550px), (max-device-width:550px) {
+        font-size: 2vw;
+      }
+
+      @media (max-device-height:550px) and (orientation: landscape){
+        font-size: 2vh;
+      }
     }
   }
 }
 
 .control-container {
-  background-color: $black;
+  background-color: $white;
   border: 6px solid $white;
   border-radius: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
   width: 100%;
@@ -173,10 +207,9 @@ main {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 60%;
+  height: 50%;
   justify-content: space-around;
   margin: auto;
-  padding: .8rem;
   width: 100%;
 }
 
@@ -232,11 +265,12 @@ main {
   flex-direction: column;
 
   &-item {
-    border-color: transparent;
+    border: none;
     border-radius: 100%;
     box-shadow: 0 .2rem .2rem $black;
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 3vmin;
+    margin: auto;
+    width: 3vmin;
   }
 }
 
@@ -260,9 +294,18 @@ main {
 }
 
 .label {
+  display: inline-block;
   font-family: 'Homenaje', sans-serif;
-  font-size: .7rem;
+  font-size: 1.1rem;
   font-weight: bold;
+
+  @media (max-width:550px), (max-device-width:550px){
+    font-size: 2.8vw;
+  }
+
+  @media (max-device-height:550px) and (orientation: landscape) {
+    font-size: 2.8vh;
+  }
 }
 
 .power-switch {
@@ -271,7 +314,13 @@ main {
   display: inline-block;
   height: 1.5rem;
   margin: .3rem;
+  max-width: 50px;
   width: 35%;
+
+  @media (max-width:550px), (max-device-width:550px), (max-device-height:550px) and (orientation: landscape){
+    height: 1rem;
+    max-width: 8vw;
+  }
 }
 
 .switch {
