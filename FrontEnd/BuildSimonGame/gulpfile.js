@@ -45,7 +45,7 @@ gulp.task('serve', function() {
   });
   var appFiles = ['./app/*', './app/js/*', './app/css/*'];
   gulp.watch('./src/js/*.js', ['scripts']);
-  gulp.watch('./src/sass/*.scss', ['styles']);
+  gulp.watch(['./src/sass/*.scss', './src/sass/*/*.scss'], ['styles']);
   gulp.watch(appFiles).on('change',bs.reload);
 });
 
