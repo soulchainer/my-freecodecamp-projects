@@ -1,77 +1,58 @@
 (function(){
-  function playingMusicButton(e) {  // what to do when music of button starts
-    function playing() {
-      e.classList.add('pushed');
-    }
-    return playing;
-  }
-  function unpressButton(e) {  // what to do when music of button ends
-    function unpressed() {
-      e.classList.remove('pushed');
-    }
-    return unpressed;
-  }
-  function unpressed(e) {
-    e.classList.remove('pushed');
-  }
-
-  // get the music buttons
-  var musicBtns = [];
-  for (let i of [0,1,2,3]) {
-    musicBtns[i] = document.getElementById("tap"+i);
-  }
-
-  // create and load the sounds
-  var assetPath = "/assets/audio/";
-  var sounds = [
-    {id: "0", src: "tap0.ogg"},
-    {id: "1", src: "tap1.ogg"},
-    {id: "2", src: "tap2.ogg"},
-    {id: "3", src: "tap3.ogg"}
-  ];
-  var cs = createjs.Sound;
-  cs.alternateExtensions = ["mp3"];
-  cs.on("fileload", onSoundLoaded);
-  cs.registerSounds(sounds, assetPath);
-  var snds = [];
-  function onSoundLoaded(e) {
-    // run when all sounds are ready
-    var id = e.id;
-    snds[id] = cs.createInstance(id);
-    var snd = snds[id];
-    snd.on("succeeded", playingMusicButton(musicBtns[id]));
-    snd.on("complete", unpressButton(musicBtns[id]));
-  }
-
-  // simon device function
+  // all the logic of the game
   var simon = function() {
+    // get the music buttons
+    var musicBtns = [];
+    for (let i of [0,1,2,3]) {
+      musicBtns[i] = document.getElementById("tap"+i);
+    }
+    // create and load the sounds
+    var assetPath = "/assets/audio/";
+    var sounds = [
+      {id: "0", src: "tap0.ogg"},
+      {id: "1", src: "tap1.ogg"},
+      {id: "2", src: "tap2.ogg"},
+      {id: "3", src: "tap3.ogg"}
+    ];
+    var cs = createjs.Sound;
+    cs.alternateExtensions = ["mp3"];
+    cs.on("fileload", onSoundLoaded);
+    cs.registerSounds(sounds, assetPath);
+    var snds = [];
+    // get the option/action buttons
     var powerBtn = document.getElementById('power');
     var startBtn = document.getElementById('start');
     var strictBtn = document.getElementById('strict');
     var modesBtn = document.getElementById('modes');
+    // get the elements of the page, for show/change info
     var  led = document.getElementById('led');
     var modeLabel = document.getElementById('mode-label');
     var strictLabel = document.getElementById('strict-label');
     var status = document.getElementById('status');
-    var modes = ["Normal", "Survival"]; // game modes available
-    var self = this;
-    this.cpuInterval = null;
+
+    // game modes available: «Normal» (20 moves to win) and «No limit»
+    // (play till you want)
+    var modes = ["Normal", "No limit"];
     powerBtn.addEventListener('click', togglePower);
+    var self = this;
+    // reference to the interval used by the cpu for play the tap series
+    // needed to stop the playing in any moment
+    this.cpuInterval = null;
     this.on = false; // Is the Simon device turned on?
-    this.mode = 0;
-    this.strict = false;  // Additive mode: after a fail, the game resets
-    this.started = false; // Is the Simon game started?
-    this.turn = 0;
-    this.turns = getTurns();
-    this.start = function() {
+    this.mode = 0;  // actual mode game (index of «modes» array)
+    this.strict = false;  // additive mode: after an user mistake, game resets
+    this.started = false; // is the game started?
+    this.turn = 0;  // turn being played
+    this.turns = getTurns();  // total turns of the game
+    this.start = function() {  // start the game, when pressed «start»
       modesBtn.removeEventListener('click', processFunctionButton);
       self.started = true;
       self.cpuTurn();
     };
-    this.taps = [];
-    this.currentPlayerTap = null;
-    this.playerMiss = false;
-    this.cpuTurn = function() {
+    this.taps = [];  // storage of the moves played
+    this.currentPlayerTap = null;  // last music button pressed by the user
+    this.playerMiss = false;  // the user has made a mistake
+    this.cpuTurn = function() {  // process the cpu turn
       self.turn++;
       if (!self.gameEnded()) {
         status.textContent = "CPU turn";
@@ -83,12 +64,13 @@
         console.log(self.taps);
         var tap = 0;
         musicBtns.forEach(disableMusicBtns);
+        // interval that plays the actual serie of buttons
         self.cpuInterval = window.setInterval(play, 600, self.cpuInterval);
       } else {
         status.textContent = "YOU WIN!!";
         return;
       }
-      function play() {
+      function play() {  // play a music button
         console.log(self.turn + " "+ tap);
         console.log(self.taps);
         console.log(tap);
@@ -102,28 +84,49 @@
         }
       }
     };
-    this.playerTurn = function() {
+    this.playerTurn = function() {  // process the player turn
       status.textContent = "Your turn";
       musicBtns.forEach(enableMusicBtns);
       var taps = self.turn;
       self.currentPlayerTap = 0;
-      // declare actions to trigger when a music button is pressed
       for (let btn of musicBtns) {
         btn.addEventListener('click', processMusicTap);
       }
     };
-    this.gameEnded = function() {
+    this.gameEnded = function() {  // return true if game ends, false otherwise
       return (self.turn > self.turns);
     };
 
     // helper functions
-    function getTurns() {
+    function playingMusicButton(e) {  // what to do when music of button starts
+      function playing() {
+        e.classList.add('pushed');
+      }
+      return playing;
+    }
+    function unpressButton(e) {  // what to do when music of button ends
+      function unpressed() {
+        e.classList.remove('pushed');
+      }
+      return unpressed;
+    }
+    function unpressed(e) {
+      e.classList.remove('pushed');
+    }
+    function onSoundLoaded(e) {  // run when all sounds are ready
+      var id = e.id;
+      snds[id] = cs.createInstance(id);
+      var snd = snds[id];
+      snd.on("succeeded", playingMusicButton(musicBtns[id]));
+      snd.on("complete", unpressButton(musicBtns[id]));
+    }
+    function getTurns() {  // return total turns to play, according to game mode
       return (self.mode === 0)? 20: Infinity;
     }
-    function getRandomTap() {
+    function getRandomTap() {  // return random button to tap next (number 0-3)
         return String(Math.floor(Math.random()*4));
     }
-    function processFunctionButton(e) {
+    function processFunctionButton(e) {  // execute action related to pushed btn
       console.log("pulsado "+ e.target.id);
       switch (e.target.id) {
         case 'start':
@@ -150,17 +153,17 @@
           self.turns = getTurns();
       }
     }
-    function enableMusicBtns(e) {
+    function enableMusicBtns(e) {  // enable music buttons (could be clicked)
       if (e.hasAttribute('disabled')) {
         e.removeAttribute('disabled');
       }
     }
-    function disableMusicBtns(e) {
+    function disableMusicBtns(e) {  // disable music buttons
       if (!e.hasAttribute('disabled')) {
         e.setAttribute('disabled','true');
       }
     }
-    function togglePower(e){
+    function togglePower(e){  // toggle power button ON/OFF
       self.on = (self.on)? false: true;
       if (self.on) {
         status.textContent = "On";
@@ -174,7 +177,7 @@
         stopGame();
       }
     }
-    function musicTapError() {
+    function musicTapError() {  // what to do when user make a mistake
       status.textContent = "YOU MISS!!";
       console.log(self.strict);
       if (self.strict) {
@@ -185,7 +188,7 @@
         window.setTimeout(self.cpuTurn, 200);
       }
     }
-    function processMusicTap(e) {
+    function processMusicTap(e) {  // process the tap of a music button
       console.log("Se ejecuta processMusicTap");
       console.log(e);
       console.log(musicBtns);
@@ -216,15 +219,15 @@
         }
       }, null, true);
     }
-    function updateLed(value="--") {
+    function updateLed(value="--") {  // update the led value
       led.textContent = value;
     }
-    function baseReset(){
+    function baseReset(){  // prepare the device for a reset (or power off)
       window.clearInterval(self.cpuInterval);
       self.cpuInterval = null;
       cs.stop();
       musicBtns.forEach(unpressed);
-      // borrar los escuchadores de eventos click
+      // remove music buttons listeners on reset, to avoid duplicity
       for (let btn of musicBtns) {
         btn.removeEventListener('click', processMusicTap);
       }
@@ -234,7 +237,7 @@
       self.currentPlayerTap = null;
       self.playerMiss = false;
     }
-    function stopGame() {
+    function stopGame() {  // stop (and power off) the device
       baseReset();
       for (let btn of [startBtn, strictBtn]) {
         btn.removeEventListener('click', processFunctionButton);
@@ -243,7 +246,7 @@
       self.started = false;
       modesBtn.addEventListener('click', processFunctionButton);
     }
-    function resetGame() {
+    function resetGame() {  // restart the game, with a new sequence of sounds
       baseReset();
       self.on = true;
       self.start();
