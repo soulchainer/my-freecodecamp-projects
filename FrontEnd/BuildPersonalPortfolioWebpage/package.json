@@ -1,6 +1,6 @@
 {
-    "name": "portfolio-jrg.0.0",
-    "version": "0.1.0.0.0",
+    "name": "portfolio-jrg",
+    "version": "0.1.0",
     "description": "My solution for the «Build a Personal Portfolio Webpage» freeCodeCamp challenge",
     "author": "Juan Riquelme <juanriqgon@tutanota.com>",
     "devDependencies": {
