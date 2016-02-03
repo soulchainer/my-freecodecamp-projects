@@ -12,23 +12,18 @@
 <body>
   <header>
     <nav class="navbar" role="navigation">
-      <label for="about" class="navbar-brand"><img src="assets/images/logo.svg" alt="logo" class="navbar-logo"> Juan Riquelme</label>
-      <div class="navbar-nav collapse">
-        <label class="nav-link" for="home">Home</label>
-        <label class="nav-link" for="about">About</label>
-        <label class="nav-link" for="projects">Projects</label>
-        <label class="nav-link" for="contact">Contact</label>
-      </div>
+      <a class="navbar-brand" href="#home"><img src="assets/images/logo.svg" alt="logo" class="navbar-logo"> Juan Riquelme</a>
+      <ul class="navbar-nav collapse">
+        <li class="nav-link"><a href="#home">Home</a></li>
+        <li class="nav-link"><a href="#about">About</a></li>
+        <li class="nav-link"><a href="#projects">Projects</a></li>
+        <li class="nav-link"><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
-  <input name="sections" class="radio hm" id="home" type="radio" tabindex="1" checked></input>
-  <input name="sections" class="radio bt" id="about" type="radio" tabindex="2"></input>
-  <input name="sections" class="radio prjcts" id="projects" tabindex="3" type="radio"></input>
-  <input name="sections" class="radio cntct" type="radio" id="contact" tabindex="4"></input>
-
   <main>
-    <section class="home">
+    <section class="home" id="home">
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <!-- Created with Inkscape (http://www.inkscape.org/) -->
       <svg class="logo" id="logo" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="171.96" width="263.51" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 263.51241 171.9604">
@@ -77,7 +72,7 @@
         <p>Web Developer</p>
       </div>
     </section>
-    <section class="about">
+    <section class="about" id="about">
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <!-- Created with Inkscape (http://www.inkscape.org/) -->
       <svg class="greeting" id="greeting" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="26.001mm" width="62.996mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 223.21572 92.12918">
@@ -110,10 +105,10 @@
         <p class="phrase6">And beware: I grew a <img class="emoji" src="assets/images/beard.svg" alt="beard icon"> and still <img class="emoji" src="assets/images/love.svg" alt="heart icon"> anime <img class="emoji" src="assets/images/japan.svg" alt="torii, traditional japanese gate"></p>
       </div>
     </section>
-    <section class="projects">
-      Requetebla
+    <section class="projects" id="projects">
+
     </section>
-    <section class="contact">
+    <section class="contact" id="contact">
       Bla bla
     </section>
   </main>
