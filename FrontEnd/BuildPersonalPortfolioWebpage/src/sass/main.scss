@@ -12,9 +12,12 @@
 \*------------------------------------*/
 
 $black: #282828;
-$blue: #66A9FF;
+$blue: #66a9ff;
+$green: #88aa00;
+$redwine: #bf3f3f;
 $red: #bb3b3b;
 $white: #fff;
+$dark-grey: #808080;
 $light-grey: #f2f2f2;
 
 
@@ -27,11 +30,14 @@ $light-grey: #f2f2f2;
 
 body {
   background-color: $white;
+  color: black;
   font-family: 'Open Sans', sans-serif;
   margin: 0;
 }
 
 a {
+  color: $redwine;
+  font-weight: bold;
   text-decoration: none;
 
   &:active,
@@ -101,7 +107,6 @@ section {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 100vh;
   justify-content: space-around;
   min-height: 100vh;
   max-width: 100vw;
@@ -131,8 +136,13 @@ section {
     font-size: 5vmax;
   }
   &>p {
+    color: $redwine;
     font-size: 2vmax;
   }
+}
+
+.green {
+  color: $green;
 }
 
 
@@ -202,3 +212,38 @@ $delay: 0;
     #PROJECTS
 \*------------------------------------*/
 
+.projects {
+  &>h1 {
+    color: $dark-grey;
+    font: {
+      size: 2.5rem;
+      weight: normal;
+    }
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.project {
+  display: inline-block;
+  transition: all .4s ease-out;
+
+  &-img {
+    border-radius: 2px;
+    box-shadow: 5px 5px 5px $dark-grey;
+  }
+
+  &>figcaption {
+    text-align: center;
+  }
+
+  &:hover {
+    transform: rotate(-1deg) scale(1.05);
+    transition: all .4s ease-in;
+  }
+}
