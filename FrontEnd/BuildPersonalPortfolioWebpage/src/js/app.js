@@ -52,9 +52,9 @@ function smoothScroll(time) {
   marker.bindPopup("I live around here.").openPopup();
 
   // render the contact form
-  var mapDiv = document.getElementById('map');
+  var contactWays = document.getElementById('contact-ways');
   var contactForm = '<form class="contact-form" action="http://pooleapp.com/stash/52a1c0eb-dcc6-45b9-8923-73309fbb729b/" method="post">\n\t<input type="hidden" name="redirect_to" value="{YOUR-THANKS-PAGE}" />\n\t<p>\n\t\t<label for="name">Name\n\t\t\t<input class="contact-field" type="text" name="name" id="name" placeholder="What\'s your name?" />\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<label for="e-mail">E-mail\n\t\t\t<input class="contact-field" type="email" name="email" id="email" placeholder="An email to answer you">\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<label for="message">Message\n\t\t\t<textarea class="message" id="message" name="message" rows="5" placeholder="Your message"></textarea>\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<input class="submit" type="submit" value="Submit" />\n\t</p>\n</form>';
-  mapDiv.insertAdjacentHTML('afterend', contactForm);
+  contactWays.insertAdjacentHTML('beforeend', contactForm);
 
   // smooth scrolling
   var btns = document.querySelectorAll('.nav-link>a');
