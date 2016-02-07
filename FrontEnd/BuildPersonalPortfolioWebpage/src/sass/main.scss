@@ -125,7 +125,6 @@ section {
   height: 35%;
   max-width: 80%;
   min-width: 35%;
-  width: auto;
 }
 
 .person {
@@ -165,7 +164,6 @@ section {
   height: 30%;
   max-width: 80%;
   min-width: 35%;
-  width: auto;
 
   &-paths {
     fill: lighten($red, 5%);
