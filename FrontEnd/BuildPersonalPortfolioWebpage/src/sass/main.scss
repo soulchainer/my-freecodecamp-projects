@@ -17,10 +17,13 @@ $green: #88aa00;
 $redwine: #bf3f3f;
 $red: #bb3b3b;
 $white: #fff;
+$yellow: #efdb1f;
 $dark-grey: #808080;
 $light-grey: #f2f2f2;
-
-
+$bg-level1: linear-gradient(to right, lighten($yellow, 5%), darken($yellow, 8%));
+$bg-level2: linear-gradient(to right, lighten($blue, 5%), darken($blue, 8%));
+$bg-level3: linear-gradient(to right, lighten($redwine, 5%), darken($redwine, 8%));
+$bg-level4: linear-gradient(to right, lighten($green, 5%), darken($green, 8%));
 
 
 
@@ -44,6 +47,13 @@ a {
   &:hover { /* Hack for hide the browser dotted box on click in links */
     outline: 0;
   }
+}
+
+h1 {
+  font: {
+      size: 2.5rem;
+      weight: normal;
+    }
 }
 
 
@@ -131,8 +141,11 @@ section {
   text-align: center;
 
   &>h1 {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 5vmax;
+    font: {
+      family: 'Quicksand', sans-serif;
+      size: 5vmax;
+      weight: bold;
+    }
   }
   &>p {
     color: $redwine;
@@ -228,17 +241,137 @@ section {
 
 
 
+
+/*------------------------------------*\
+    #SKILLS
+\*------------------------------------*/
+
+.skills {
+  justify-content: flex-start;
+
+  &>h1 {
+    color: $dark-grey;
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &-legend {
+    height: auto;
+
+    &-title {
+      display: inline-block;
+      font-weight: bold;
+      vertical-align: middle;
+    }
+  }
+}
+
+.skill-level {
+  border-radius: 5px;
+  display: inline-block;
+  list-style: none;
+  padding: .5rem;
+  text-shadow: 0 0 5px $black;
+}
+
+@each $level, $color in ("level1", $yellow), ("level2", $blue),
+                        ("level3", $redwine), ("level4", $green) {
+  .#{$level} {
+    background-color: $color;
+    color: $white;
+    font-weight: bold;
+  }
+}
+
+.animate-bar {
+  animation: quickslideinleft .4s ease-in forwards;
+}
+
+@keyframes quickslideinleft{
+  to {
+    transform: translateX(0);
+  }
+}
+
+.chart {
+  box-sizing: border-box;
+  margin-left: 2rem;
+  max-width: 90vw;
+  overflow: hidden;
+  width: 600px;
+
+  &-title {
+    font-variant: small-caps;
+  }
+
+  &-category {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  &-bar {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-sizing: border-box;
+    color: $white;
+    font-weight: bold;
+    height: 2rem;
+    margin: .5rem 0;
+    padding: .25rem .5rem;
+    text-shadow: 0 0 5px $black;
+    transform: translateX(-200%);
+
+    @each $percent in 30, 40, 50, 60, 70, 80, 85, 90 {
+      &[data-percent='#{$percent}'] {
+        width: #{$percent}%;
+
+        @if $percent <= 25 {
+          background: $bg-level1;
+        } @else if $percent <= 50 {
+          background: $bg-level2;
+        } @else if $percent <= 75 {
+          background: $bg-level3;
+        } @else {
+          background: $bg-level4;
+        }
+      }
+    }
+
+    @each $order in 0, 1, 2, 3, 4, 5, 6, 7 {
+      &[data-order="#{$order}"].animate-bar {
+        animation-delay: .2s * $order;
+
+        &>.chart-label {
+          @extend .animate-bar;
+          animation-delay: (.2s * $order) + .2s;
+        }
+      }
+    }
+  }
+
+  &-label {
+    display: inline-block;
+    transform: translateX(-200%);
+  }
+}
+
+
+
+
+
 /*------------------------------------*\
     #PROJECTS
 \*------------------------------------*/
 
 .projects {
+  @extend %grey-section;
+
   &>h1 {
     color: $dark-grey;
-    font: {
-      size: 2.5rem;
-      weight: normal;
-    }
   }
 
   &-container {
@@ -277,15 +410,10 @@ section {
 \*------------------------------------*/
 
 .contact {
-  @extend %grey-section;
   font-size: 1.2rem;
 
   &>h1 {
     color: $black;
-    font: {
-      size: 2.5rem;
-      weight: normal;
-    }
   }
 }
 
