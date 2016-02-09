@@ -146,10 +146,18 @@ section {
       size: 5vmax;
       weight: bold;
     }
+
+    @media (max-width:900px), (max-device-width:900px) {
+      font-size: 2.9rem;
+    }
   }
   &>p {
     color: $redwine;
     font-size: 2vmax;
+
+    @media (max-width:900px), (max-device-width:900px) {
+      font-size: 1.4rem;
+    }
   }
 }
 
@@ -199,7 +207,12 @@ section {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-top: 3rem;
   max-width: 90vw;
+
+  @media (max-width:700px), (max-device-width:700px) {
+    flex-direction: column;
+  }
 
   &-img {
     width: 45vw;
@@ -209,6 +222,10 @@ section {
 
   &-text {
     width: 45vw;
+
+    @media (max-width:700px), (max-device-width:700px) {
+      width: 90vw;
+    }
   }
 }
 
@@ -225,10 +242,18 @@ section {
   }
 }
 
+.sn-icons {
+  display: inline-block;
+}
+
 .sn-icon {
   display: inline-block;
   font-size: 3rem;
   padding: 1rem;
+
+  @media (max-width:350px), (max-device-width:350px) {
+      font-size: 2rem;
+  }
 }
 
 @each $sn, $color in (codepen, #000), (github, #333),
@@ -300,9 +325,12 @@ section {
 .chart {
   box-sizing: border-box;
   margin-left: 2rem;
-  max-width: 90vw;
   overflow: hidden;
-  width: 600px;
+  width: 30vw;
+
+  @media (max-width:1000px), (max-device-width:1000px) {
+      width: 90vw;
+  }
 
   &-title {
     font-variant: small-caps;
@@ -354,8 +382,10 @@ section {
   }
 
   &-label {
-    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transform: translateX(-200%);
+    white-space: nowrap;
   }
 }
 
@@ -386,13 +416,24 @@ section {
   display: inline-block;
   transition: all .4s ease-out;
 
+  @media (max-width:500px), (max-device-width:500px) {
+      margin-left: 0;
+      margin-right: 0;
+  }
+
   &-img {
     border-radius: 2px;
     box-shadow: 5px 5px 5px $dark-grey;
+    max-width: 90vw;
   }
 
-  &>figcaption {
+  &-caption {
     text-align: center;
+
+    &-title {
+      font-size: 1.4rem;
+      font-size: bold;
+    }
   }
 
   &:hover {
@@ -432,6 +473,11 @@ section {
   max-height: 80vh;
   max-width: 80vw;
   width: 750px;
+
+  @media (max-width:1200px), (max-device-width:1200px) {
+      width: 90vw;
+      height: 60vh;
+  }
 }
 
 .contact-ways {
