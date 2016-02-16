@@ -61,4 +61,18 @@ function smoothScroll(time) {
   for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', smoothScroll(200));
   }
+
+  // menu mobile
+  var mobilemenu = document.getElementById('mobile-menu');
+  var menuMobileContainer = document.getElementById('navbar-mobile-menu-container');
+  function toggleFoldedMenu() {
+    var folded = menuMobileContainer.getAttribute('data-folded');
+    if (folded === 'true') {
+      menuMobileContainer.setAttribute('data-folded', 'false');
+      return;
+    }
+    menuMobileContainer.setAttribute('data-folded', 'true');
+  }
+
+  mobilemenu.addEventListener('click', toggleFoldedMenu);
 })();

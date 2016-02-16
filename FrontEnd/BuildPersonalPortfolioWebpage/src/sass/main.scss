@@ -66,7 +66,9 @@ h1 {
 
 .navbar {
   align-items: center;
+  background-color: rgba($white, .85);
   box-sizing: border-box;
+  font-size: 1.2rem;
   display: flex;
   height: 4rem;
   justify-content: space-between;
@@ -78,16 +80,27 @@ h1 {
   z-index: 1000;
 
   &-brand {
+    color: $black;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+
+    @media (max-width:767px) {
+      width: 50vw;
+    }
   }
+}
 
-  &-logo {
-    height: 1.5rem;
-    margin-right: .8rem;
-    vertical-align: middle;
-  }
-
-  &-nav {
-
+@media (max-width:767px) {
+  .menu {
+    background-color: rgba($white, .85);
+    left: 0;
+    margin: 0;
+    overflow-y: hidden;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    top: 4rem;
+    width: 100vw;
   }
 }
 
@@ -95,6 +108,115 @@ h1 {
   display: inline-block;
   margin-left: 1rem;
   position: relative;
+
+  @media (max-width:767px) {
+    display: block;
+    margin: 0;
+    padding: .5rem 0;
+    transition: background-color .4s;
+
+    &:hover {
+      background-color: $redwine;
+      transition: background-color .4s;
+
+      &>a, &>a:hover {
+        color: $white;
+      }
+    }
+  }
+
+  &>a {
+    color: $black;
+    transition: color .4s;
+
+    &:hover {
+      color: $redwine;
+      transition: color .4s;
+    }
+  }
+}
+
+.navbar-mobile-menu-container {
+  display: none;
+  text-align: right;
+  width: 50vw;
+
+  @media (max-width:767px) {
+    display: block;
+
+    &[data-folded="true"]+.menu {
+      transition: height .4s;
+      height: 0;
+    }
+
+    &[data-folded="false"] {
+      &+.menu {
+        transition: height .4s;
+        height: 13rem;
+      }
+      & .face,
+      & .alt-face {
+        background-color: $red;
+        color: $white;
+        transition: background-color .4s, color .4s;
+      }
+    }
+  }
+}
+
+.menu-cube-wrap {
+  display: inline-block;
+  height: 2rem;
+  perspective: 800px;
+	perspective-origin: 50% 1rem;
+  width: 2rem;
+}
+
+.menu-cube {
+  animation: spin 4s linear forwards infinite;
+  position: relative;
+  text-align: center;
+  transform-style: preserve-3d;
+  width: 2rem;
+}
+
+.face {
+  backface-visibility: hidden;
+  background-color: $yellow;
+  box-sizing: border-box;
+  color: invert($yellow);
+  height: 2rem;
+  line-height: 2rem;
+  margin: 0;
+  position: absolute;
+  transition: background-color .4s, color .4s;
+  width: 2rem;
+}
+
+.alt-face {
+  @extend .face;
+  background-color: $black;
+  color: invert($black);
+}
+
+.back {
+	transform: translateZ(-1rem) rotateY(180deg);
+}
+.right {
+	transform: rotateY(-270deg) translateX(1rem);
+	transform-origin: top right;
+}
+.left {
+	transform: rotateY(270deg) translateX(-1rem);
+	transform-origin: center left;
+}
+.front {
+	transform: translateZ(1rem);
+}
+
+@keyframes spin {
+	from { transform: rotateY(0); }
+	to { transform: rotateY(-360deg); }
 }
 
 
@@ -147,7 +269,7 @@ section {
       weight: bold;
     }
 
-    @media (max-width:900px), (max-device-width:900px) {
+    @media (max-width: 900px){
       font-size: 2.9rem;
     }
   }
@@ -155,7 +277,7 @@ section {
     color: $redwine;
     font-size: 2vmax;
 
-    @media (max-width:900px), (max-device-width:900px) {
+    @media (max-width: 900px){
       font-size: 1.4rem;
     }
   }
@@ -210,7 +332,7 @@ section {
   margin-top: 3rem;
   max-width: 90vw;
 
-  @media (max-width:700px), (max-device-width:700px) {
+  @media (max-width:700px) {
     flex-direction: column;
   }
 
@@ -223,7 +345,7 @@ section {
   &-text {
     width: 45vw;
 
-    @media (max-width:700px), (max-device-width:700px) {
+    @media (max-width: 700px) {
       width: 90vw;
     }
   }
@@ -251,7 +373,7 @@ section {
   font-size: 3rem;
   padding: 1rem;
 
-  @media (max-width:350px), (max-device-width:350px) {
+  @media (max-width: 350px) {
       font-size: 2rem;
   }
 }
@@ -328,7 +450,7 @@ section {
   overflow: hidden;
   width: 30vw;
 
-  @media (max-width:1000px), (max-device-width:1000px) {
+  @media (max-width: 1000px) {
       width: 90vw;
   }
 
@@ -416,7 +538,7 @@ section {
   display: inline-block;
   transition: all .4s ease-out;
 
-  @media (max-width:500px), (max-device-width:500px) {
+  @media (max-width: 500px) {
       margin-left: 0;
       margin-right: 0;
   }
@@ -474,7 +596,7 @@ section {
   max-width: 80vw;
   width: 750px;
 
-  @media (max-width:1200px), (max-device-width:1200px) {
+  @media (max-width: 1200px) {
       width: 90vw;
       height: 60vh;
   }
@@ -487,7 +609,7 @@ section {
   padding: 1rem;
   width: 30vw;
 
-  @media (max-width:1200px), (max-device-width:1200px), (max-device-height:1200px) and (orientation: landscape) {
+  @media (max-width: 1200px) {
     width: 100vw;
   }
 }
