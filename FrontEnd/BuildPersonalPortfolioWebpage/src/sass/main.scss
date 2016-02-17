@@ -13,6 +13,7 @@
 
 $black: #282828;
 $blue: #66a9ff;
+$dark-blue: #003F9A;
 $green: #88aa00;
 $redwine: #bf3f3f;
 $red: #bb3b3b;
@@ -68,8 +69,8 @@ h1 {
   align-items: center;
   background-color: rgba($white, .85);
   box-sizing: border-box;
-  font-size: 1.2rem;
   display: flex;
+  font-size: 1.2rem;
   height: 4rem;
   justify-content: space-between;
   left: 0;
@@ -104,7 +105,7 @@ h1 {
   }
 }
 
-.nav-link {
+.menu-item {
   display: inline-block;
   margin-left: 1rem;
   position: relative;
@@ -112,26 +113,32 @@ h1 {
   @media (max-width:767px) {
     display: block;
     margin: 0;
+  }
+}
+
+.nav-link {
+  color: $dark-grey;
+  display: inline-block;
+  line-height: 1.5rem;
+  transition: color .4s;
+
+  @media (max-width: 767px) {
+    display: block;
     padding: .5rem 0;
     transition: background-color .4s;
-
-    &:hover {
-      background-color: $redwine;
-      transition: background-color .4s;
-
-      &>a, &>a:hover {
-        color: $white;
-      }
-    }
   }
 
-  &>a {
-    color: $black;
-    transition: color .4s;
-
-    &:hover {
-      color: $redwine;
+  &:hover,
+  &.current-section {
+    @media (min-width: 768px) {
+      border-bottom: 4px solid $redwine;
+      color: $black;
       transition: color .4s;
+    }
+
+    @media (max-width:767px) {
+      transition: background-color .4s;
+      background-color: transparentize($yellow, .1);
     }
   }
 }
@@ -152,12 +159,12 @@ h1 {
     &[data-folded="false"] {
       &+.menu {
         transition: height .4s;
-        height: 13rem;
+        height: 12.5rem;
       }
       & .face,
       & .alt-face {
-        background-color: $red;
-        color: $white;
+        background-color: $dark-grey;
+        color: $yellow;
         transition: background-color .4s, color .4s;
       }
     }
@@ -184,7 +191,7 @@ h1 {
   backface-visibility: hidden;
   background-color: $yellow;
   box-sizing: border-box;
-  color: invert($yellow);
+  color: $black;
   height: 2rem;
   line-height: 2rem;
   margin: 0;
@@ -196,7 +203,7 @@ h1 {
 .alt-face {
   @extend .face;
   background-color: $black;
-  color: invert($black);
+  color: $yellow;
 }
 
 .back {

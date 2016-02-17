@@ -1,34 +1,80 @@
-var btns = {'btn-home': document.getElementById('home'),
-            'btn-about': document.getElementById('about'),
-            'btn-projects': document.getElementById('projects'),
-            'btn-contact': document.getElementById('contact')
-            };
-function smoothScroll(time) {
-  function animate(e) {
-    // smooth scrolling from @rahul_send89 function
-    // http://stackoverflow.com/a/26094310/1405004
-    var elem = btns[e.target.id];
-    var to = elem.offsetTop;
-    var from = window.scrollY;
-    var start = new Date().getTime(),
-        timer = setInterval(function() {
-          var step = Math.min(1,(new Date().getTime()-start)/time);
-              window.scrollTo(0,(from+step*(to-from))+1);
-              if( step === 1){
-                clearInterval(timer);
-              }
-        },25);
-        window.scrollTo(0,(from+1));
+function debounce(func, wait, immediate) {
+  // taken from Underscore.js
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) {
+        func.apply(context, args);
+      }
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) {
+      func.apply(context, args);
+    }
+	};
+}
+
+function hasClass(el, className) {
+  if (el.classList) {
+    return el.classList.contains(className);
+  } else {
+    return el.className.indexOf(className) !== new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
   }
-  return animate;
+}
+function addClass(el, className) {
+  if (el.classList) {
+    if (!hasClass(el, className)) {
+      el.classList.add(className);
+    }
+  } else {
+    el.className += ' ' + className;
+  }
+}
+
+function removeClass(el, className) {
+  if (hasClass(el, className)) {
+    if (el.classList) {
+        el.classList.remove(className);
+    } else {
+      el.className.replace(new RegExp('(^| )' + className + '( |$)', 'g'), '');
+    }
+  }
 }
 
 
 (function(){
+  var btns = {'btn-home': document.getElementById('home'),
+            'btn-about': document.getElementById('about'),
+            'btn-projects': document.getElementById('projects'),
+            'btn-contact': document.getElementById('contact')
+            };
+  function smoothScroll(time) {
+    function animate(e) {
+      // smooth scrolling from @rahul_send89 function
+      // http://stackoverflow.com/a/26094310/1405004
+      var elem = btns[e.target.id];
+      var to = elem.offsetTop;
+      var from = window.scrollY;
+      var start = new Date().getTime(),
+          timer = setInterval(function() {
+            var step = Math.min(1,(new Date().getTime()-start)/time);
+                window.scrollTo(0,(from+step*(to-from))+1);
+                if( step === 1){
+                  clearInterval(timer);
+                }
+          },25);
+          window.scrollTo(0,(from+1));
+    }
+    return animate;
+  }
   var Vivus = require('vivus');
   var L = require('leaflet');
 
-  // «¡Hola!» svg drawing animation
+  // declare «¡Hola!» svg drawing animation
   var paths = document.getElementById('paths');
   var greeting = new Vivus('greeting',  {
     type: "oneByOne",
@@ -37,7 +83,6 @@ function smoothScroll(time) {
   }, function () {
     paths.classList.add('drawn');
   });
-  greeting.play(1);
 
   // render the map of contact section
   var map = L.map('map').setView([37.9410106, -1.1398814], 11);
@@ -57,9 +102,11 @@ function smoothScroll(time) {
   contactWays.insertAdjacentHTML('beforeend', contactForm);
 
   // smooth scrolling
-  var btns = document.querySelectorAll('.nav-link>a');
-  for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener('click', smoothScroll(200));
+  {
+    let btns = document.querySelectorAll('.nav-link');
+    for (let i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', smoothScroll(200));
+    }
   }
 
   // menu mobile
@@ -75,4 +122,45 @@ function smoothScroll(time) {
   }
 
   mobilemenu.addEventListener('click', toggleFoldedMenu);
+
+  // Fire animations and update navbar when scroll to the proper section
+  var sections = new Map();
+  ["home", "about", "skills", "projects", "contact"].forEach(section => sections.set(section, document.getElementById(section).offsetTop));
+  var chartBars = document.querySelectorAll('.chart-bar');
+  var sectionsLinks = document.querySelectorAll('.nav-link');
+  var [home, about, skills, projects, contact] = sectionsLinks;
+
+  function toggleClassAllocationNodeList(nodeTarget, nodeList, className) {
+    // remove «className» from other nodes of nodeList and add it to nodeTarget
+    if (!hasClass(nodeTarget, className)) {
+        Array.prototype.forEach.call(nodeList, el=>removeClass(el, className));
+      }
+      addClass(nodeTarget, className);
+  }
+
+  function fireActionOnScroll(e) {
+    var scrollPos = e.pageY;
+    if (scrollPos < sections.get('about')) {
+      // do something in home
+      toggleClassAllocationNodeList(home, sectionsLinks, 'current-section');
+    } else if (scrollPos < sections.get('skills')) {
+      // do something in about
+      greeting.play(1);  // draw the SVG «¡Hola!»
+      toggleClassAllocationNodeList(about, sectionsLinks, 'current-section');
+    } else if (scrollPos < sections.get('projects')) {
+      // do something in skills
+      toggleClassAllocationNodeList(skills, sectionsLinks, 'current-section');
+      Array.prototype.forEach.call(chartBars, el => addClass(el, 'animate-bar'));
+    } else if (scrollPos < sections.get('contact')) {
+      // do something in projects
+      toggleClassAllocationNodeList(projects, sectionsLinks, 'current-section');
+    } else {
+      // do something in contact
+      toggleClassAllocationNodeList(contact, sectionsLinks, 'current-section');
+    }
+  }
+
+  var fireOnScroll = debounce(fireActionOnScroll, 100);
+
+  window.addEventListener('scroll', fireOnScroll);
 })();
