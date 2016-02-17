@@ -74,10 +74,11 @@ function removeClass(el, className) {
   var Vivus = require('vivus');
   var L = require('leaflet');
 
-  // declare «¡Hola!» svg drawing animation
+  // «¡Hola!» svg drawing animation
   var paths = document.getElementById('paths');
   var greeting = new Vivus('greeting',  {
     type: "oneByOne",
+    duration: 225,
     pathTimingFunction: Vivus.LINEAR,
 		animTimingFunction: Vivus.LINEAR
   }, function () {
@@ -145,7 +146,6 @@ function removeClass(el, className) {
       toggleClassAllocationNodeList(home, sectionsLinks, 'current-section');
     } else if (scrollPos < sections.get('skills')) {
       // do something in about
-      greeting.play(1);  // draw the SVG «¡Hola!»
       toggleClassAllocationNodeList(about, sectionsLinks, 'current-section');
     } else if (scrollPos < sections.get('projects')) {
       // do something in skills
