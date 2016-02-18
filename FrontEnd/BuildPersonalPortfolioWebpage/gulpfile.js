@@ -1,30 +1,19 @@
 // Define plugins
-var gulp = require('gulp'),
-    babelify = require('babelify'),
-    browserify = require('browserify'),
-    buffer = require('vinyl-buffer'),
-    source = require('vinyl-source-stream');
+var gulp = require('gulp');
 var bs = require('browser-sync').create();
 var $ = require('gulp-load-plugins')();
 
 // Process the app JavaScript (own and required)
 gulp.task('scripts', function() {
-    var b = browserify({
-        entries: './src/js/app.js',
-        debug: true
-    });
-
-    return b.transform(babelify)
-        .bundle()
-        .pipe(source('./app.js'))
-        .pipe(buffer())
+    return gulp.src('./src/js/app.js')
         .pipe($.sourcemaps.init({loadMaps: true}))
+        .pipe($.babel())
         .pipe($.uglify())
         .on('error', $.util.log)
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('./app/js'));
 });
-// Process CSS files with PostCSS
+// Process CSS files with SASS & PostCSS
 gulp.task('styles', function () {
     return gulp.src('./src/sass/*.scss')
         .pipe($.sourcemaps.init({loadMaps: true}))

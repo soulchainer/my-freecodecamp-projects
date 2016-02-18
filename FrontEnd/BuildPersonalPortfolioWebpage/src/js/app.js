@@ -71,8 +71,6 @@ function removeClass(el, className) {
     }
     return animate;
   }
-  var Vivus = require('vivus');
-  var L = require('leaflet');
 
   // «¡Hola!» svg drawing animation
   var paths = document.getElementById('paths');
@@ -85,17 +83,30 @@ function removeClass(el, className) {
     paths.classList.add('drawn');
   });
 
-  // render the map of contact section
-  var map = L.map('map').setView([37.9410106, -1.1398814], 11);
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoianVhbnJpcWdvbiIsImEiOiJjaWs5MGR2bTAwMDA4d2xsdjNwOXQ3eXQ1In0.Y7PbFkq-Wxa2Kn5O1CWgUg', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18,
-    id: 'juanriqgon.p2ln61p7',
-    accessToken: 'pk.eyJ1IjoianVhbnJpcWdvbiIsImEiOiJjaWs5MGR2bTAwMDA4d2xsdjNwOXQ3eXQ1In0.Y7PbFkq-Wxa2Kn5O1CWgUg'
-  }).addTo(map);
-  L.Icon.Default.imagePath = '../assets/images';
-  var marker = L.marker([37.9410106, -1.1398814]).addTo(map);
-  marker.bindPopup("I live around here.").openPopup();
+  function onMarkerClick(e) {
+      e.target.openPopup();
+  }
+
+  {
+    // render the map of contact section
+    let map = L.map('map', {
+      center: [37.9410106, -1.1398814],
+      doubleClickZoom: 'center',
+      dragging: false,
+      scrollWheelZoom: false,
+      zoom: 11
+    });
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoianVhbnJpcWdvbiIsImEiOiJjaWs5MGR2bTAwMDA4d2xsdjNwOXQ3eXQ1In0.Y7PbFkq-Wxa2Kn5O1CWgUg', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'juanriqgon.p2ln61p7',
+      accessToken: 'pk.eyJ1IjoianVhbnJpcWdvbiIsImEiOiJjaWs5MGR2bTAwMDA4d2xsdjNwOXQ3eXQ1In0.Y7PbFkq-Wxa2Kn5O1CWgUg'
+    }).addTo(map);
+    L.Icon.Default.imagePath = '../assets/images';
+    let marker = L.marker([37.9410106, -1.1398814]).addTo(map);
+    marker.bindPopup("I live around here.");
+    marker.addEventListener('click', onMarkerClick);
+  }
 
   // render the contact form
   var contactWays = document.getElementById('contact-ways');
