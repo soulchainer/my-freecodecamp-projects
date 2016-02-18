@@ -124,10 +124,14 @@ function removeClass(el, className) {
   // menu mobile
   var mobilemenu = document.getElementById('mobile-menu');
   var menuMobileContainer = document.getElementById('navbar-mobile-menu-container');
+  // sectionsLinks used in toggleFoldedMenu and fireActionOnScroll
+  var sectionLinks = document.querySelectorAll('.nav-link');
+  var [home, about, skills, projects, contact] = sectionLinks;
   function toggleFoldedMenu() {
     var folded = menuMobileContainer.getAttribute('data-folded');
     if (folded === 'true') {
       menuMobileContainer.setAttribute('data-folded', 'false');
+      [home, about, skills, projects, contact].forEach(el => el.addEventListener('click', toggleFoldedMenu));
       return;
     }
     menuMobileContainer.setAttribute('data-folded', 'true');
@@ -139,8 +143,6 @@ function removeClass(el, className) {
   var sections = new Map();
   ["home", "about", "skills", "projects", "contact"].forEach(section => sections.set(section, document.getElementById(section).offsetTop));
   var chartBars = document.querySelectorAll('.chart-bar');
-  var sectionsLinks = document.querySelectorAll('.nav-link');
-  var [home, about, skills, projects, contact] = sectionsLinks;
 
   function toggleClassAllocationNodeList(nodeTarget, nodeList, className) {
     // remove «className» from other nodes of nodeList and add it to nodeTarget
@@ -154,20 +156,20 @@ function removeClass(el, className) {
     var scrollPos = e.pageY;
     if (scrollPos < sections.get('about')) {
       // do something in home
-      toggleClassAllocationNodeList(home, sectionsLinks, 'current-section');
+      toggleClassAllocationNodeList(home, sectionLinks, 'current-section');
     } else if (scrollPos < sections.get('skills')) {
       // do something in about
-      toggleClassAllocationNodeList(about, sectionsLinks, 'current-section');
+      toggleClassAllocationNodeList(about, sectionLinks, 'current-section');
     } else if (scrollPos < sections.get('projects')) {
       // do something in skills
-      toggleClassAllocationNodeList(skills, sectionsLinks, 'current-section');
+      toggleClassAllocationNodeList(skills, sectionLinks, 'current-section');
       Array.prototype.forEach.call(chartBars, el => addClass(el, 'animate-bar'));
     } else if (scrollPos < sections.get('contact')) {
       // do something in projects
-      toggleClassAllocationNodeList(projects, sectionsLinks, 'current-section');
+      toggleClassAllocationNodeList(projects, sectionLinks, 'current-section');
     } else {
       // do something in contact
-      toggleClassAllocationNodeList(contact, sectionsLinks, 'current-section');
+      toggleClassAllocationNodeList(contact, sectionLinks, 'current-section');
     }
   }
 
