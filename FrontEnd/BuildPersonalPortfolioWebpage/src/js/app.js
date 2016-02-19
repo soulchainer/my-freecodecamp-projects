@@ -153,7 +153,7 @@ function removeClass(el, className) {
   }
 
   function fireActionOnScroll(e) {
-    var scrollPos = e.pageY;
+    var scrollPos = e.pageY + 100;
     if (scrollPos < sections.get('about')) {
       // do something in home
       toggleClassAllocationNodeList(home, sectionLinks, 'current-section');
