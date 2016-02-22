@@ -176,4 +176,44 @@ function removeClass(el, className) {
   var fireOnScroll = debounce(fireActionOnScroll, 100);
 
   window.addEventListener('scroll', fireOnScroll);
+
+  // carousel
+  {
+    let autoplay = true;
+    let carouselControl = document.getElementById('carousel-control');
+    let carousel = document.getElementById('carousel');
+    let degs = 0;
+    function scrollCarousel(e) {
+      e.preventDefault();
+      degs = ((e.deltaY < 0)? degs + 10: degs - 10);
+      carousel.style.transform = "rotateY(-" + degs +"deg)";
+    }
+    // carousel control toggle
+    carouselControl.addEventListener('click', function() {
+      autoplay = (autoplay)? false: true;
+
+      if(autoplay) {
+        carouselControl.textContent = 'Autoplay';
+        addClass(carousel, 'carousel-animation');
+        carousel.removeEventListener('wheel', scrollCarousel);
+      } else {
+        carouselControl.textContent = 'Swipe';
+        removeClass(carousel, 'carousel-animation');
+        carousel.addEventListener('wheel', scrollCarousel);
+      }
+    });
+
+    // carousel manual pan
+    let hammer = new Hammer.Manager(carousel);
+
+    hammer.add( new Hammer.Swipe({direction: Hammer.DIRECTION_HORIZONTAL, threshold: 10}));
+    hammer.on('swiperight', function(e) {
+        degs -= 60;
+        carousel.style.transform = "rotateY(-" + degs +"deg)";
+    });
+    hammer.on('swipeleft', function(e) {
+      degs += 60;
+      carousel.style.transform = "rotateY(-" + degs +"deg)";
+    });
+  }
 })();

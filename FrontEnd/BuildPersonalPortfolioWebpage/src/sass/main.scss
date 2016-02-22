@@ -1,4 +1,14 @@
 /*------------------------------------*\
+    #IMPORTS
+\*------------------------------------*/
+
+@import "trig_functions";
+
+
+
+
+
+/*------------------------------------*\
     #VARIABLES
 \*------------------------------------*/
 
@@ -16,6 +26,14 @@ $bg-level1: linear-gradient(to right, lighten($yellow, 5%), darken($yellow, 8%))
 $bg-level2: linear-gradient(to right, lighten($blue, 5%), darken($blue, 8%));
 $bg-level3: linear-gradient(to right, lighten($redwine, 5%), darken($redwine, 8%));
 $bg-level4: linear-gradient(to right, lighten($green, 5%), darken($green, 8%));
+$projects: 6;
+$carousel-deg: 360deg/$projects;
+$carousel-init-deg: 0 - $carousel-deg;
+$carousel-rotation: $carousel-init-deg + $carousel-deg;
+$length-panel: 600px;
+$carousel-translateZ: ($length-panel/2)/tan(pi()/$projects);
+
+
 
 
 
@@ -525,41 +543,79 @@ section {
   }
 
   &-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    height: 400px;
+    perspective: 10000px;
+    position: relative;
+    width: $length-panel;
+  }
+}
+
+.carousel {
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: all .4s;
+  width: 100%;
+
+  &-animation {
+    animation: carousel (8s * $projects) linear forwards infinite;
+    transition: all .4s;
+  }
+  &-control {
+   display: inline-block;
+   text-align: center;
+   width: 100%;
   }
 }
 
 .project {
-  display: inline-block;
-  transition: all .4s ease-out;
-
-  @media (max-width: 500px) {
-      margin-left: 0;
-      margin-right: 0;
-  }
+  backface-visibility: hidden;
+  border: 1px solid $black;
+  border-radius: 2px;
+  box-shadow: 5px 5px 5px transparentize($dark-grey,.5);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: 10px;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  width: $length-panel - (10px * 2);
 
   &-img {
-    border-radius: 2px;
-    box-shadow: 5px 5px 5px $dark-grey;
-    max-width: 90vw;
+    height: 100%;
+    position: absolute;
+    width: 100%;
   }
 
   &-caption {
+    background-color: transparentize($black, .1);
+    bottom: 0;
+    color: $white;
+    display: block;
+    padding-bottom: 5px;
+    position: absolute;
     text-align: center;
+    width: 100%;
 
     &-title {
       font-size: 1.4rem;
       font-size: bold;
     }
   }
+}
 
-  &:hover {
-    transform: rotate(-1deg) scale(1.05);
-    transition: all .4s ease-in;
+@for $i from 1 through $projects {
+  .project:nth-child(#{$i}) {
+    transform: rotateY($carousel-rotation) translateZ($carousel-translateZ);
   }
+  $carousel-rotation: $carousel-rotation + $carousel-deg;
+}
+
+@keyframes carousel {
+  from { transform: rotateY(-0deg); }
+  to   { transform: rotateY(-360deg);}
 }
 
 
