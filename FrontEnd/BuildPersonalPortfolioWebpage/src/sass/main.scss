@@ -125,6 +125,14 @@ h1 {
   }
 }
 
+%current-section {
+  @media (min-width: 768px) {
+    border-bottom: 4px solid $redwine;
+    color: $black;
+    transition: color .4s;
+  }
+}
+
 .nav-link {
   color: $dark-grey;
   display: inline-block;
@@ -137,14 +145,12 @@ h1 {
     transition: background-color .4s;
   }
 
-  &:hover,
   &.current-section {
-    @media (min-width: 768px) {
-      border-bottom: 4px solid $redwine;
-      color: $black;
-      transition: color .4s;
-    }
+    @extend %current-section;
+  }
 
+  &:hover {
+    @extend %current-section;
     @media (max-width:767px) {
       transition: background-color .4s;
       background-color: transparentize($yellow, .1);

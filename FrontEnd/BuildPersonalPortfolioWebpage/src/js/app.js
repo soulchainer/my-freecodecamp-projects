@@ -18,45 +18,19 @@ function debounce(func, wait, immediate) {
 	};
 }
 
-function hasClass(el, className) {
-  if (el.classList) {
-    return el.classList.contains(className);
-  } else {
-    return el.className.indexOf(className) !== new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-  }
-}
-function addClass(el, className) {
-  if (el.classList) {
-    if (!hasClass(el, className)) {
-      el.classList.add(className);
-    }
-  } else {
-    el.className += ' ' + className;
-  }
-}
-
-function removeClass(el, className) {
-  if (hasClass(el, className)) {
-    if (el.classList) {
-        el.classList.remove(className);
-    } else {
-      el.className.replace(new RegExp('(^| )' + className + '( |$)', 'g'), '');
-    }
-  }
-}
-
-
 (function(){
-  var btns = {'btn-home': document.getElementById('home'),
-            'btn-about': document.getElementById('about'),
-            'btn-projects': document.getElementById('projects'),
-            'btn-contact': document.getElementById('contact')
+  var btns = {'btn-home': $('#home'),
+            'btn-about': $('#about'),
+            'btn-skills': $('#skills'),
+            'btn-projects': $('#projects'),
+            'btn-contact': $('#contact')
             };
+
   function smoothScroll(time) {
     function animate(e) {
       // smooth scrolling from @rahul_send89 function
       // http://stackoverflow.com/a/26094310/1405004
-      var elem = btns[e.target.id];
+      var elem = btns[e.target.id][0];
       var to = elem.offsetTop;
       var from = window.scrollY;
       var start = new Date().getTime(),
@@ -73,14 +47,14 @@ function removeClass(el, className) {
   }
 
   // «¡Hola!» svg drawing animation
-  var paths = document.getElementById('paths');
+  var $paths = $('#paths');
   var greeting = new Vivus('greeting',  {
     type: "oneByOne",
     duration: 225,
     pathTimingFunction: Vivus.LINEAR,
 		animTimingFunction: Vivus.LINEAR
   }, function () {
-    paths.classList.add('drawn');
+    $paths.addClass('drawn');
   });
 
   function onMarkerClick(e) {
@@ -109,111 +83,111 @@ function removeClass(el, className) {
   }
 
   // render the contact form
-  var contactWays = document.getElementById('contact-ways');
+  var $contactWays = $('#contact-ways');
   var contactForm = '<form class="contact-form" action="http://pooleapp.com/stash/52a1c0eb-dcc6-45b9-8923-73309fbb729b/" method="post">\n\t<input type="hidden" name="redirect_to" value="{YOUR-THANKS-PAGE}" />\n\t<p>\n\t\t<label for="name">Name\n\t\t\t<input class="contact-field" type="text" name="name" id="name" placeholder="What\'s your name?" />\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<label for="e-mail">E-mail\n\t\t\t<input class="contact-field" type="email" name="email" id="email" placeholder="An email to answer you">\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<label for="message">Message\n\t\t\t<textarea class="message" id="message" name="message" rows="5" placeholder="Your message"></textarea>\n\t\t</label>\n\t</p>\n\t<p>\n\t\t<input class="submit" type="submit" value="Submit" />\n\t</p>\n</form>';
-  contactWays.insertAdjacentHTML('beforeend', contactForm);
+  $contactWays.append(contactForm);
 
   // smooth scrolling
   {
-    let btns = document.querySelectorAll('.nav-link');
-    for (let i = 0; i < btns.length; i++) {
-      btns[i].addEventListener('click', smoothScroll(200));
-    }
+    let $btns = $('.nav-link');
+    $btns.on('click', smoothScroll(200));
   }
 
   // menu mobile
-  var mobilemenu = document.getElementById('mobile-menu');
-  var menuMobileContainer = document.getElementById('navbar-mobile-menu-container');
+  var $mobilemenu = $('#mobile-menu');
+  var $menuMobileContainer = $('#navbar-mobile-menu-container');
   // sectionsLinks used in toggleFoldedMenu and fireActionOnScroll
-  var sectionLinks = document.querySelectorAll('.nav-link');
-  var [home, about, skills, projects, contact] = sectionLinks;
+  var $sectionLinks = $('.nav-link');
+  var [home, about, skills, projects, contact] = ['home', 'about', 'skills', 'projects', 'contact'].map(section => $('#btn-' + section));
+
   function toggleFoldedMenu() {
-    var folded = menuMobileContainer.getAttribute('data-folded');
+    var folded = $menuMobileContainer.attr('data-folded');
     if (folded === 'true') {
-      menuMobileContainer.setAttribute('data-folded', 'false');
-      [home, about, skills, projects, contact].forEach(el => el.addEventListener('click', toggleFoldedMenu));
-      return;
+      $menuMobileContainer.attr('data-folded', 'false');
+      $sectionLinks.on('click', toggleFoldedMenu);
+    } else {
+      $menuMobileContainer.attr('data-folded', 'true');
+      $sectionLinks.off('click', toggleFoldedMenu);
     }
-    menuMobileContainer.setAttribute('data-folded', 'true');
   }
 
-  mobilemenu.addEventListener('click', toggleFoldedMenu);
+  $mobilemenu.on('click', toggleFoldedMenu);
 
   // Fire animations and update navbar when scroll to the proper section
   var sections = new Map();
-  ["home", "about", "skills", "projects", "contact"].forEach(section => sections.set(section, document.getElementById(section).offsetTop));
-  var chartBars = document.querySelectorAll('.chart-bar');
+  ["home", "about", "skills", "projects", "contact"].forEach(section => sections.set(section, $('#' + section)[0].offsetTop));
+  var $chartBars = $('.chart-bar');
 
   function toggleClassAllocationNodeList(nodeTarget, nodeList, className) {
     // remove «className» from other nodes of nodeList and add it to nodeTarget
-    if (!hasClass(nodeTarget, className)) {
-        Array.prototype.forEach.call(nodeList, el=>removeClass(el, className));
+    if (!nodeTarget.hasClass(className)) {
+        nodeList.removeClass(className);
+        nodeTarget.addClass(className);
       }
-      addClass(nodeTarget, className);
   }
 
   function fireActionOnScroll(e) {
-    var scrollPos = e.pageY + 100;
-    if (scrollPos < sections.get('about')) {
+    var scrollPos = (e.pageY)? e.pageY + 100: e.currentTarget.pageYOffset + 100;
+    if ((scrollPos < sections.get('about')) || Number.isNaN(scrollPos)) {
       // do something in home
-      toggleClassAllocationNodeList(home, sectionLinks, 'current-section');
+      toggleClassAllocationNodeList(home, $sectionLinks, 'current-section');
     } else if (scrollPos < sections.get('skills')) {
       // do something in about
-      toggleClassAllocationNodeList(about, sectionLinks, 'current-section');
+      toggleClassAllocationNodeList(about, $sectionLinks, 'current-section');
     } else if (scrollPos < sections.get('projects')) {
       // do something in skills
-      toggleClassAllocationNodeList(skills, sectionLinks, 'current-section');
-      Array.prototype.forEach.call(chartBars, el => addClass(el, 'animate-bar'));
+      toggleClassAllocationNodeList(skills, $sectionLinks, 'current-section');
+      $chartBars.addClass('animate-bar');
     } else if (scrollPos < sections.get('contact')) {
       // do something in projects
-      toggleClassAllocationNodeList(projects, sectionLinks, 'current-section');
+      toggleClassAllocationNodeList(projects, $sectionLinks, 'current-section');
     } else {
       // do something in contact
-      toggleClassAllocationNodeList(contact, sectionLinks, 'current-section');
+      toggleClassAllocationNodeList(contact, $sectionLinks, 'current-section');
     }
   }
 
   var fireOnScroll = debounce(fireActionOnScroll, 100);
 
-  window.addEventListener('scroll', fireOnScroll);
+  $(window).on('scroll', fireOnScroll);
 
   // carousel
   {
     let autoplay = true;
-    let carouselControl = document.getElementById('carousel-control');
-    let carousel = document.getElementById('carousel');
+    let $carouselControl = $('#carousel-control');
+    let $carousel = $('#carousel');
     let degs = 0;
     function scrollCarousel(e) {
       e.preventDefault();
       degs = ((e.deltaY < 0)? degs + 10: degs - 10);
-      carousel.style.transform = "rotateY(-" + degs +"deg)";
+      $carousel.css('transform', 'rotateY(-' + degs +'deg)');
     }
     // carousel control toggle
-    carouselControl.addEventListener('click', function() {
+    $carouselControl.on('click', function() {
       autoplay = (autoplay)? false: true;
+      $carousel.toggleClass('carousel-animation');
 
       if(autoplay) {
-        carouselControl.textContent = 'Autoplay';
-        addClass(carousel, 'carousel-animation');
-        carousel.removeEventListener('wheel', scrollCarousel);
+        $carouselControl.html('Autoplay');
+        $carousel.off('wheel', scrollCarousel);
       } else {
-        carouselControl.textContent = 'Swipe';
-        removeClass(carousel, 'carousel-animation');
-        carousel.addEventListener('wheel', scrollCarousel);
+        $carouselControl.html('Swipe');
+        $carousel.on('wheel', scrollCarousel);
       }
     });
 
     // carousel manual pan
+    let carousel = document.getElementById('carousel');
     let hammer = new Hammer.Manager(carousel);
 
     hammer.add( new Hammer.Swipe({direction: Hammer.DIRECTION_HORIZONTAL, threshold: 10}));
     hammer.on('swiperight', function(e) {
         degs -= 60;
-        carousel.style.transform = "rotateY(-" + degs +"deg)";
+        $carousel.css('transform', 'rotateY(-' + degs + 'deg)');
     });
     hammer.on('swipeleft', function(e) {
       degs += 60;
-      carousel.style.transform = "rotateY(-" + degs +"deg)";
+      $carousel.css('transform', 'rotateY(-' + degs + 'deg)');
     });
   }
 })();
