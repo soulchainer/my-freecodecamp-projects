@@ -155,45 +155,66 @@ function debounce(func, wait, immediate) {
   {
     let autoplay = true;
     let src, alt;
-    let $carouselControl = $('#carousel-control-btn');
+    let $carouselControl = $('#carousel-control');
+    let $carouselControlBtn = $('#carousel-control-btn');
+    let panelWidth = $carouselControl[0].clientWidth;
     let $carousel = $('#carousel');
+    let totalWidth = $carousel[0].clientWidth;
     let $carouselScrollIcons = $('.carousel-scroll-icon')
-    let degs = 0;
+    let translate = 0;
+
+    function panelToTheRight() {
+      if (translate < 0) {
+        translate += panelWidth;
+      } else {
+        translate = -totalWidth + panelWidth;
+      }
+      $carousel.css('transform', 'translateX(' + translate + 'px)');
+    }
+
+    function panelToTheLeft() {
+      if ((translate <= 0) && (translate > -totalWidth + panelWidth)) {
+        translate -= panelWidth;
+      } else {
+        translate = 0;
+      }
+      $carousel.css('transform', 'translateX(' + translate + 'px)');
+    }
+    // carousel scroll control
     function scrollCarousel(e) {
       e.preventDefault();
-      degs = ((e.deltaY < 0)? degs + 10: degs - 10);
-      $carousel.css('transform', 'rotateY(-' + degs +'deg)');
+      if(e.deltaY < 0) {
+        panelToTheRight()
+      } else {
+        panelToTheLeft();
+      }
     }
     // carousel control toggle
-    $carouselControl.on('click', function() {
+    $carouselControlBtn.on('click', function() {
       autoplay = (autoplay)? false: true;
       $carousel.toggleClass('carousel-animation');
 
       if(autoplay) {
         src = 'assets/images/pause.svg';
         alt = 'Pause';
+        translate = 0;
+        $carousel.css('transform', 'translateX(' + translate + 'px)');
         $carousel.off('wheel', scrollCarousel);
       } else {
         src = 'assets/images/play.svg';
         alt = 'Play';
         $carousel.on('wheel', scrollCarousel);
       }
-      $carouselControl.attr({'src': src, 'alt': alt});
+      $carouselControlBtn.attr({'src': src, 'alt': alt});
       $carouselScrollIcons.toggleClass('hide');
     });
 
-    // carousel manual pan
+    // carousel touch control
     let carousel = document.getElementById('carousel');
     let hammer = new Hammer.Manager(carousel);
 
     hammer.add( new Hammer.Swipe({direction: Hammer.DIRECTION_HORIZONTAL, threshold: 10}));
-    hammer.on('swiperight', function(e) {
-        degs -= 60;
-        $carousel.css('transform', 'rotateY(-' + degs + 'deg)');
-    });
-    hammer.on('swipeleft', function(e) {
-      degs += 60;
-      $carousel.css('transform', 'rotateY(-' + degs + 'deg)');
-    });
+    hammer.on('swiperight', panelToTheRight);
+    hammer.on('swipeleft', panelToTheLeft);
   }
 })();
