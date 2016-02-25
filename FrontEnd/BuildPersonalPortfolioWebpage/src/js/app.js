@@ -154,8 +154,10 @@ function debounce(func, wait, immediate) {
   // carousel
   {
     let autoplay = true;
-    let $carouselControl = $('#carousel-control');
+    let src, alt;
+    let $carouselControl = $('#carousel-control-btn');
     let $carousel = $('#carousel');
+    let $carouselScrollIcons = $('.carousel-scroll-icon')
     let degs = 0;
     function scrollCarousel(e) {
       e.preventDefault();
@@ -168,12 +170,16 @@ function debounce(func, wait, immediate) {
       $carousel.toggleClass('carousel-animation');
 
       if(autoplay) {
-        $carouselControl.html('Autoplay');
+        src = 'assets/images/pause.svg';
+        alt = 'Pause';
         $carousel.off('wheel', scrollCarousel);
       } else {
-        $carouselControl.html('Swipe');
+        src = 'assets/images/play.svg';
+        alt = 'Play';
         $carousel.on('wheel', scrollCarousel);
       }
+      $carouselControl.attr({'src': src, 'alt': alt});
+      $carouselScrollIcons.toggleClass('hide');
     });
 
     // carousel manual pan

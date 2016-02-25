@@ -2,8 +2,6 @@
     #IMPORTS
 \*------------------------------------*/
 
-@import "trig_functions";
-
 
 
 
@@ -27,11 +25,14 @@ $bg-level2: linear-gradient(to right, lighten($blue, 5%), darken($blue, 8%));
 $bg-level3: linear-gradient(to right, lighten($redwine, 5%), darken($redwine, 8%));
 $bg-level4: linear-gradient(to right, lighten($green, 5%), darken($green, 8%));
 $projects: 6;
-$carousel-deg: 360deg/$projects;
-$carousel-init-deg: 0 - $carousel-deg;
-$carousel-rotation: $carousel-init-deg + $carousel-deg;
+$height-panel: 450px;
 $length-panel: 600px;
-$carousel-translateZ: ($length-panel/2)/tan(pi()/$projects);
+$carousel-animation-time: 30s;
+$carousel-animation-step-duration: (95%/$projects)*.75;
+$carousel-animation-pause-duration: (95%/$projects)*.25;
+$carousel-animation-step-start: 0%;
+$carousel-animation-step-end: $carousel-animation-step-start+$carousel-animation-step-duration;
+$carousel-translateX: 100%/$projects;
 
 
 
@@ -549,55 +550,78 @@ section {
   }
 
   &-container {
-    height: 400px;
-    perspective: 10000px;
+    border: 1px solid $black;
+    box-shadow: 5px 5px 5px transparentize($dark-grey,.5);
+    box-sizing: border-box;
+    height: $height-panel;
     position: relative;
+    overflow: hidden;
     width: $length-panel;
+
+    @media (max-width: 600px) {
+      width: 95vw;
+      height: 95vw * .75;
+    }
   }
 }
 
 .carousel {
+  display: flex;
   height: 100%;
   position: absolute;
-  transform-style: preserve-3d;
-  transition: all .4s;
-  width: 100%;
+  // transition: all .4s;
+  width: $length-panel * $projects;
+
+  @media (max-width: 600px) {
+    width: 95vw * $projects;
+  }
 
   &-animation {
-    animation: carousel (8s * $projects) linear forwards infinite;
-    transition: all .4s;
+    animation: carousel (5s * $projects) infinite;
+    // transition: all .4s;
   }
   &-control {
-   display: inline-block;
-   text-align: center;
-   width: 100%;
+    width: $length-panel;
+
+    @media (max-width: 600px) {
+      width: 95vw;
+    }
+  }
+
+  &-control-btn,
+  &-scroll-icon {
+    height: 2rem;
+  }
+
+  &-control-btn {
+    margin-right: 1rem;
   }
 }
 
+.hide {
+  display: none;
+}
+
 .project {
-  backface-visibility: hidden;
-  border: 1px solid $black;
-  border-radius: 2px;
-  box-shadow: 5px 5px 5px transparentize($dark-grey,.5);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
   height: 100%;
-  left: 10px;
   margin: 0;
-  position: absolute;
-  top: 10px;
-  width: $length-panel - (10px * 2);
+  position: relative;
+  width: $length-panel;
+
+  @media (max-width: 600px) {
+    width: 95vw;
+  }
 
   &-img {
-    height: 100%;
     position: absolute;
     width: 100%;
   }
 
   &-caption {
-    background-color: transparentize($black, .1);
+    background-image: linear-gradient(to bottom, rgba($black, .5), rgba($black, .75), rgba($black, .8));
     bottom: 0;
+    box-shadow: 0 0 5px $black;
     color: $white;
     display: block;
     padding-bottom: 5px;
@@ -612,19 +636,36 @@ section {
   }
 }
 
-@for $i from 1 through $projects {
-  .project:nth-child(#{$i}) {
-    transform: rotateY($carousel-rotation) translateZ($carousel-translateZ);
-  }
-  $carousel-rotation: $carousel-rotation + $carousel-deg;
+
+.mouse-wheel {
+  animation: wheel 3s infinite;
+}
+
+.swipe {
+  animation: swipe 5s infinite;
+}
+
+@keyframes wheel {
+  0%        { transform: translateY(-5%); }
+  20%, 80%  { transform: translateY(5%);  }
+  100%      { transform: translateY(-5%); }
+}
+
+@keyframes swipe {
+  0% { transform: translateX(0);}
+  10% { transform: translateX(2rem);}
+  15% { transform: translateX(0);}
+  100% { transform: translateX(0);}
 }
 
 @keyframes carousel {
-  from { transform: rotateY(-0deg); }
-  to   { transform: rotateY(-360deg);}
+  @for $i from 0 through ($projects - 1) {
+    #{$carousel-animation-step-start}, #{$carousel-animation-step-end} { transform: translateX(-$carousel-translateX*$i);}
+    $carousel-animation-step-start: $carousel-animation-step-end + $carousel-animation-pause-duration;
+    $carousel-animation-step-end: $carousel-animation-step-start + $carousel-animation-step-duration;
+  }
+  100% { transform: translateX(0);}
 }
-
-
 
 
 
