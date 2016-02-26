@@ -12,7 +12,8 @@
 
 $black: #282828;
 $blue: #66a9ff;
-$dark-blue: #003F9A;
+$brown: #45322c;
+$dark-blue: #003f9a;
 $green: #88aa00;
 $redwine: #bf3f3f;
 $red: #bb3b3b;
@@ -46,7 +47,10 @@ body {
   background-color: $white;
   color: $black;
   font-family: 'Open Sans', sans-serif;
+  line-height: 1.4rem;
   margin: 0;
+  // hack for deal with vw including the scrollbar as part of the viewport
+  overflow-x: hidden;
 }
 
 a {
@@ -62,17 +66,22 @@ a {
 
 h1 {
   font: {
-      size: 2.5rem;
-      weight: normal;
-    }
+    family: 'Roboto Slab', serif;
+    size: 3rem;
+    weight: normal;
+  }
+
+  padding-bottom: 5vh;
 }
 
 %dark-section {
   background-color: $black;
+  color: $white;
 }
 
 %grey-section {
   background-color: $light-grey;
+  color: $brown;
 }
 
 .brand {
@@ -96,6 +105,7 @@ h1 {
 .navbar {
   align-items: center;
   background-color: rgba($white, .85);
+  box-shadow: 0 0 2rem rgba($black, .1);
   box-sizing: border-box;
   display: flex;
   font-size: 1.2rem;
@@ -136,9 +146,18 @@ h1 {
 
 %current-section {
   @media (min-width: 768px) {
-    border-bottom: 4px solid $redwine;
-    color: $black;
+    color: saturate($red, 25%);
     transition: color .4s;
+
+    &::before {
+      transition: opacity .4s .2s;
+      opacity: 1;
+    }
+
+    &::after {
+      transition: opacity .4s .2s;
+      opacity: 1;
+    }
   }
 }
 
@@ -147,6 +166,18 @@ h1 {
   display: inline-block;
   line-height: 1.5rem;
   transition: color .4s;
+
+  &::before {
+    content: "<";
+    transition: opacity .4s .2s;
+    opacity: 0;
+  }
+
+  &::after {
+    content: " />";
+    transition: opacity .4s .2s;
+    opacity: 0;
+  }
 
   @media (max-width: 767px) {
     display: block;
@@ -273,7 +304,7 @@ section {
   justify-content: space-around;
   min-height: 100vh;
   max-width: 100vw;
-  padding-top: 4rem;
+  padding: 15vh 5vw;
 }
 
 
@@ -290,10 +321,16 @@ section {
   min-width: 35%;
 }
 
+%home-titles {
+  max-width: 100vw;
+  word-wrap: break-word;
+}
+
 .person {
   text-align: center;
 
   &>h1 {
+    @extend %home-titles;
     font: {
       family: 'Quicksand', sans-serif;
       size: 5vmax;
@@ -302,15 +339,13 @@ section {
 
     @media (max-width: 900px){
       font-size: 2.9rem;
+      line-height: 3.3rem;
     }
   }
   &>p {
+    @extend %home-titles;
     color: $redwine;
-    font-size: 2vmax;
-
-    @media (max-width: 900px){
-      font-size: 1.4rem;
-    }
+    font-size: 2rem;
   }
 }
 
@@ -328,7 +363,23 @@ section {
 
 .about {
   @extend %grey-section;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  padding-top: 10vh;
+  position: relative;
+
+  &::before {
+    border: {
+      top: 10vh solid $white;
+      right: 100vw solid transparent;
+    }
+    content: '';
+    height: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 0;
+  }
 }
 
 .greeting {
@@ -368,10 +419,14 @@ section {
     width: 45vw;
     max-width: 400px;
     max-height: 400px;
+
+    @media (max-width: 700px) {
+      width: 90vw;
+    }
   }
 
   &-text {
-    width: 45vw;
+    width: 30vw;
 
     @media (max-width: 700px) {
       width: 90vw;
@@ -403,10 +458,7 @@ section {
 .skills {
   @extend %dark-section;
   justify-content: flex-start;
-
-  &>h1 {
-    color: $dark-grey;
-  }
+  position: relative;
 
   &-container {
     display: flex;
@@ -418,11 +470,23 @@ section {
     height: auto;
 
     &-title {
-      color: $dark-grey;
       display: inline-block;
       font-weight: bold;
       vertical-align: middle;
     }
+  }
+
+  &::before {
+    background: linear-gradient(-135deg, $light-grey 10px, transparent 0) 0 10px, linear-gradient(135deg, $light-grey 10px, $black 0) 0 10px;
+    background-color: $light-grey;
+    background-repeat: repeat-x;
+    background-size: 20px 20px;
+    content: '';
+    left: 0;
+    height: 25px;
+    position: absolute;
+    top: -25px;
+    width: 100%;
   }
 }
 
@@ -430,6 +494,7 @@ section {
   border-radius: 5px;
   display: inline-block;
   list-style: none;
+  margin: .25rem;
   padding: .5rem;
   text-shadow: 0 0 5px $black;
 }
@@ -529,6 +594,8 @@ section {
 \*------------------------------------*/
 
 .projects {
+  position: relative;
+
   &>h1 {
     color: $dark-grey;
   }
@@ -546,6 +613,20 @@ section {
       width: 95vw;
       height: 95vw * .75;
     }
+  }
+
+  &::before {
+    border: {
+      color: $black transparent transparent transparent;
+      style: solid;
+      width: 10vh 50vw 0 50vw;
+    }
+    content: '';
+    height: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 0;
   }
 }
 
@@ -626,7 +707,7 @@ section {
 }
 
 .swipe {
-  animation: swipe 5s infinite;
+  animation: swipe 3s infinite;
 }
 
 @keyframes wheel {
@@ -660,9 +741,24 @@ section {
 .contact {
   @extend %grey-section;
   font-size: 1.2rem;
+  padding-top: 10vh;
+  position: relative;
 
   &>h1 {
     color: $black;
+  }
+
+  &::before {
+    border: {
+      top: 10vh solid $white;
+      left: 100vw solid transparent;
+    }
+    content: '';
+    height: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 0;
   }
 }
 
@@ -673,7 +769,7 @@ section {
   flex-wrap: wrap;
   min-height: 70vh;
   justify-content: center;
-  width: 100vw;
+  // width: 100vw;
 }
 
 .sn-icon {
@@ -682,6 +778,13 @@ section {
   min-height: 100px;
   min-width: 100px;
   padding: 1rem;
+  transform: rotateZ(0) scale(.9);
+  transition: transform .4s;
+
+  &:hover {
+    transform: rotateZ(360deg) scale(1.1);
+    transition: transform .4s;
+  }
 }
 
 @each $sn, $color in (email, #bb3b3b), (codepen, #000), (github, #333),
@@ -701,6 +804,8 @@ section {
 
 footer {
   @extend %dark-section;
+  border-top: 5px solid $green;
+  border-image: linear-gradient(120deg, $yellow, $green, $yellow);
   color: $dark-grey;
   font-size: .8rem;
   line-height: 1.5rem;
@@ -710,6 +815,12 @@ footer {
   &>.brand {
     color: $light-grey;
   }
+}
+
+.footer-divider {
+  background-image: linear-gradient(120deg, $yellow, $green, $yellow);
+  height: 5px;
+  width: 100%;
 }
 
 .humans {

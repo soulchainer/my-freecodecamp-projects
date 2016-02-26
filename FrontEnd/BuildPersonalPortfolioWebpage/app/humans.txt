@@ -23,6 +23,11 @@ Work license: CC by 4.0 (http://creativecommons.org/licenses/by/4.0/)
 URL: http://keyamoon.com/
 Contact: https://icomoon.io/#contact
 
+To: Emoji One
+For: the meditating man emoji
+Work license: CC by 4.0 (https://creativecommons.org/licenses/by/4.0/legalcode)
+URL: http://emojione.com/
+
 To: Pablo Impallari
 For: their font «Lobster» (https://www.google.com/fonts/specimen/Lobster)
 Work license: SIL Open Font License, 1.1
@@ -36,6 +41,11 @@ To: Steve Matteson
 For: their font «Open Sans» (https://www.google.com/fonts/specimen/Open+Sans)
 Work license: Apache License, version 2.0
 URL: https://profiles.google.com/107777320916704234605/about
+
+To: Christian Robertson
+For: their font «Roboto Slab» (https://www.google.com/fonts/specimen/Roboto+Slab)
+Work license: Apache License, version 2.0
+URL: https://plus.google.com/110879635926653430880/about
 
 
 /* SITE */
