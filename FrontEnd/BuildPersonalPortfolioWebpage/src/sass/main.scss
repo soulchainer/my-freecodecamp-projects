@@ -67,6 +67,24 @@ h1 {
     }
 }
 
+%dark-section {
+  background-color: $black;
+}
+
+%grey-section {
+  background-color: $light-grey;
+}
+
+.brand {
+  color: $black;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: bold;
+
+  @media (max-width:767px) {
+    width: 50vw;
+  }
+}
+
 
 
 
@@ -89,16 +107,6 @@ h1 {
   right: 0;
   top: 0;
   z-index: 1001;
-
-  &-brand {
-    color: $black;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: bold;
-
-    @media (max-width:767px) {
-      width: 50vw;
-    }
-  }
 }
 
 @media (max-width:767px) {
@@ -318,9 +326,6 @@ section {
     #ABOUT
 \*------------------------------------*/
 
-%grey-section {
-  background-color: $light-grey;
-}
 .about {
   @extend %grey-section;
   font-size: 1.4rem;
@@ -396,6 +401,7 @@ section {
 \*------------------------------------*/
 
 .skills {
+  @extend %dark-section;
   justify-content: flex-start;
 
   &>h1 {
@@ -412,6 +418,7 @@ section {
     height: auto;
 
     &-title {
+      color: $dark-grey;
       display: inline-block;
       font-weight: bold;
       vertical-align: middle;
@@ -522,8 +529,6 @@ section {
 \*------------------------------------*/
 
 .projects {
-  @extend %grey-section;
-
   &>h1 {
     color: $dark-grey;
   }
@@ -653,6 +658,7 @@ section {
 \*------------------------------------*/
 
 .contact {
+  @extend %grey-section;
   font-size: 1.2rem;
 
   &>h1 {
@@ -683,4 +689,29 @@ section {
   .sn-icon-#{$sn} {
     fill: $color;
   }
+}
+
+
+
+
+
+/*------------------------------------*\
+    #FOOTER
+\*------------------------------------*/
+
+footer {
+  @extend %dark-section;
+  color: $dark-grey;
+  font-size: .8rem;
+  line-height: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+
+  &>.brand {
+    color: $light-grey;
+  }
+}
+
+.humans {
+  vertical-align: bottom;
 }

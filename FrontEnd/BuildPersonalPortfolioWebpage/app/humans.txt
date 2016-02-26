@@ -1,0 +1,47 @@
+/* TEAM */
+
+  Developer: Juan Riquelme
+  Contact: juanriqgon [at] gmail.com
+  Twitter: @juanriqgon
+  From: Murcia, Spain
+
+/* THANKS */
+
+To: Katarina Stefanikova
+For: the hand svg icon
+Work license: CC by 3.0 (http://creativecommons.org/licenses/by/3.0/)
+URL: http://www.flaticon.com/authors/katarina-stefanikova
+
+To: Freepik
+For: the mouse svg icon. I edited it for isolate, colour, and animate the wheel.
+Work license: Flaticon Basic License (http://file005.flaticon.com/downloads/license/license.pdf)
+URL: http://www.freepik.com/
+
+To: Keyamoon
+For: their free vector icon pack IcoMoon-Free (https://github.com/Keyamoon/IcoMoon-Free)
+Work license: CC by 4.0 (http://creativecommons.org/licenses/by/4.0/)
+URL: http://keyamoon.com/
+Contact: https://icomoon.io/#contact
+
+To: Pablo Impallari
+For: their font «Lobster» (https://www.google.com/fonts/specimen/Lobster)
+Work license: SIL Open Font License, 1.1
+URL: http://www.impallari.com
+
+To: Andrew Paglinawan
+For: their font «Quicksand» (https://www.google.com/fonts/specimen/Quicksand)
+Work license: SIL Open Font License, 1.1
+
+To: Steve Matteson
+For: their font «Open Sans» (https://www.google.com/fonts/specimen/Open+Sans)
+Work license: Apache License, version 2.0
+URL: https://profiles.google.com/107777320916704234605/about
+
+
+/* SITE */
+
+  Last update: 2016/02/26
+  Standards: CSS3, HTML5, JavaScript
+  Components: Google Fonts, Hammer.js, Vivus, jBone
+  Software: Atom, Visual Studio Code, Inkscape, GIMP, Scour, Firefox, Mousepad
+  Language: English
