@@ -1,0 +1,58 @@
+/*------------------------------------*\
+    #VARIABLES
+\*------------------------------------*/
+
+$base-path: '../assets/fonts/';
+
+
+
+
+
+/*------------------------------------*\
+    #FONTS
+\*------------------------------------*/
+
+@font-face {
+  font: {
+    family: 'icomoon';
+    weight: normal;
+    style: normal;
+  }
+  src:  url('#{$base-path}icomoon.eot?85x0w5');
+  src:  url('#{$base-path}icomoon.eot?85x0w5#iefix') format('embedded-opentype'),
+      url('#{$base-path}icomoon.ttf?85x0w5') format('truetype'),
+      url('#{$base-path}icomoon.woff?85x0w5') format('woff'),
+      url('#{$base-path}icomoon.svg?85x0w5#icomoon') format('svg');
+}
+
+
+
+
+
+/*------------------------------------*\
+    #ICONS
+\*------------------------------------*/
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font: {
+    family: 'icomoon' !important;
+    style: normal;
+    weight: normal;
+    variant: normal;
+  }
+  speak: none;
+  line-height: 1;
+  text-transform: none;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@each $icon, $value in ('link', '\e900'), ('play', '\e901'),
+                       ('stop', '\e902') {
+  .icon-#{$icon}:before {
+    content: $value;
+  }
+}

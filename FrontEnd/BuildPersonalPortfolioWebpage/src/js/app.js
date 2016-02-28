@@ -125,13 +125,13 @@ function debounce(func, wait, immediate) {
   {
     let autoplay = true;
     let src, alt;
-    let $carouselControl = $('#carousel-control');
     let $carouselControlBtn = $('#carousel-control-btn');
-    let panelWidth = $carouselControl[0].clientWidth;
+    let panelWidth = $('#projects-device')[0].clientWidth;
     let $carousel = $('#carousel');
     let totalWidth = $carousel[0].clientWidth;
-    let $carouselScrollIcons = $('.carousel-scroll-icon')
+    let $swipe = $('#swipe');
     let translate = 0;
+    let startSwipePos;
 
     function panelToTheRight() {
       if (translate < 0) {
@@ -150,11 +150,14 @@ function debounce(func, wait, immediate) {
       }
       $carousel.css('transform', 'translateX(' + translate + 'px)');
     }
-    // carousel scroll control
-    function scrollCarousel(e) {
-      e.preventDefault();
-      if(e.deltaY < 0) {
-        panelToTheRight()
+    // carousel desktop swipe control
+    function startSwipeCarousel(e) {
+      startSwipePos = e.deltaX;
+    }
+    function endSwipeCarousel(e) {
+      console.log("Drag end");
+      if((startSwipePos - e.deltaX) < 0) {
+        panelToTheRight();
       } else {
         panelToTheLeft();
       }
@@ -165,18 +168,20 @@ function debounce(func, wait, immediate) {
       $carousel.toggleClass('carousel-animation');
 
       if(autoplay) {
-        src = 'assets/images/pause.svg';
-        alt = 'Pause';
         translate = 0;
         $carousel.css('transform', 'translateX(' + translate + 'px)');
-        $carousel.off('wheel', scrollCarousel);
+        $carouselControlBtn.attr('alt', 'Stop');
+        $carousel.off('dragstart', startSwipeCarousel);
+        $carousel.off('dragend', endSwipeCarousel);
       } else {
-        src = 'assets/images/play.svg';
-        alt = 'Play';
-        $carousel.on('wheel', scrollCarousel);
+        $carouselControlBtn.attr('alt', 'Autoplay');
+        $carousel.on('dragstart', startSwipeCarousel);
+        $carousel.on('dragend', endSwipeCarousel);
       }
-      $carouselControlBtn.attr({'src': src, 'alt': alt});
-      $carouselScrollIcons.toggleClass('hide');
+      $carouselControlBtn.toggleClass('icon-stop');
+      $carouselControlBtn.toggleClass('icon-play');
+      $swipe.toggleClass('hide');
+      $swipe.toggleClass('swipe');
     });
 
     // carousel touch control
@@ -190,6 +195,6 @@ function debounce(func, wait, immediate) {
 
   // add email address
   {
-     $('#email').attr('href', 'mailto:juanriqgon@gmail.com');
+     $('#mail').attr('href', 'mailto:juanriqgon@gmail.com');
   }
 })();

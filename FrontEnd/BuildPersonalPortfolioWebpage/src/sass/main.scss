@@ -2,6 +2,8 @@
     #IMPORTS
 \*------------------------------------*/
 
+@import 'fonts';
+
 
 
 
@@ -11,6 +13,7 @@
 \*------------------------------------*/
 
 $black: #282828;
+$device-black: #222;
 $blue: #66a9ff;
 $brown: #45322c;
 $dark-blue: #003f9a;
@@ -64,14 +67,17 @@ a {
   }
 }
 
-h1 {
+h1,
+h2 {
+  padding-bottom: 5vh;
+}
+
+h2 {
   font: {
     family: 'Roboto Slab', serif;
     size: 3rem;
-    weight: normal;
+    weight: 100;
   }
-
-  padding-bottom: 5vh;
 }
 
 %dark-section {
@@ -146,7 +152,7 @@ h1 {
 
 %current-section {
   @media (min-width: 768px) {
-    color: saturate($red, 25%);
+    color: $black;
     transition: color .4s;
 
     &::before {
@@ -471,7 +477,8 @@ section {
 
     &-title {
       display: inline-block;
-      font-weight: bold;
+      font-weight: 100;
+      letter-spacing: .3rem;
       vertical-align: middle;
     }
   }
@@ -522,7 +529,7 @@ section {
   box-sizing: border-box;
   margin-left: 2rem;
   overflow: hidden;
-  width: 30vw;
+  width: 25vw;
 
   @media (max-width: 1000px) {
       width: 90vw;
@@ -530,6 +537,8 @@ section {
 
   &-title {
     font-variant: small-caps;
+    font-weight: 100;
+    letter-spacing: .3rem;
   }
 
   &-category {
@@ -549,7 +558,7 @@ section {
     text-shadow: 0 0 5px $black;
     transform: translateX(-200%);
 
-    @each $percent in 30, 40, 50, 60, 70, 80, 85, 90 {
+    @each $percent in 25, 30, 40, 50, 60, 70, 80, 85, 90 {
       &[data-percent='#{$percent}'] {
         width: #{$percent}%;
 
@@ -565,7 +574,7 @@ section {
       }
     }
 
-    @each $order in 0, 1, 2, 3, 4, 5, 6, 7 {
+    @each $order in 0, 1, 2, 3, 4, 5, 6, 7, 8 {
       &[data-order="#{$order}"].animate-bar {
         animation-delay: .2s * $order;
 
@@ -593,26 +602,37 @@ section {
     #PROJECTS
 \*------------------------------------*/
 
+.device-container {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
 .projects {
   position: relative;
 
-  &>h1 {
+  &>h3 {
     color: $dark-grey;
   }
 
   &-container {
-    border: 1px solid $black;
+    height: $height-panel + 90px;
+    position: relative;
+    width: $length-panel + 90px;
+    @media (max-width: $length-panel + 90px), (max-height: $height-panel + 90px) {
+      height: 95vmin * .75;
+      width: 95vmin;
+    }
+  }
+
+  &-device {
+    border: 40px solid $device-black;
+    border-radius: 20px;
     box-shadow: 5px 5px 5px transparentize($dark-grey,.5);
     box-sizing: border-box;
-    height: $height-panel;
+    height: 100%;
     position: relative;
     overflow: hidden;
-    width: $length-panel;
-
-    @media (max-width: 600px) {
-      width: 95vw;
-      height: 95vw * .75;
-    }
+    width: 100%;
   }
 
   &::before {
@@ -634,37 +654,32 @@ section {
   display: flex;
   height: 100%;
   position: absolute;
-  // transition: all .4s;
-  width: $length-panel * $projects;
-
-  @media (max-width: 600px) {
-    width: 95vw * $projects;
-  }
+  width: 100% * $projects;
 
   &-animation {
-    animation: carousel (5s * $projects) infinite;
-    // transition: all .4s;
+    animation: carousel (3s * $projects) infinite;
   }
   &-control {
-    width: $length-panel;
-
-    @media (max-width: 600px) {
-      width: 95vw;
-    }
+    text-align: center;
+    width: 100%;
   }
 
-  &-control-btn,
-  &-scroll-icon {
-    height: 2rem;
+  &-swipe-icon {
+    width: 3rem;
   }
 
   &-control-btn {
-    margin-right: 1rem;
+    bottom: 5px;
+    color: lighten($black, 40%);
+    font-size: 30px;
+    left: calc(50% - 15px);
+    position: absolute;
+    z-index: 5;
   }
 }
 
 .hide {
-  display: none;
+  visibility: hidden;
 }
 
 .project {
@@ -672,14 +687,14 @@ section {
   height: 100%;
   margin: 0;
   position: relative;
-  width: $length-panel;
-
-  @media (max-width: 600px) {
-    width: 95vw;
-  }
+  width: 100%;
 
   &-img {
+    display: inline-block;
+    background-size: cover;
+    pointer-events: none;
     position: absolute;
+    height: 100%;
     width: 100%;
   }
 
@@ -687,7 +702,6 @@ section {
     background-image: linear-gradient(to bottom, rgba($black, .5), rgba($black, .75), rgba($black, .8));
     bottom: 0;
     box-shadow: 0 0 5px $black;
-    color: $white;
     display: block;
     padding-bottom: 5px;
     position: absolute;
@@ -695,25 +709,20 @@ section {
     width: 100%;
 
     &-title {
+      color: $white;
       font-size: 1.4rem;
-      font-size: bold;
+      font-weight: normal;
+
+      @media (max-width: 350px), (max-height: 400px) {
+        font-size: 1rem;
+        font-weight: bold;
+      }
     }
   }
 }
 
-
-.mouse-wheel {
-  animation: wheel 3s infinite;
-}
-
 .swipe {
   animation: swipe 3s infinite;
-}
-
-@keyframes wheel {
-  0%        { transform: translateY(-5%); }
-  20%, 80%  { transform: translateY(5%);  }
-  100%      { transform: translateY(-5%); }
 }
 
 @keyframes swipe {
@@ -744,7 +753,7 @@ section {
   padding-top: 10vh;
   position: relative;
 
-  &>h1 {
+  &>h2 {
     color: $black;
   }
 
@@ -769,10 +778,10 @@ section {
   flex-wrap: wrap;
   min-height: 70vh;
   justify-content: center;
-  // width: 100vw;
 }
 
 .sn-icon {
+  display: inline-block;
   max-height: 50vw;
   max-width: 50vw;
   min-height: 100px;
@@ -787,9 +796,9 @@ section {
   }
 }
 
-@each $sn, $color in (email, #bb3b3b), (codepen, #000), (github, #333),
-                     (linkedin, #1d87be), (twitter, #55acee) {
-  .sn-icon-#{$sn} {
+@each $name, $color in ('mail', #bb3b3b), ('codepen', #000), ('github', #333),
+                     ('linkedin', #1d87be), ('twitter', #55acee) {
+  .sn-icon-#{$name} {
     fill: $color;
   }
 }
