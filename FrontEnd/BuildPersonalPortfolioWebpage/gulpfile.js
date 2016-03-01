@@ -13,7 +13,7 @@ gulp.task('scripts', function() {
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('./app/js'));
 });
-// Process CSS files with SASS & PostCSS
+// Process SASS files
 gulp.task('styles', function () {
     return gulp.src('./src/sass/*.scss')
         .pipe($.sourcemaps.init({loadMaps: true}))
@@ -22,9 +22,30 @@ gulp.task('styles', function () {
             browsers: ['last 2 versions'],
             cascade: false
         }))
+        .pipe($.cleanCss({compatibility: 'ie8'}))
         .on('error', $.util.log)
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('./app/css'));
+});
+
+// Process HTML files
+gulp.task('htmlmin', function() {
+  return gulp.src('./src/*.html')
+    .pipe($.sourcemaps.init({loadMaps: true}))
+    .pipe($.htmlmin({
+      collapseWhitespace: true,
+      collapseInlineTagWhitespace: true,
+      removeTagWhitespace: true,
+      removeComments: true,
+      removeRedundantAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      minifyJS: true,
+      minifyCSS: true
+      }))
+    .on('error', $.util.log)
+    .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest('./app'));
 });
 
 // Serve and watch for changes in files
@@ -35,7 +56,8 @@ gulp.task('serve', function() {
     var appFiles = ['./app/*', './app/js/*', './app/css/*'];
     gulp.watch('./src/js/*.js', ['scripts']);
     gulp.watch('./src/sass/*.scss', ['styles']);
+    gulp.watch('./src/*.html', ['htmlmin']);
     gulp.watch(appFiles).on('change',bs.reload);
 });
 
-gulp.task('default', ['scripts', 'styles', 'serve']);
+gulp.task('default', ['scripts', 'styles', 'htmlmin', 'serve']);
