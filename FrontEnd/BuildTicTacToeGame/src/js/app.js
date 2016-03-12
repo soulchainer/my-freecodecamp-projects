@@ -2,7 +2,7 @@
     const EMPTY = '*';
     const X = 'X';
     const O = 'O';
-    const TOP = 10;
+    const TOP = 100;
 
     function threeInARow(row) { // return true if all row elements are equal
         let token = row[0];
@@ -95,21 +95,22 @@
 
         minimax(player, depth) {
         // return the best move to do from the actual game state
+        // use alpha-beta pruning algorithm, an improvement of minimax one
             let bestMove,
                 currentMax,
                 max = -TOP;
             for (let move of this.getValidMoves()) {
-                currentMax = this.minValue(move, depth, this.rival[player]);
+                currentMax = this.minValue(move, depth, this.rival[player],
+                                           -TOP, TOP);
                 if (currentMax > max) {
                     max = currentMax;
                     bestMove = move;
                 }
             }
             return bestMove;
-
         }
 
-        maxValue(move, depth, player) {
+        maxValue(move, depth, player, α, β) {
         // maximizer function
         // return a integer with the calculated value of the best
         // situation that «move» could lead the player
@@ -119,19 +120,22 @@
                 if (this.isGameOver()) {
                     return this.evalFinalState(player, depth);
                 }
-                let value = -TOP;
                 for (let move of this.getValidMoves()) {
-                    value = Math.max(value, this.minValue(move, depth + 1,
-                                                          this.rival[player]));
+                    α = Math.max(α,
+                                 this.minValue(move, depth + 1,
+                                               this.rival[player], α, β));
+                    if (α >= β) {
+                        return β;
+                    }
                 }
-                return value;
+                return α;
             }
             finally {
                 this.board.undoMove(move);
             }
         }
 
-        minValue(move, depth, player) {
+        minValue(move, depth, player, α, β) {
         // minimizer function
         // return a integer with the calculated value of the best
         // situation that «move» could lead to rival
@@ -142,12 +146,15 @@
                 if (this.isGameOver()) {
                     return this.evalFinalState(player, depth);
                 }
-                let value = TOP;
                 for (let move of this.getValidMoves()) {
-                    value = Math.min(value, this.maxValue(move, depth + 1,
-                                                          this.rival[player]));
+                    β = Math.min(β,
+                                 this.maxValue(move, depth + 1,
+                                               this.rival[player], α, β));
+                    if (α >= β) {
+                        return α;
+                    }
                 }
-                return value;
+                return β;
             }
             finally {
                 this.board.undoMove(move);
