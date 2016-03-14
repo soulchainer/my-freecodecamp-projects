@@ -79,6 +79,13 @@
         }
 
         /**
+         * Reset a Tic Tac Toe Game.
+         */
+        reset() {
+            this.constructor();
+        }
+
+        /**
          * Get squares still available (empty) in the board.
          * @returns {Number[]} List of empty squares in the board.
          */
@@ -140,7 +147,7 @@
         /**
          * Check if the game can continue or not and act according to that.
          * If game can continue, run the next player turn.
-         * If not, draw the final status of the game
+         * If not, draw the final status of the game and init a new one.
          * @param {String} player - The token of the actual player.
          * @param {Function} playerFunction - The function to execute if the
          * game should continue.
@@ -149,7 +156,9 @@
             if (this.isGameOver()) {
                 this.board.draw();
                 let winner = this.getWinner();
-                console.log((winner)? `Player ${winner} won.`: 'It was a tie.');
+                console.log((winner)? `Player ${winner} won.`:'It was a tie.');
+                this.reset();
+                this.start();
             } else {
                 playerFunction.bind(this)(this.rival[player]);
             }
