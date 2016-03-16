@@ -1,0 +1,196 @@
+/*------------------------------------*\
+    #VARIABLES
+\*------------------------------------*/
+
+$modal-bg-color: hsla(255, 100%, 98%, .9);
+$modal-overlay-color: hsla(255, 100%, 95%, .3);
+$black: hsl(0, 0%, 16%);
+$black-shadow: transparentize($black, .4);
+$blue: hsl(217, 72%, 50%);
+$color-unselected: hsl(0, 0%, 40%);
+
+
+
+
+/*------------------------------------*\
+    #GENERAL
+\*------------------------------------*/
+
+button {
+  // background-color: transparent;
+  border: none;
+  border-radius: .5rem;
+  box-sizing: border-box;
+  padding: .8rem;
+
+  /* Firefox specific rule, for change the ugly dotted border when a button
+   * gets the focus.
+   */
+  &::-moz-focus-inner {
+    border: none;
+  }
+}
+
+%icon {
+  height: auto;
+  width: 90%;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #BOARD
+\*------------------------------------*/
+
+.disabled {
+  pointer-events: none;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+  margin: auto;
+  max-height: 90vh;
+  max-width: 90vw;
+  width: 650px;
+
+  &-row {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.square {
+  border: .5rem solid $black;
+  border-radius: 0;
+  box-sizing: border-box;
+  height: 100%;
+  width: 33%;
+}
+
+
+/* Tokens */
+
+.token-img {
+  @extend %icon;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #MODAL
+\*------------------------------------*/
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+
+  &-container {
+    background-color: $modal-bg-color;
+    border-radius: .4rem;
+    box-shadow: 0 0 1rem $black-shadow;
+    box-sizing: border-box;
+    height: 400px;
+    left: 50%;
+    margin: auto;
+    max-width: 90vw;
+    padding: 2rem;
+    top: 5rem;
+    width: 400px;
+    z-index: 1000;
+  }
+
+  &-overlay {
+    background: $modal-overlay-color;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+  }
+}
+
+
+.option {
+  &-row {
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    justify-content: center;
+    width: 100%;
+
+    &:last-child {
+      height: 20%;
+      flex-direction: row;
+    }
+  }
+
+  &-group {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &-title {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  &-btn {
+    background-color: transparent;
+    width: 30%;
+  }
+
+  &-icon {
+    @extend %icon;
+  }
+}
+
+.token {
+
+  path {
+      transition: all .4s;
+  }
+
+  &.unselected {
+    path {
+      stroke: $color-unselected;
+      transition: all .4s;
+    }
+  }
+}
+
+.player {
+
+  circle,
+  rect,
+  path {
+      transition: all .4s;
+  }
+
+  &.unselected {
+    circle,
+    path,
+    rect {
+      fill: $color-unselected;
+      transition: all .4s;
+    }
+  }
+}
+
+.start-btn {
+  align-self: center;
+  background-color: $blue;
+  height: 75%;
+  max-height: 3rem;
+  max-width: 12rem;
+  width: 50%;
+}

@@ -1,11 +1,20 @@
 // Define plugins
-var gulp = require('gulp');
+var gulp = require('gulp'),
+    browserify = require('browserify'),
+    buffer = require('vinyl-buffer'),
+    source = require('vinyl-source-stream');
 var bs = require('browser-sync').create();
 var $ = require('gulp-load-plugins')();
 
 // Process the app JavaScript (own and required)
 gulp.task('scripts', function() {
-  return gulp.src('./src/js/app.js')
+  var b = browserify({
+    entries: './src/js/app.js',
+    debug: true,
+  });
+  return b.bundle()
+    .pipe(source('./app.js'))
+    .pipe(buffer())
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe($.babel())
     .pipe($.uglify())

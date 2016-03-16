@@ -1,4 +1,7 @@
 (function(){
+    /** Library imports for Browserify */
+    let $ = require('jbone');
+
     /** @constant {String} EMPTY - Represent an EMPTY square in the board */
     const EMPTY = '*';
     /** @constant {String} X - The X token for the board*/
@@ -10,6 +13,11 @@
      * tree algorithm.
      */
     const TOP = 100;
+    /**
+     * @constant {picoModal} MODAL - Modal for choose token and player one of
+     * the game.
+     */
+    // const MODAL = ;
 
     /**
      * Answer if the row isn't empty and all their elements are equal.
@@ -17,7 +25,7 @@
      * @returns {Boolean} True if all line elements are equal and not the
      * empty token, false otherwise.
      */
-    function threeInARow(row) { // return true if all row elements are equal
+    function threeInARow(row) {
         let token = row[0];
         if (token !== EMPTY) {
             return row.every(element => element === token);
@@ -29,24 +37,31 @@
         /** Create a board. */
         constructor() {
             this.squares = Array(9).fill(EMPTY);
+            this.getReady();
         }
 
-        /** Draw the game board. */
-        draw() {
-            let board = '';
-            for (let [index, value] of this.squares.entries()) {
-                board += (index % 3)? value: `\n${value}`;
+        /** Clear and prepare the board for a new game */
+        getReady() {
+            for (let i = 0; i < 9; i++) {
+                this[`$square${i}`] = $(`#square${i}`);
+                this[`$square${i}`].html('').removeAttr('disabled');
             }
-            console.log(board);
         }
 
         /**
          * Place the token of a player in the board.
          * @param {Number} move - The position where the token will be placed.
          * @param {String} player - The token of the player.
+         * @param {Boolean} [realMove=false] - If the move is a real move in
+         * the board, not a move done by the search tree algorithm.
          */
-        makeMove(move, player) {
+        makeMove(move, player, realMove=false) {
             this.squares[move] = player;
+            if (realMove) {
+                let tokenAlt = (player === 'X')? 'Cross': 'Circle';
+                let token = `<img class="token-img" src="assets/images/${player}.svg" alt="${tokenAlt}">`;
+                this[`$square${move}`].html(token).attr('disabled', '');
+            }
         }
 
         /**
@@ -76,13 +91,69 @@
             this.lines= [[0,1,2], [3,4,5], [6,7,8], // vertical
                         [0,3,6], [1,4,7], [2,5,8], // horizontal
                         [0,4,8],[2,4,6]];          // diagonal
+
+            this.cacheDom();
+            this.bindEvents();
+        }
+
+        /** Cache the DOM elements of the board */
+        cacheDom() {
+            this.$board = $('#board');
+            this.$square = $('.square');
+            this.$modal = $('.modal');
+        }
+
+        /** Bind events to DOM elements */
+        bindEvents() {
+            this.$square.on('click', this.handleMove.bind(this));
+        }
+
+        /** Enable the board, making it clickable. */
+        enableBoard() {
+            this.$board.removeClass('disabled');
+        }
+
+        /** Disable the board, making it unclickable. */
+        disableBoard() {
+            this.$board.addClass('disabled');
+        }
+
+        /**
+         * Handle an user move try.
+         * @param {Object} event - The event associated to a click
+         * in a board square (a move) made by the user.
+         */
+        handleMove(event) {
+            let move = Number(event.currentTarget.dataset.square);
+            this.board.makeMove.bind(this.board)(move, this.humanToken, true);
+            this.continueGame(this.humanToken, this.cpuPlayer);
+        }
+
+        /**
+         * Check if the game can continue or not and act according to that.
+         * If game can continue, run the next player turn.
+         * If not, announce the result, reset the game and show the modal.
+         * @param {String} player - The token of the actual player.
+         * @param {Function} playerFunction - The function to execute if the
+         * game should continue.
+         */
+        continueGame(player, playerFunction) {
+            if (this.isGameOver()) {
+                let winner = this.getWinner();
+                console.log((winner)? `Player ${winner} won.`:'It was a tie.');
+                window.setTimeout(this.reset.bind(this), 800);
+            } else {
+                playerFunction.bind(this)(this.rival[player]);
+            }
         }
 
         /**
          * Reset a Tic Tac Toe Game.
          */
         reset() {
-            this.constructor();
+            this.board = new Board();
+            this.turn = 0;
+            this.$modal.removeClass('hidden');
         }
 
         /**
@@ -142,26 +213,6 @@
                 return -TOP + depth;
             }
             return 0;
-        }
-
-        /**
-         * Check if the game can continue or not and act according to that.
-         * If game can continue, run the next player turn.
-         * If not, draw the final status of the game and init a new one.
-         * @param {String} player - The token of the actual player.
-         * @param {Function} playerFunction - The function to execute if the
-         * game should continue.
-         */
-        continueGame(player, playerFunction) {
-            if (this.isGameOver()) {
-                this.board.draw();
-                let winner = this.getWinner();
-                console.log((winner)? `Player ${winner} won.`:'It was a tie.');
-                this.reset();
-                this.start();
-            } else {
-                playerFunction.bind(this)(this.rival[player]);
-            }
         }
 
         /**
@@ -262,17 +313,15 @@
          */
         cpuPlayer(player) {
             console.time('cpu move');
-            this.board.draw();
+            this.disableBoard();
             let move;
             if (this.turn) {
                 move = this.minimax(player, this.turn);
             } else {
                 move = Math.floor(Math.random() * this.getValidMoves().length);
             }
-            console.log(`Cpu moves ${move}`);
+            this.board.makeMove(move, player, true);
             console.timeEnd('cpu move');
-            this.board.makeMove(move, player);
-
             this.continueGame(player, this.humanPlayer);
         }
 
@@ -282,48 +331,94 @@
          */
         humanPlayer(player) {
             this.turn++;
-            console.log(`Turn ${this.turn}`);
-            this.board.draw();
-            let validMoves = this.getValidMoves();
-
-            function askMove() { // print moves available
-                console.log(`Moves available: ${validMoves}`);
-                // ask player for their next move
-                let move = Number(prompt('Give me your move: '));
-
-                if (validMoves.indexOf(move) !== -1) {
-                    return move;
-                }
-                console.log(`${move} isn't a valid move. Try again.`);
-                return askMove();
-            }
-
-            let move = askMove();
-            this.board.makeMove(move, player);
-            this.continueGame(player, this.cpuPlayer);
+            this.enableBoard();
         }
 
         /**
          * Start the Tic Tac Toe game.
-         * @param {String} [playerOne='cpu'] - Player one (starts the game).
-         * @param {String} [token='X'] - Token of the player one.
+         * An OptionsModal should be instantiated for this to work.
          */
-        start(playerOne='cpu', token='X') {
-            if (playerOne === 'cpu') {
-                this.cpuPlayer(token);
+        start() {
+            if (this.playerOne === 'human') {
+                this.humanPlayer(this.humanToken);
             } else {
-                this.humanPlayer(token);
+                this.cpuPlayer(this.rival[this.humanToken]);
             }
         }
     }
 
-    /**
-     * Create and launch a Tic Tac Toe game.
-     */
-    function game(){
-        let ttt = new TicTacToe();
-        ttt.start();
+    /** Class representing an options modal window for the game. */
+    class OptionsModal {
+        /**
+         * Create a modal for a Tic Tac Toe game.
+         * @param {Object} game - A TicTacToe instance.
+         */
+        constructor(game) {
+            this.game = game;
+            this.cacheDom();
+            this.bindEvents();
+        }
+
+        /** Cache the DOM elements of the modal */
+        cacheDom() {
+            this.$tokens = $('.token');
+            this.$players = $('.player');
+            this.$start = $('#start-btn');
+            this.$modal = $('.modal');
+        }
+
+        /** Bind events to DOM elements */
+        bindEvents() {
+            this.$tokens.on('click', this.handleTokenSelection.bind(this));
+            this.$players.on('click', this.handlePlayerSelection.bind(this));
+            this.$start.on('click', this.handleStart.bind(this));
+        }
+
+        /**
+         * Handle the token selection by the user.
+         * @param {Object} event - The event associated to a click
+         * in a token button made by the user, choosing their token.
+         */
+        handleTokenSelection(event) {
+            let $this = $(event.currentTarget);
+            if ($this.hasClass('unselected')) {
+                this.$tokens.toggleClass('unselected');
+                this.token = $this.attr('data-token');
+            }
+        }
+
+        /**
+         * Handle the selection of player one by the user.
+         * @param {Object} event - The event associated to a click
+         * in a player button made by the user, choosing which player
+         * will start the game.
+         */
+        handlePlayerSelection(event) {
+            let $this = $(event.currentTarget);
+            if ($this.hasClass('unselected')) {
+                this.$players.toggleClass('unselected');
+                this.playerOne = $this.attr('data-playerone');
+            }
+        }
+
+        /**
+         * Handle the click in the modal start button by the user.
+         * @param {Object} event - The event associated to a click
+         * in the start button made by the user, for starting the game.
+         */
+        handleStart(event) {
+            this.game.playerOne = this.playerOne || 'human';
+            this.game.humanToken = this.token || 'X';
+            this.$modal.addClass('hidden');
+            this.game.start();
+        }
     }
 
-    game();
+    /** Create and launch a Tic Tac Toe game. */
+    function newGame(){
+        let ttt = new TicTacToe();
+        let modal = new OptionsModal(ttt);
+    }
+
+    newGame();
 })();
