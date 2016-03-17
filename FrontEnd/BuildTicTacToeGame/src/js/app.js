@@ -13,11 +13,6 @@
      * tree algorithm.
      */
     const TOP = 100;
-    /**
-     * @constant {picoModal} MODAL - Modal for choose token and player one of
-     * the game.
-     */
-    // const MODAL = ;
 
     /**
      * Answer if the row isn't empty and all their elements are equal.
@@ -26,10 +21,37 @@
      * empty token, false otherwise.
      */
     function threeInARow(row) {
-        let token = row[0];
-        if (token !== EMPTY) {
-            return row.every(element => element === token);
+        let repeats = new Set(row);
+        return (repeats.size === 1) && (!repeats.has(EMPTY));
+    }
+
+    /**
+     * Answer if the given player has two tokens in the row, so a direct
+     * win situation.
+     * @param {String[]} row - Array of tokens of one winning line.
+     * @param {String} player - The token of the player to check.
+     * @returns {Boolean} True if there is two player tokens and any rival
+     * tokens, false otherwise.
+     */
+    function twoInARow(row, player) {
+        let uniques = new Set(row);
+        if ((uniques.size === 3) || !uniques.has(EMPTY)) {
+            return false;
         }
+        let playerTokens = row.filter(element => element === player);
+        return playerTokens.length === 2;
+    }
+
+    /**
+     * Answer if the given player has placed the only token placed in the
+     * current row.
+     * @param {String[]} row - Array of tokens of one winning line.
+     * @param {String} player - The token of the player to check.
+     * @returns {Boolean} True if there is one player token and any rival
+     * tokens, false otherwise.
+     */
+    function oneInARow(row, player) {
+        return (twoInARow(row, EMPTY) && (row.indexOf(player) !== -1));
     }
 
     /** Class representing a board. */
@@ -37,6 +59,24 @@
         /** Create a board. */
         constructor() {
             this.squares = Array(9).fill(EMPTY);
+            this.lines= [[0,1,2], [3,4,5], [6,7,8], // horizontal
+                         [0,3,6], [1,4,7], [2,5,8], // vertical
+                         [0,4,8],[2,4,6]];          // diagonal
+            this.crossLines = {
+                0: [[0, 1, 2], [0, 3, 6], [0, 4, 8]],
+                1: [[0, 1, 2], [1, 4, 7]],
+                2: [[0, 1, 2], [2, 5, 8]],
+                3: [[3, 4, 5], [0, 3, 6]],
+                4: [[3, 4, 5], [1, 4, 5], [0, 4, 8]],
+                5: [[3, 4, 5], [2, 5, 8]],
+                6: [[6, 7, 8], [0, 3, 6], [2, 4, 6]],
+                7: [[6, 7, 8], [1, 4, 7]],
+                8: [[6, 7, 8], [2, 5, 8], [0, 4, 8]]
+            };
+            this.center = 4;
+            this.corners = new Map([[0, 8], [2, 6], [6, 2], [8, 0]]);
+            this.middles = [1, 7, 3, 5];
+
             this.getReady();
         }
 
@@ -52,24 +92,12 @@
          * Place the token of a player in the board.
          * @param {Number} move - The position where the token will be placed.
          * @param {String} player - The token of the player.
-         * @param {Boolean} [realMove=false] - If the move is a real move in
-         * the board, not a move done by the search tree algorithm.
          */
-        makeMove(move, player, realMove=false) {
+        makeMove(move, player) {
             this.squares[move] = player;
-            if (realMove) {
-                let tokenAlt = (player === 'X')? 'Cross': 'Circle';
-                let token = `<img class="token-img" src="assets/images/${player}.svg" alt="${tokenAlt}">`;
-                this[`$square${move}`].html(token).attr('disabled', '');
-            }
-        }
-
-        /**
-         * Remove the player token in the given position of the board.
-         * @param {Number} move - The position of the token to be erased.
-         */
-        undoMove(move) {
-            this.makeMove(move, EMPTY);
+            let tokenAlt = (player === 'X')? 'Cross': 'Circle';
+            let token = `<img class="token-img" src="assets/images/${player}.svg" alt="${tokenAlt}">`;
+            this[`$square${move}`].html(token).attr('disabled', '');
         }
     }
 
@@ -88,9 +116,6 @@
             this.board = new Board();
             this.rival = {'O': 'X', 'X': 'O'};
             this.turn = 0;
-            this.lines= [[0,1,2], [3,4,5], [6,7,8], // vertical
-                        [0,3,6], [1,4,7], [2,5,8], // horizontal
-                        [0,4,8],[2,4,6]];          // diagonal
 
             this.cacheDom();
             this.bindEvents();
@@ -125,7 +150,7 @@
          */
         handleMove(event) {
             let move = Number(event.currentTarget.dataset.square);
-            this.board.makeMove.bind(this.board)(move, this.humanToken, true);
+            this.board.makeMove.bind(this.board)(move, this.humanToken);
             this.continueGame(this.humanToken, this.cpuPlayer);
         }
 
@@ -177,12 +202,37 @@
         }
 
         /**
+         * Convert a board positions array to a board tokens array.
+         * @param {Number[]} indexArr - The array of board positions.
+         */
+        toTokenArray(indexArr) {
+            return indexArr.map(element => this.board.squares[element]);
+        }
+
+        /**
+         * Check if a move is a fork move.
+         * @param {Number} forkCandidate - The position to check.
+         * @player {String} player - The player for whom the check is being done.
+         * @returns {Boolean} true if it's a fork move, false otherwise.
+         */
+        isForkMove(forkCandidate, player) {
+
+            let isForkLine = function (crossline) {
+                let tokens = this.toTokenArray(crossline);
+                return oneInARow(tokens, player);
+            };
+            let forkLines = this.board.crossLines[forkCandidate]
+                            .filter(isForkLine.bind(this));
+            return forkLines.length > 1;
+        }
+
+        /**
          * Get the token of the winner player.
          * @returns {?String} The token of the actual winner. null means a tie.
          */
         getWinner() {
-            for (let line of this.lines) {
-                let row = line.map(element => this.board.squares[element]);
+            for (let line of this.board.lines) {
+                let row = this.toTokenArray(line);
                 if (threeInARow(row)) {
                     return row[0];
                 }
@@ -191,119 +241,63 @@
         }
 
         /**
-         * Evaluate (score) the state of the player at the end of a game.
-         * The possible states are: «Win» (a positive number),
-         * «Lose» (a negative) or «Tie» (zero).
-         * Take the number of moves done (depth) into account. Not taking that
-         * into account leads to a CPU playing awfully: a win in 4 moves is
-         * more valuable that one achieved in 6.
-         * @param {String} player - The token of the player which state is
-         * being evaluated.
-         * @param {Number} depth - The number of moves done to reach the actual
-         * state of the game.
-         *
-         * @returns {Number} The score of the actual state from the player
-         * perspective.
+         * Get the best move to do for CPU to never lose.
+         * @param {String} player - The CPU player token.
+         * @returns {Number} The best move to do for not lose.
          */
-        evalFinalState(player, depth) {
-            let winner = this.getWinner();
-            if (winner === player) {
-                return TOP - depth;
-            } else if (winner === this.rival[player]) {
-                return -TOP + depth;
-            }
-            return 0;
-        }
-
-        /**
-         * Implement search of the best move to execute next in the game.
-         * Use MiniMax algorithm enhanced with alpha-beta pruning.
-         * @returns {Number} bestMove - Best move to do next to play perfectly.
-         */
-        minimax(player, depth) {
-            let bestMove,
-                currentMax,
-                max = -TOP;
-            for (let move of this.getValidMoves()) {
-                currentMax = this.minValue(move, depth, this.rival[player],
-                                           -TOP, TOP);
-                if (currentMax > max) {
-                    max = currentMax;
-                    bestMove = move;
+        bestMove(player) {
+            // if cpu has two in a row, win
+            for (let line of this.board.lines) {
+                let row = this.toTokenArray(line);
+                if (twoInARow(row, player)) {
+                    return line[row.indexOf(EMPTY)];
                 }
             }
-            return bestMove;
-        }
-
-        /**
-         * Evaluate the given position and get the best result the player could
-         * achieve from that.
-         * @param {Number} move - The token position being evaluated.
-         * @param {Number} depth - The number of moves done to reach the
-         * actual state of the game.
-         * @param {String} player - The token of the player movement being
-         * evaluated.
-         * @param {Number} α - Best result possible till the moment for the
-         * player.
-         * @param {Number} β - Best result possible till the moment for the
-         * opponent.
-         * @returns {Number} Best situation the player could achieve from the
-         * given position.
-         */
-        maxValue(move, depth, player, α, β) {
-            try {
-                this.board.makeMove(move, player);
-                if (this.isGameOver()) {
-                    return this.evalFinalState(player, depth);
+            // if human has two in a row, block him
+            for (let line of this.board.lines) {
+                let row = this.toTokenArray(line);
+                if (twoInARow(row, this.humanToken)) {
+                    return line[row.indexOf(EMPTY)];
                 }
-                for (let move of this.getValidMoves()) {
-                    α = Math.max(α,
-                                 this.minValue(move, depth + 1,
-                                               this.rival[player], α, β));
-                    if (α >= β) {
-                        return β;
-                    }
-                }
-                return α;
             }
-            finally {
-                this.board.undoMove(move);
-            }
-        }
-
-        /**
-         * Evaluate the given position and get the worst result for the player
-         * opponent (the best for the player).
-         * @param {Number} move - The token position being evaluated.
-         * @param {Number} depth - The number of moves done to reach the
-         * actual state of the game.
-         * @param {String} player - The token of the player movement being
-         * evaluated.
-         * @param {Number} α - Best result possible till the moment for the
-         * player.
-         * @param {Number} β - Best result possible till the moment for the
-         * opponent.
-         * @returns {Number} Worst situation the opponent player could achieve
-         * from the given position.
-         */
-        minValue(move, depth, player, α, β) {
-            try {
-                this.board.makeMove(move, player);
-                if (this.isGameOver()) {
-                    return this.evalFinalState(player, depth);
+            // if there's a chance to create a fork create it
+            let validMoves = this.getValidMoves();
+            for (let square of validMoves) {
+                if (this.isForkMove(square, player)) {
+                    return square;
                 }
-                for (let move of this.getValidMoves()) {
-                    β = Math.min(β,
-                                 this.maxValue(move, depth + 1,
-                                               this.rival[player], α, β));
-                    if (α >= β) {
-                        return α;
-                    }
-                }
-                return β;
             }
-            finally {
-                this.board.undoMove(move);
+            // if there's a chance to the opponent to create a fork, block it
+            for (let square of validMoves) {
+                if (this.isForkMove(square, this.humanToken)) {
+                    return square;
+                }
+            }
+            // if center is free, taken it
+            if (validMoves.indexOf(this.board.center) !== -1) {
+                return this.board.center;
+            }
+            // if the opponent takes a corner, play the opposite corner
+            let corners = [...this.board.corners.entries()];
+            let oppositeCorners = corners
+                               .filter((key, value) =>
+                               (this.board.squares[key] === this.humanToken)
+                               && (this.board.squares[value] === EMPTY));
+            if (oppositeCorners.length) {
+                let value = this.board.corners.get(oppositeCorners[0][0]);
+                return value;
+            }
+            // if there's a empty corner, take it
+            for (let corner of this.board.corners.keys()) {
+                if (this.board.squares[corner] === EMPTY) {
+                    return corner;
+                }
+            }
+            // if there's an empty middle square, take it
+            for (let middle of this.board.middles) {
+                if (this.board.squares[middle] === EMPTY) {
+                    return middle;
+                }
             }
         }
 
@@ -316,11 +310,11 @@
             this.disableBoard();
             let move;
             if (this.turn) {
-                move = this.minimax(player, this.turn);
+                move = this.bestMove(player);
             } else {
                 move = Math.floor(Math.random() * this.getValidMoves().length);
             }
-            this.board.makeMove(move, player, true);
+            this.board.makeMove.bind(this.board)(move, player);
             console.timeEnd('cpu move');
             this.continueGame(player, this.humanPlayer);
         }
