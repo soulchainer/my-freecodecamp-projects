@@ -9,10 +9,10 @@
     /** @constant {String} O - The O token for the board */
     const O = 'O';
     /**
-     * @constant {Number} TOP - The maximum value to be used by the search
-     * tree algorithm.
+     * @constant {Number} RESET_TIME - Time in milliseconds to wait
+     * for reseting the game.
      */
-    const TOP = 100;
+    const RESET_TIME = 2500;
 
     /**
      * Answer if the row isn't empty and all their elements are equal.
@@ -84,7 +84,8 @@
         getReady() {
             for (let i = 0; i < 9; i++) {
                 this[`$square${i}`] = $(`#square${i}`);
-                this[`$square${i}`].html('').removeAttr('disabled');
+                this[`$square${i}`].html('').removeAttr('disabled')
+                .removeClass('fade winner1 winner2 winner3');
             }
         }
 
@@ -165,8 +166,17 @@
         continueGame(player, playerFunction) {
             if (this.isGameOver()) {
                 let winner = this.getWinner();
-                console.log((winner)? `Player ${winner} won.`:'It was a tie.');
-                window.setTimeout(this.reset.bind(this), 800);
+                let message;
+                if (winner) {
+                    let human = (winner.token === this.humanToken);
+                    this.highlightLine(winner.line);
+                    message = (human)? 'YOU WIN!': 'CPU WINS!';
+                } else {
+                    message = 'IT\'S A TIE!';
+                }
+                /* Change the tab title for the game result */
+                document.title = message;
+                window.setTimeout(this.reset.bind(this), RESET_TIME);
             } else {
                 playerFunction.bind(this)(this.rival[player]);
             }
@@ -179,6 +189,7 @@
             this.board = new Board();
             this.turn = 0;
             this.$modal.removeClass('hidden');
+            document.title = 'Tic Tac Toe';
         }
 
         /**
@@ -228,16 +239,33 @@
 
         /**
          * Get the token of the winner player.
-         * @returns {?String} The token of the actual winner. null means a tie.
+         * @returns {?Array<String, Number[]>} The token of the actual winner. null means a tie.
          */
         getWinner() {
             for (let line of this.board.lines) {
                 let row = this.toTokenArray(line);
                 if (threeInARow(row)) {
-                    return row[0];
+                    return {'token': row[0], 'line': line};
                 }
             }
             return null;
+        }
+
+        /**
+         * Highlight the given line in the board.
+         * @param {Number[]} line - The line to be highlighted.
+         */
+        highlightLine(line) {
+            let squareNumber = 1;
+            for (let square = 0; square < 9; square++) {
+                if (line.indexOf(square) === -1) {
+                    this.board[`$square${square}`].addClass('fade');
+                } else {
+                    this.board[`$square${square}`]
+                    .addClass(`winner${squareNumber}`);
+                    squareNumber++;
+                }
+            }
         }
 
         /**

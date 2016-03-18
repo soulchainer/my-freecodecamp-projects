@@ -2,13 +2,29 @@
     #VARIABLES
 \*------------------------------------*/
 
+@import "normalize";
+
+
+
+
+
+/*------------------------------------*\
+    #VARIABLES
+\*------------------------------------*/
+
 $modal-bg-color: hsla(255, 100%, 98%, .9);
 $modal-overlay-color: hsla(255, 100%, 95%, .3);
 $black: hsl(0, 0%, 16%);
 $black-shadow: transparentize($black, .4);
 $blue: hsl(217, 72%, 50%);
+$dark-blue: darken($blue, 20%);
 $color-unselected: hsl(0, 0%, 40%);
+$white: hsl(255, 100%, 95%);
+$light-grey: lighten($black, 70%);
+$light-green: hsl(90, 41%, 70%);
 
+$modal-title-font: 'Glegoo', serif;
+$modal-start-font: 'Ubuntu Mono', sans-serif;
 
 
 
@@ -16,8 +32,11 @@ $color-unselected: hsl(0, 0%, 40%);
     #GENERAL
 \*------------------------------------*/
 
+body {
+  background-color: $black;
+}
+
 button {
-  // background-color: transparent;
   border: none;
   border-radius: .5rem;
   box-sizing: border-box;
@@ -31,9 +50,17 @@ button {
   }
 }
 
+%centered {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
 %icon {
-  height: auto;
-  width: 90%;
+  height: 100%;
+  width: 100%;
 }
 
 
@@ -49,27 +76,56 @@ button {
 }
 
 .board {
+  @extend %centered;
   display: flex;
   flex-direction: column;
   height: 650px;
   margin: auto;
   max-height: 90vh;
   max-width: 90vw;
+  position: absolute;
   width: 650px;
 
   &-row {
     display: flex;
-    height: 100%;
+    height: 33%;
     width: 100%;
   }
 }
 
 .square {
+  background-color: $light-grey;
   border: .5rem solid $black;
   border-radius: 0;
   box-sizing: border-box;
   height: 100%;
+  transition: all .4s;
   width: 33%;
+
+  &:hover {
+    background-color: $white;
+    transition: all .4s;
+  }
+}
+
+/* Highlight the squares part of the winning line */
+
+%winner {
+  background-color: $light-green;
+  transform: scale(1.1);
+}
+
+@each $n in 1, 2, 3 {
+  .winner#{$n} {
+    @extend %winner;
+    transition: all .4s ease-in (.4s * ($n - 1));
+  }
+}
+
+/* Fades the squares of the board not part of the winning line */
+.fade {
+    opacity: .5;
+    transition: all .4s;
 }
 
 
@@ -87,11 +143,8 @@ button {
     #MODAL
 \*------------------------------------*/
 
-.hidden {
-  display: none;
-}
-
 .modal {
+  @extend %centered;
   position: fixed;
 
   &-container {
@@ -99,23 +152,33 @@ button {
     border-radius: .4rem;
     box-shadow: 0 0 1rem $black-shadow;
     box-sizing: border-box;
+    font-family: $modal-title-font;
     height: 400px;
-    left: 50%;
     margin: auto;
-    max-width: 90vw;
+    max-height: 90%;
+    max-width: 90%;
     padding: 2rem;
-    top: 5rem;
+    transition: transform .3s;
+    visibility: visible;
     width: 400px;
     z-index: 1000;
+
+    &.hidden {
+      transform: scale(0);
+      transition: all .3s;
+      visibility: hidden;
+    }
   }
 
   &-overlay {
     background: $modal-overlay-color;
     height: 100%;
-    left: 0;
-    top: 0;
     width: 100%;
     z-index: 999;
+
+    &.hidden {
+      display: none;
+    }
   }
 }
 
@@ -136,16 +199,21 @@ button {
 
   &-group {
     display: flex;
+    height: 80%;
     justify-content: space-around;
+    padding: 5%;
   }
 
   &-title {
-    margin-top: 0;
+    line-height: 1.5rem;
+    margin: 0;
     text-align: center;
   }
 
   &-btn {
     background-color: transparent;
+    min-height: 5rem;
+    min-width: 5rem;
     width: 30%;
   }
 
@@ -189,8 +257,23 @@ button {
 .start-btn {
   align-self: center;
   background-color: $blue;
-  height: 75%;
+  box-shadow: 0 7px 0 $dark-blue;
+  color: $white;
+  font: {
+    family: $modal-start-font;
+    size: 1.5rem;
+    weight: bold;
+  }
+  line-height: 1.5rem;
   max-height: 3rem;
   max-width: 12rem;
+  position: relative;
+  transition: all .1s;
   width: 50%;
+
+  &:active {
+    box-shadow: 0 2px 0 $dark-blue;
+    top: 5px;
+    transition: all .1s;
+  }
 }

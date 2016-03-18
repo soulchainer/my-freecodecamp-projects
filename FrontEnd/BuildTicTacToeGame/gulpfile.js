@@ -2,9 +2,9 @@
 var gulp = require('gulp'),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
-    source = require('vinyl-source-stream');
-var bs = require('browser-sync').create();
-var $ = require('gulp-load-plugins')();
+    source = require('vinyl-source-stream'),
+    bs = require('browser-sync').create(),
+    $ = require('gulp-load-plugins')();
 
 // Process the app JavaScript (own and required)
 gulp.task('scripts', function() {
